@@ -11,6 +11,7 @@ public abstract class FighterPlane extends ActiveActorDestructible {
 
 	public abstract ActiveActorDestructible fireProjectile();
 	
+	//i change the health mommentarely
 	@Override
 	public void takeDamage() {
 		health--;

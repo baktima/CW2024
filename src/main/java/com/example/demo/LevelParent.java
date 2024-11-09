@@ -74,6 +74,8 @@ public abstract class LevelParent extends Observable {
 	}
 
 	public void goToNextLevel(String levelName) {
+		//the change that makes the transition works 
+		user.destroy();
 		setChanged();
 		notifyObservers(levelName);
 	}

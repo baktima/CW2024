@@ -2,6 +2,8 @@ package com.example.demo;
 
 import javafx.scene.image.*;
 
+//this is the source where a lot of class extends from here for the player and the enemy projectile
+
 public abstract class ActiveActor extends ImageView {
 	
 	private static final String IMAGE_LOCATION = "/com/example/demo/images/";

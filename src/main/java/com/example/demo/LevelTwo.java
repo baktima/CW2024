@@ -10,6 +10,8 @@ public class LevelTwo extends LevelParent {
 	public LevelTwo(double screenHeight, double screenWidth) {
 		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, PLAYER_INITIAL_HEALTH);
 		boss = new Boss();
+		
+		
 	}
 
 	@Override
@@ -31,6 +33,7 @@ public class LevelTwo extends LevelParent {
 	protected void spawnEnemyUnits() {
 		if (getCurrentNumberOfEnemies() == 0) {
 			addEnemyUnit(boss);
+			getRoot().getChildren().add(boss.getShieldImage()); 
 		}
 	}
 
