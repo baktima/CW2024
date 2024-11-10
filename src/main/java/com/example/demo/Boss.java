@@ -145,4 +145,4 @@ public class Boss extends FighterPlane {
 
 }
 
-/*when the shield is there, it wont dissapear anymore and the shield doesnt move at all*/
+/*when the shield is there, it wont dissapear anymore and the shield doesnt move at all (done)*/

@@ -22,11 +22,11 @@ public class LevelOne extends LevelParent {
 			goToNextLevel(NEXT_LEVEL);
 	}
 
-	@Override
-	protected void initializeFriendlyUnits() {
-		getRoot().getChildren().add(getUser());
-	}
-
+//	@Override
+//	protected void initializeFriendlyUnits() {
+//		getRoot().getChildren().add(getUser());
+//	}
+	
 	@Override
 	protected void spawnEnemyUnits() {
 		int currentNumberOfEnemies = getCurrentNumberOfEnemies();
