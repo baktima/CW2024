@@ -45,6 +45,8 @@ public abstract class LevelParent extends Observable {
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
 		
+		int testing = 1; 
+		
 		//initializing all of the variables
 		root = new Group();
 		scene = new Scene(root, screenWidth, screenHeight);
