@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+
+import com.example.demo.MainMenu;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -17,10 +20,16 @@ public class Main extends Application {
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		stage.setTitle(TITLE);
 		stage.setResizable(false);
-		stage.setHeight(SCREEN_HEIGHT);
-		stage.setWidth(SCREEN_WIDTH);
-		myController = new Controller(stage);   
-		myController.launchGame();
+//		stage.setHeight(SCREEN_HEIGHT);
+//		stage.setWidth(SCREEN_WIDTH);
+		myController = new Controller(stage);
+		
+		//executing the main menu first
+		try {
+			MainMenu.showMainMenu(stage, myController);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {

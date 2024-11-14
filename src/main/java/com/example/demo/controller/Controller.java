@@ -20,19 +20,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.animation.Timeline;
 
 import com.example.demo.LevelParent;
-//import com.example.demo.PauseMenu; 
 
 public class Controller implements Observer {
 
 	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelTwo";
 	private final Stage stage;
-	private static Stage pauseMenu; 
-
-	//testing
-	private static Controller instance; 
-	private boolean isPaused = false;
-	
-	
 	
 	public Controller(Stage stage) {
 		this.stage = stage;
