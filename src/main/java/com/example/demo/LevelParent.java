@@ -1,15 +1,22 @@
 package com.example.demo;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.example.demo.controller.Controller;
+import com.example.demo.controller.PauseMenuController;
+
 import javafx.animation.*;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;//
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.util.Duration;
+import javafx.scene.Parent;
 
 public abstract class LevelParent extends Observable {
 
@@ -18,8 +25,11 @@ public abstract class LevelParent extends Observable {
 	private final double screenHeight;
 	private final double screenWidth;
 	private final double enemyMaximumYPosition;
-
+	
 	private final Group root;
+	private final Group gamePlayRoot; 
+	private final Group pauseMenuRoot;
+	
 	private final Timeline timeline;
 	private final UserPlane user;
 	private final Scene scene;
@@ -32,7 +42,8 @@ public abstract class LevelParent extends Observable {
 	
 	private int currentNumberOfEnemies;
 	private LevelView levelView;
-	private boolean paused = false; 
+	private boolean paused = false;
+	private Parent pauseMenu;
 
 	/**
 	 * changing the constructor since there's a lot of redundant use of this.
@@ -45,7 +56,7 @@ public abstract class LevelParent extends Observable {
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
 		
-		int testing = 1; 
+		int testing = 1;
 		
 		//initializing all of the variables
 		root = new Group();
@@ -58,6 +69,12 @@ public abstract class LevelParent extends Observable {
 		currentNumberOfEnemies = 0;
 		initializeTimeline();
 		friendlyUnits.add(user);
+		
+		gamePlayRoot = new Group(); 
+		pauseMenuRoot = new Group();
+		
+		root.getChildren().addAll(gamePlayRoot, pauseMenuRoot); 
+		
 	}
 	
 
@@ -65,7 +82,7 @@ public abstract class LevelParent extends Observable {
  * most of these function will be used by the inherited levels 
  */
 	private void initializeFriendlyUnits() {
-		root.getChildren().add(user);
+		gamePlayRoot.getChildren().add(user);
 		
 	}
 
@@ -140,24 +157,12 @@ public abstract class LevelParent extends Observable {
 	    updateLevelView();
 	}
 
-
 	private void initializeTimeline() {
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame gameLoop = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> updateScene());
 		timeline.getKeyFrames().add(gameLoop);
 	}
 	
-	//adding a stopping and resume method to stop the timeline 
-	private void togglePauseResume() {
-	    if (paused) {
-	        timeline.play();
-	    } else {
-	        timeline.pause();
-	    }
-	    paused = !paused;
-	}
-
-
 	/**
 	 *initializing the background and handle custom inputs 
 	 */
@@ -167,7 +172,7 @@ public abstract class LevelParent extends Observable {
 		background.setFitWidth(screenWidth);
 		background.setOnKeyPressed(e -> handleKeyPress(e.getCode()));
 		background.setOnKeyReleased(e-> handleKeyRelease(e.getCode())); 
-		root.getChildren().add(background);
+		gamePlayRoot.getChildren().add(background);
 	}
 	
 	/**
@@ -179,8 +184,63 @@ public abstract class LevelParent extends Observable {
 	    if (kc == KeyCode.UP) user.moveUp();
 	    if (kc == KeyCode.DOWN) user.moveDown();
 	    if (kc == KeyCode.SPACE) fireProjectile();
+	    
+	    //testing
 	    if (kc == KeyCode.ESCAPE) togglePauseResume();
 	    
+	}
+	
+	//adding a stopping and resume method to stop the timeline 
+	private void togglePauseResume() {
+	    if (paused) {
+	        resumeGame();
+	    } else {
+	        pauseGame();
+	    }
+	    paused = !paused;
+	}
+
+	private void pauseGame() {
+	    timeline.pause();
+	    displayPauseMenu();
+	}
+
+	public void resumeGame() {
+	    timeline.play();
+	    pauseMenuRoot.getChildren().clear();
+	    paused = false;
+	    
+	    //this is the function that fix the pause menu supposidely 
+	    gamePlayRoot.getChildren().remove(background);
+	    gamePlayRoot.getChildren().add(0, background);
+
+	}
+	
+	private void displayPauseMenu() {
+	    try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/fxml/PauseMenu.fxml"));
+	        Parent pauseMenu = loader.load();
+
+	        // Access the controller to pass in any necessary references
+	        PauseMenuController pauseController = loader.getController();
+	        pauseController.initialize(this);
+	        
+	        double centerX = (screenWidth - pauseMenu.getLayoutBounds().getWidth()) / 4;
+	        double centerY = (screenHeight - pauseMenu.getLayoutBounds().getHeight()) / 4;
+	        pauseMenu.setLayoutX(centerX);
+	        pauseMenu.setLayoutY(centerY);
+	        
+
+	        // Add the pause menu overlay to the scene
+	        pauseMenuRoot.getChildren().add(pauseMenu);
+	        
+	        pauseMenu.setVisible(true);
+	        
+	        //focus 
+	        pauseMenu.requestFocus();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	/**
@@ -195,7 +255,7 @@ public abstract class LevelParent extends Observable {
 
 	private void fireProjectile() {
 		ActiveActorDestructible projectile = user.fireProjectile();
-		root.getChildren().add(projectile);
+		gamePlayRoot.getChildren().add(projectile);
 		userProjectiles.add(projectile);
 	}
 
@@ -205,7 +265,7 @@ public abstract class LevelParent extends Observable {
 
 	private void spawnEnemyProjectile(ActiveActorDestructible projectile) {
 		if (projectile != null) {
-			root.getChildren().add(projectile);
+			gamePlayRoot.getChildren().add(projectile);
 			enemyProjectiles.add(projectile);
 		}
 	}
@@ -227,7 +287,7 @@ public abstract class LevelParent extends Observable {
 	private void removeDestroyedActors(List<ActiveActorDestructible> actors) {
 		List<ActiveActorDestructible> destroyedActors = actors.stream().filter(actor -> actor.isDestroyed())
 				.collect(Collectors.toList());
-		root.getChildren().removeAll(destroyedActors);
+		gamePlayRoot.getChildren().removeAll(destroyedActors);
 		actors.removeAll(destroyedActors);
 	}
 
@@ -306,7 +366,7 @@ public abstract class LevelParent extends Observable {
 
 	protected void addEnemyUnit(ActiveActorDestructible enemy) {
 		enemyUnits.add(enemy);
-		root.getChildren().add(enemy);
+		gamePlayRoot.getChildren().add(enemy);
 	}
 
 	protected double getEnemyMaximumYPosition() {

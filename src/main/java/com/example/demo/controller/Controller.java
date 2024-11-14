@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
@@ -8,19 +9,35 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javafx.scene.Scene;
+import javafx.scene.Parent; 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+
+//testing
+import javafx.animation.Timeline;
+
 import com.example.demo.LevelParent;
+//import com.example.demo.PauseMenu; 
 
 public class Controller implements Observer {
 
-	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelOne";
+	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelTwo";
 	private final Stage stage;
+	private static Stage pauseMenu; 
 
+	//testing
+	private static Controller instance; 
+	private boolean isPaused = false;
+	
+	
+	
 	public Controller(Stage stage) {
 		this.stage = stage;
 	}
+	
 
 	public void launchGame() throws ClassNotFoundException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
@@ -29,7 +46,7 @@ public class Controller implements Observer {
 			goToLevel(LEVEL_ONE_CLASS_NAME);
 	}
 
-	private void goToLevel(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
+	public void goToLevel(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 			Class<?> myClass = Class.forName(className);
 			Constructor<?> constructor = myClass.getConstructor(double.class, double.class);
@@ -40,6 +57,8 @@ public class Controller implements Observer {
 			myLevel.startGame();
 
 	}
+	
+	
 	
 	//maybe the update is wrong i need to change it first to know the root cause 
 
@@ -84,4 +103,6 @@ public class Controller implements Observer {
 	        System.exit(1);
 	    }
 	}
+
+
 }

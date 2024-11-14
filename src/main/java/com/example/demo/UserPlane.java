@@ -31,6 +31,8 @@ public class UserPlane extends FighterPlane {
 		}
 	}
 	
+	
+	//you dont need the update actor since its only purpose currently is to just update the position nothing else
 	@Override
 	public void updateActor() {
 		updatePosition();
