@@ -10,19 +10,13 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	private static final int SCREEN_WIDTH = 1300;
-	private static final int SCREEN_HEIGHT = 750;
 	private static final String TITLE = "Sky Battle";
-	private Controller myController;
 
-	@Override
-	public void start(Stage stage) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    @Override
+	public void start(Stage stage) throws SecurityException, IllegalArgumentException {
 		stage.setTitle(TITLE);
 		stage.setResizable(false);
-//		stage.setHeight(SCREEN_HEIGHT);
-//		stage.setWidth(SCREEN_WIDTH);
-		myController = new Controller(stage);
+        Controller myController = new Controller(stage);
 		
 		//executing the main menu first
 		try {
@@ -36,6 +30,7 @@ public class Main extends Application {
 		launch();
 	}
 }
+
 
 //there's no main menu and there's no ending scene which makes everything confusing and at 22 second it will always crash out for some reason but it will stay running
 //and also the amount of bullet can also cause the same error

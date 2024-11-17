@@ -13,10 +13,10 @@ public class MainMenuController {
      * @param stage         The primary stage of the application.
      * @param gameController The main game controller to manage the game transitions.
      */
+
 	public void initialize(Stage stage, Controller gameController) {
-		this.stage = stage; 
-		this.gameController = gameController; 
-		
+		this.stage = stage;
+		this.gameController = gameController;
 	}
 	
 	@FXML
@@ -35,8 +35,7 @@ public class MainMenuController {
 	}
 	
 	@FXML
-	private void buttonExit() { 
-		stage.close(); 
+	private void buttonExit() {
+		javafx.application.Platform.exit();
 	}
-	
 }

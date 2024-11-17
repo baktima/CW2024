@@ -22,11 +22,6 @@ public class LevelOne extends LevelParent {
 			goToNextLevel(NEXT_LEVEL);
 	}
 
-//	@Override
-//	protected void initializeFriendlyUnits() {
-//		getRoot().getChildren().add(getUser());
-//	}
-	
 	@Override
 	protected void spawnEnemyUnits() {
 		int currentNumberOfEnemies = getCurrentNumberOfEnemies();
@@ -44,8 +39,13 @@ public class LevelOne extends LevelParent {
 		return new LevelView(getRoot(), PLAYER_INITIAL_HEALTH);
 	}
 
+	@Override
+	public void restartGame(){
+		super.restartGame();
+		getUser().setNumberOfKills(0);
+	}
+
 	private boolean userHasReachedKillTarget() {
 		return getUser().getNumberOfKills() >= KILLS_TO_ADVANCE;
 	}
-
 }

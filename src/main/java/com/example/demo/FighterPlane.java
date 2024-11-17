@@ -10,8 +10,8 @@ public abstract class FighterPlane extends ActiveActorDestructible {
 	}
 
 	public abstract ActiveActorDestructible fireProjectile();
-	
-	//i change the health mommentarely
+
+
 	@Override
 	public void takeDamage() {
 		health--;
@@ -34,6 +34,10 @@ public abstract class FighterPlane extends ActiveActorDestructible {
 
 	public int getHealth() {
 		return health;
+	}
+
+	public void resetHealth(int health){
+		this.health = health;
 	}
 		
 }

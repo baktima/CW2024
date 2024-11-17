@@ -9,10 +9,10 @@ public class Boss extends FighterPlane {
 	private static final double INITIAL_Y_POSITION = 400;
 	private static final double PROJECTILE_Y_POSITION_OFFSET = 75.0;
 	private static final double BOSS_FIRE_RATE = .04;
-	private static final double BOSS_SHIELD_PROBABILITY = 0.5;
+	private static final double BOSS_SHIELD_PROBABILITY = 0;
 	private static final int IMAGE_HEIGHT = 50;
 	private static final int VERTICAL_VELOCITY = 8;
-	private static final int HEALTH = 1;
+	private static int HEALTH = 3;
 	private static final int MOVE_FREQUENCY_PER_CYCLE = 5;
 	private static final int ZERO = 0;
 	private static final int MAX_FRAMES_WITH_SAME_MOVE = 10;
@@ -25,6 +25,9 @@ public class Boss extends FighterPlane {
 	private int indexOfCurrentMove;
 	private int framesWithShieldActivated;
 	private ShieldImage shieldImage;
+
+	//testing
+	private int health; // Instance variable for health
 
 	public Boss() {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH);
@@ -67,6 +70,7 @@ public class Boss extends FighterPlane {
 	public void takeDamage() {
 		if (!isShielded) {
 			super.takeDamage();
+			health--;
 		}
 	}
 
@@ -144,7 +148,21 @@ public class Boss extends FighterPlane {
 	    }
 	}
 
+	public void reset() {
+		// Reset health
+		super.resetHealth(3);
 
+		// Reset position
+		setTranslateY(0);
+
+		// Reset shield status
+		isShielded = false;
+		framesWithShieldActivated = 0;
+		shieldImage.hideShield();
+
+		// Reset movement pattern
+		consecutiveMovesInSameDirection = 0;
+		indexOfCurrentMove = 0;
+		Collections.shuffle(movePattern);
+	}
 }
-
-/*when the shield is there, it wont dissapear anymore and the shield doesnt move at all (done)*/

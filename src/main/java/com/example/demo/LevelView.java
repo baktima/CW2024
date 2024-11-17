@@ -42,4 +42,13 @@ public class LevelView {
 		}
 	}
 
+	public void resetHeartDisplay(){
+
+		heartDisplay.getContainer().getChildren().clear();
+
+		heartDisplay.setNumberOfHeartsToDisplay(5);
+		heartDisplay.initializeHearts();
+
+	}
+
 }

@@ -15,9 +15,9 @@ public class HeartDisplay {
 	private int numberOfHeartsToDisplay;
 	
 	public HeartDisplay(double xPosition, double yPosition, int heartsToDisplay) {
-		this.containerXPosition = xPosition;
-		this.containerYPosition = yPosition;
-		this.numberOfHeartsToDisplay = heartsToDisplay;
+		containerXPosition = xPosition;
+		containerYPosition = yPosition;
+		numberOfHeartsToDisplay = heartsToDisplay;
 		initializeContainer();
 		initializeHearts();
 	}
@@ -28,7 +28,7 @@ public class HeartDisplay {
 		container.setLayoutY(containerYPosition);		
 	}
 	
-	private void initializeHearts() {
+	public void initializeHearts() {
 		for (int i = 0; i < numberOfHeartsToDisplay; i++) {
 			ImageView heart = new ImageView(new Image(getClass().getResource(HEART_IMAGE_NAME).toExternalForm()));
 
@@ -47,4 +47,7 @@ public class HeartDisplay {
 		return container;
 	}
 
+	public void setNumberOfHeartsToDisplay(int numberOfHeartsToDisplay) {
+		this.numberOfHeartsToDisplay = numberOfHeartsToDisplay;
+	}
 }

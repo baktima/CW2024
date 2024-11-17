@@ -13,11 +13,6 @@ public class LevelTwo extends LevelParent {
 		
 	}
 
-//	@Override
-//	protected void initializeFriendlyUnits() {
-//		getRoot().getChildren().add(getUser());
-//	}
-
 	@Override
 	protected void checkIfGameOver() {
 		if (userIsDestroyed()) {
@@ -40,6 +35,14 @@ public class LevelTwo extends LevelParent {
 	protected LevelView instantiateLevelView() {
 		levelView = new LevelViewLevelTwo(getRoot(), PLAYER_INITIAL_HEALTH);
 		return levelView;
+	}
+
+	@Override
+	public void restartGame(){
+
+		super.restartGame();
+		boss.reset();
+
 	}
 
 }
