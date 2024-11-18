@@ -40,6 +40,8 @@ public class UserPlane extends FighterPlane {
 	
 	@Override
 	public ActiveActorDestructible fireProjectile() {
+		SoundEffects soundEffects = new SoundEffects();
+		soundEffects.playSound();
 		return new UserProjectile(PROJECTILE_X_POSITION, getProjectileYPosition(PROJECTILE_Y_POSITION_OFFSET));
 	}
 

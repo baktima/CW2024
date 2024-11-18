@@ -48,8 +48,9 @@
 
 		//testing
 		private Stage stage;
+		private boolean canFire = true;
 
-		/**
+        /**
 		 * changing the constructor since there's a lot of redundant use of this.
 		 * @param playerInitialHealth passing the current player health.
 		 * @param backgroundImageName passing the background file path name to the function.
@@ -225,7 +226,7 @@
 		private void handleKeyPress(KeyCode kc) {
 			if (kc == KeyCode.UP) user.moveUp();
 			if (kc == KeyCode.DOWN) user.moveDown();
-			if (kc == KeyCode.SPACE) fireProjectile();
+			if (kc == KeyCode.SPACE) fireWithCooldown();
 
 			//testing
 			if (kc == KeyCode.ESCAPE) togglePauseResume();
@@ -340,6 +341,19 @@
 			ActiveActorDestructible projectile = user.fireProjectile();
 			gamePlayRoot.getChildren().add(projectile);
 			userProjectiles.add(projectile);
+		}
+
+		private void fireWithCooldown(){
+			if (canFire){
+				fireProjectile();
+				canFire = false; // Prevent firing until cooldown expires
+
+				// Start a cooldown timer using the Timeline
+                int fireCooldown = 300;
+                Timeline cooldownTimer = new Timeline(new KeyFrame(Duration.millis(fireCooldown), e -> canFire = true));
+				cooldownTimer.setCycleCount(1);
+				cooldownTimer.play();
+			}
 		}
 
 		private void generateEnemyFire() {
