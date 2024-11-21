@@ -1,23 +1,12 @@
 package com.example.demo.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Observable;
 import java.util.Observer;
 
 import javafx.scene.Scene;
-import javafx.scene.Parent; 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-
-//testing
-import javafx.animation.Timeline;
 
 import com.example.demo.LevelParent;
 
@@ -25,11 +14,6 @@ public class Controller implements Observer {
 
 	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelOne";
 	private final Stage stage;
-	
-	public Controller(Stage stage) {
-		this.stage = stage;
-	}
-	
 
 	public void launchGame() throws ClassNotFoundException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
@@ -53,9 +37,10 @@ public class Controller implements Observer {
 			myLevel.startGame();
 
 	}
-	
-	
-	
+	public Controller(Stage stage) {
+		this.stage = stage;
+	}
+
 	//maybe the update is wrong i need to change it first to know the root cause 
 
 //	@Override

@@ -44,6 +44,7 @@ public class LevelView {
 
 	public void resetHeartDisplay(){
 
+		//use getter for the total of heart not like this
 		heartDisplay.getContainer().getChildren().clear();
 
 		heartDisplay.setNumberOfHeartsToDisplay(5);

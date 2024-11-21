@@ -4,14 +4,11 @@
 	import java.util.*;
 	import java.util.stream.Collectors;
 
-	import com.example.demo.controller.Controller;
 	import com.example.demo.controller.PauseMenuController;
 
 	import javafx.animation.*;
-	import javafx.event.EventHandler;
-	import javafx.fxml.FXMLLoader;//
+	import javafx.fxml.FXMLLoader;
 	import javafx.scene.Group;
-	import javafx.scene.Node;
 	import javafx.scene.Scene;
 	import javafx.scene.image.*;
 	import javafx.scene.input.*;
@@ -63,8 +60,6 @@
 			this.screenHeight = screenHeight;
 			this.screenWidth = screenWidth;
 
-			int testing = 1;
-
 			//initializing all the variables
 			root = new Group();
 			scene = new Scene(root, screenWidth, screenHeight);
@@ -104,15 +99,15 @@
 		}
 
 		//not yet now
-		//based from the user reset maybe i can like put the reset heart display so it can change dynamically;
+		//based from the user reset maybe I can like put the reset heart display, so it can change dynamically;
 		private void userReset() {
 			// Reset user position to the initial state (e.g., bottom-center of the screen)
 			user.setTranslateY(0);
 
 			//resetting heart
-			user.resetHealth(5);
+			user.setHealth(5);
 
-			//reseting the heart display but i modified it from the class itself, maybe pass some value would be better
+			//resting the heart display but i modified it from the class itself, maybe pass some value would be better
 			levelView.resetHeartDisplay();
 
 
@@ -155,6 +150,7 @@
 
 		public void goToNextLevel(String levelName) {
 			//the change that makes the transition works
+			//later maybe need to make it nicer.
 			user.destroy();
 			setChanged();
 			notifyObservers(levelName);
@@ -349,7 +345,7 @@
 				canFire = false; // Prevent firing until cooldown expires
 
 				// Start a cooldown timer using the Timeline
-                int fireCooldown = 300;
+                int fireCooldown = 200;
                 Timeline cooldownTimer = new Timeline(new KeyFrame(Duration.millis(fireCooldown), e -> canFire = true));
 				cooldownTimer.setCycleCount(1);
 				cooldownTimer.play();

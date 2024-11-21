@@ -27,7 +27,7 @@ public class Boss extends FighterPlane {
 	private ShieldImage shieldImage;
 
 	//testing
-	private int health; // Instance variable for health
+	private int INITIAL_HEALTH = 3; // Instance variable for health
 
 	public Boss() {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH);
@@ -65,12 +65,12 @@ public class Boss extends FighterPlane {
 	public ActiveActorDestructible fireProjectile() {
 		return bossFiresInCurrentFrame() ? new BossProjectile(getProjectileInitialPosition()) : null;
 	}
-	
+
+
 	@Override
 	public void takeDamage() {
 		if (!isShielded) {
 			super.takeDamage();
-			health--;
 		}
 	}
 
@@ -150,7 +150,7 @@ public class Boss extends FighterPlane {
 
 	public void reset() {
 		// Reset health
-		super.resetHealth(3);
+		super.setHealth(INITIAL_HEALTH);
 
 		// Reset position
 		setTranslateY(0);

@@ -3,7 +3,7 @@ package com.example.demo;
 public class EnemyPlane extends FighterPlane {
 
 	private static final String IMAGE_NAME = "enemyplane.png";
-	private static final int IMAGE_HEIGHT = 100;
+	private static final int IMAGE_HEIGHT = 50;
 	private static final int HORIZONTAL_VELOCITY = -6;
 	private static final double PROJECTILE_X_POSITION_OFFSET = -100.0;
 	private static final double PROJECTILE_Y_POSITION_OFFSET = 50.0;
@@ -14,18 +14,35 @@ public class EnemyPlane extends FighterPlane {
 		super(IMAGE_NAME, IMAGE_HEIGHT, initialXPos, initialYPos, INITIAL_HEALTH);
 	}
 
+	//for the EnemySpecialPlane
+	public EnemyPlane(String imageName, double initialXPos, double initialYPos, int health) {
+		super(imageName, IMAGE_HEIGHT, initialXPos, initialYPos, health);
+	}
+
+	public static double getProjectileXPositionOffset() {
+		return PROJECTILE_X_POSITION_OFFSET;
+	}
+
+	public static double getProjectileYPositionOffset() {
+		return PROJECTILE_Y_POSITION_OFFSET;
+	}
+
 	@Override
 	public void updatePosition() {
 		moveHorizontally(HORIZONTAL_VELOCITY);
 	}
 
+	//fix minor typo
 	@Override
 	public ActiveActorDestructible fireProjectile() {
-		if (Math.random() < FIRE_RATE) {
-			double projectileXPosition = getProjectileXPosition(PROJECTILE_X_POSITION_OFFSET);
-			double projectileYPostion = getProjectileYPosition(PROJECTILE_Y_POSITION_OFFSET);
-			return new EnemyProjectile(projectileXPosition, projectileYPostion);
-		}
+
+			if (Math.random() < FIRE_RATE) {
+				double projectileXPosition = getProjectileXPosition(getProjectileXPositionOffset());
+				double projectileYPosition = getProjectileYPosition(getProjectileYPositionOffset());
+				return new EnemyProjectile(projectileXPosition, projectileYPosition);
+
+			}
+
 		return null;
 	}
 
