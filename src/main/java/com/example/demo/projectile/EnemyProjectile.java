@@ -10,19 +10,9 @@ public class EnemyProjectile extends Projectile {
 		super(IMAGE_NAME, IMAGE_HEIGHT, initialXPos, initialYPos);
 	}
 
-	@Override
-	public void updatePosition() {
-		moveHorizontally(HORIZONTAL_VELOCITY);
-	}
-
-	@Override
-	public void updateActor() {
-		updatePosition();
-	}
-
 	//testing
 	@Override
-	protected double getHorizontalVelocity() {
+	public double GetHorizontalVelocity() {
 		return HORIZONTAL_VELOCITY;
 	}
 

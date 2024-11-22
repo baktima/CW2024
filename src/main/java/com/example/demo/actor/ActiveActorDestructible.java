@@ -1,34 +1,34 @@
-package com.example.demo.actor;
-
-public abstract class ActiveActorDestructible extends ActiveActor implements Destructible {
-
-	private boolean isDestroyed;
-
-	public ActiveActorDestructible(String imageName, int imageHeight, double initialXPos, double initialYPos) {
-		super(imageName, imageHeight, initialXPos, initialYPos);
-		isDestroyed = false;
-	}
-
-	@Override
-	public abstract void updatePosition();
-
-	public abstract void updateActor();
-
-	@Override
-	public abstract void takeDamage();
-
-	//can be changed to this.isDestroyed = true since there's no other application of the setter
-	@Override
-	public void destroy() {
-		setDestroyed(true);
-	}
-
-	protected void setDestroyed(boolean isDestroyed) {
-		this.isDestroyed = isDestroyed;
-	}
-
-	public boolean isDestroyed() {
-		return isDestroyed;
-	}
-
-}
+//package com.example.demo.actor;
+//
+//public abstract class ActiveActorDestructible extends ActiveActor implements Destructible {
+//
+//	private boolean isDestroyed;
+//
+//	public ActiveActorDestructible(String imageName, int imageHeight, double initialXPos, double initialYPos) {
+//		super(imageName, imageHeight, initialXPos, initialYPos);
+//		isDestroyed = false;
+//	}
+//
+//	@Override
+//	public abstract void updatePosition();
+//
+//	public abstract void updateActor();
+//
+//	@Override
+//	public abstract void takeDamage();
+//
+//	//can be changed to this.getIsDestroyed = true since there's no other application of the setter
+//	@Override
+//	public void destroy() {
+//		setDestroyed(true);
+//	}
+//
+//	protected void setDestroyed(boolean isDestroyed) {
+//		this.isDestroyed = isDestroyed;
+//	}
+//
+//	public boolean getIsDestroyed() {
+//		return isDestroyed;
+//	}
+//
+//}

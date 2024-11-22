@@ -382,7 +382,7 @@
 		}
 
 		private void removeDestroyedActors(List<ActiveActor> actors) {
-			List<ActiveActor> destroyedActors = actors.stream().filter(actor -> actor.isDestroyed())
+			List<ActiveActor> destroyedActors = actors.stream().filter(actor -> actor.getIsDestroyed())
 					.collect(Collectors.toList());
 			gamePlayRoot.getChildren().removeAll(destroyedActors);
 			actors.removeAll(destroyedActors);
@@ -475,7 +475,7 @@
 		}
 
 		protected boolean userIsDestroyed() {
-			return user.isDestroyed();
+			return user.getIsDestroyed();
 		}
 
 		private void updateNumberOfEnemies() {

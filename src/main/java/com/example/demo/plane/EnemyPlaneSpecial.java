@@ -26,8 +26,8 @@ public class EnemyPlaneSpecial extends EnemyPlane {
     }
 
     @Override
-    public void updatePosition() {
-        moveHorizontally(HORIZONTAL_MOVEMENT);
+    public double GetHorizontalVelocity(){
+        return HORIZONTAL_MOVEMENT;
     }
 
 }

@@ -10,15 +10,15 @@ public class EnemySpecialProjectile extends EnemyProjectile {
 
     @Override
     public void updatePosition(){
-        moveHorizontally(HORIZONTAL_VELOCITY);
+        super.updatePosition();
         moveVertically(VERTICAL_VELOCITY);
     }
 
     //testing
-//    @Override
-//    public void UpdatePosition(){
-//        super.UpdatePosition();
-//        moveVertically(VERTICAL_VELOCITY);
-//    }
+    @Override
+    public double GetHorizontalVelocity() {
+        return HORIZONTAL_VELOCITY;
+    }
+
 }
 

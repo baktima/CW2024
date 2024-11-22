@@ -20,8 +20,6 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 		isDestroyed = false;
 	}
 
-	public abstract void updatePosition();
-
 	protected void moveHorizontally(double horizontalMove) {
 		this.setTranslateX(getTranslateX() + horizontalMove);
 	}
@@ -30,12 +28,14 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 		this.setTranslateY(getTranslateY() + verticalMove);
 	}
 
-	public abstract void updateActor();
+	public void updateActor(){
+		updatePosition();
+	}
 
 	//destructible
 	public abstract void takeDamage();
 
-	//can be changed to this.isDestroyed = true since there's no other application of the setter
+	//can be changed to this.getIsDestroyed = true since there's no other application of the setter
 	public void destroy() {
 		setDestroyed(true);
 	}
@@ -44,7 +44,12 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 		this.isDestroyed = isDestroyed;
 	}
 
-	public boolean isDestroyed() {
+	public boolean getIsDestroyed() {
 		return isDestroyed;
 	}
+
+	public void updatePosition(){
+		moveHorizontally(GetHorizontalVelocity());
+	}
+	public abstract double GetHorizontalVelocity();
 }

@@ -14,6 +14,7 @@ public class UserPlane extends FighterPlane {
 	private static final double INITIAL_Y_POSITION = 300.0;
 	private static final int IMAGE_HEIGHT = 50;
 	private static final int VERTICAL_VELOCITY = 12;
+	private static final double HORIZONTAL_VELOCITY = 0;
 	private static final int PROJECTILE_X_POSITION = 110;
 	private static final int PROJECTILE_Y_POSITION_OFFSET = 20;
 	private int velocityMultiplier;
@@ -35,15 +36,13 @@ public class UserPlane extends FighterPlane {
 			}
 		}
 	}
-	
-	
-	//you don't need the update actor since its only purpose currently is to just update the position nothing else
-	@Override
-	public void updateActor() {
-		updatePosition();
-	}
-	
-	@Override
+
+    @Override
+    public double GetHorizontalVelocity() {
+        return HORIZONTAL_VELOCITY;
+    }
+
+    @Override
 	public ActiveActor fireProjectile() {
 		SoundEffects soundEffects = new SoundEffects();
 		soundEffects.playSound();

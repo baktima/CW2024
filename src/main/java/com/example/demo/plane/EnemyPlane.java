@@ -30,10 +30,6 @@ public class EnemyPlane extends FighterPlane {
 		return PROJECTILE_Y_POSITION_OFFSET;
 	}
 
-	@Override
-	public void updatePosition() {
-		moveHorizontally(HORIZONTAL_VELOCITY);
-	}
 
 	//fix minor typo
 	@Override
@@ -50,8 +46,8 @@ public class EnemyPlane extends FighterPlane {
 	}
 
 	@Override
-	public void updateActor() {
-		updatePosition();
+	public double GetHorizontalVelocity() {
+		return HORIZONTAL_VELOCITY;
 	}
 
 }

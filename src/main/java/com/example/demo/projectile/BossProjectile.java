@@ -11,19 +11,10 @@ public class BossProjectile extends Projectile {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, initialYPos);
 	}
 
-	@Override
-	public void updatePosition() {
-		moveHorizontally(HORIZONTAL_VELOCITY);
-	}
-	
-	@Override
-	public void updateActor() {
-		updatePosition();
-	}
 
 	//testing
 	@Override
-	protected double getHorizontalVelocity() {
+	public double GetHorizontalVelocity() {
 		return HORIZONTAL_VELOCITY;
 	}
 	

@@ -16,6 +16,7 @@ public class Boss extends FighterPlane {
 	private static final double BOSS_SHIELD_PROBABILITY = 0.5;
 	private static final int IMAGE_HEIGHT = 50;
 	private static final int VERTICAL_VELOCITY = 8;
+	private static final double HORIZONTAL_VELOCITY = 0;
 	private static final int MOVE_FREQUENCY_PER_CYCLE = 5;
 	private static final int ZERO = 0;
 	private static final int MAX_FRAMES_WITH_SAME_MOVE = 10;
@@ -59,7 +60,7 @@ public class Boss extends FighterPlane {
 	//this is the reason why it needs to update actors not the update position, the update shield;
 	@Override
 	public void updateActor() {
-		updatePosition();
+		super.updateActor();
 		updateShield();
 	}
 
@@ -74,6 +75,11 @@ public class Boss extends FighterPlane {
 		if (!isShielded) {
 			super.takeDamage();
 		}
+	}
+
+	@Override
+	public double GetHorizontalVelocity() {
+		return HORIZONTAL_VELOCITY;
 	}
 
 	private void initializeMovePattern() {
