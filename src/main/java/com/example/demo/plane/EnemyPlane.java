@@ -1,4 +1,7 @@
-package com.example.demo;
+package com.example.demo.plane;
+
+import com.example.demo.projectile.EnemyProjectile;
+import com.example.demo.actor.ActiveActorDestructible;
 
 public class EnemyPlane extends FighterPlane {
 

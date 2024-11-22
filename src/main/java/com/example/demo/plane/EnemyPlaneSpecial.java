@@ -1,6 +1,9 @@
-package com.example.demo;
+package com.example.demo.plane;
 
-public class EnemyPlaneSpecial extends EnemyPlane{
+import com.example.demo.projectile.EnemySpecialProjectile;
+import com.example.demo.actor.ActiveActorDestructible;
+
+public class EnemyPlaneSpecial extends EnemyPlane {
 
     private static final String IMAGE_NAME = "enemyplaneSpecial.png";
     private static final int HEALTH = 2;

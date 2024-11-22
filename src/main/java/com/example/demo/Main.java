@@ -1,9 +1,9 @@
-package com.example.demo.controller;
+package com.example.demo;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
-import com.example.demo.MainMenu;
+import com.example.demo.controller.Controller;
+import com.example.demo.display.MainMenu;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

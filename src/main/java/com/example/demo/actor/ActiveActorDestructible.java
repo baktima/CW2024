@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.actor;
 
 public abstract class ActiveActorDestructible extends ActiveActor implements Destructible {
 
@@ -29,5 +29,5 @@ public abstract class ActiveActorDestructible extends ActiveActor implements Des
 	public boolean isDestroyed() {
 		return isDestroyed;
 	}
-	
+
 }

@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.display;
 
 import com.example.demo.controller.Controller;
 import com.example.demo.controller.MainMenuController;
@@ -13,7 +13,7 @@ public class MainMenu {
     private static final int SCREEN_HEIGHT = 750;
     private static final String TITLE = "Sky Battle";
 
-    public static void showMainMenu(Stage stage, Controller gameController) throws IOException {
+    public static void showMainMenu(Stage stage, Controller gameController)throws IOException {
         FXMLLoader loader = new FXMLLoader(MainMenu.class.getResource("/com/example/demo/fxml/MainMenu.fxml"));
         Parent root = loader.load();
 

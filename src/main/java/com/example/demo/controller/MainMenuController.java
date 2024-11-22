@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.SoundEffects;
+import com.example.demo.sound.SoundEffects;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;

@@ -1,8 +1,6 @@
-package com.example.demo;
+package com.example.demo.sound;
 
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public class SoundEffects {
     private static double globalVolume = 0.7; // Default global volume

@@ -1,11 +1,15 @@
-	package com.example.demo;
+	package com.example.demo.level;
 
 	import java.io.IOException;
 	import java.util.*;
 	import java.util.stream.Collectors;
 
+	import com.example.demo.level.levelView.LevelView;
+	import com.example.demo.actor.ActiveActorDestructible;
 	import com.example.demo.controller.PauseMenuController;
 
+	import com.example.demo.plane.FighterPlane;
+	import com.example.demo.plane.UserPlane;
 	import javafx.animation.*;
 	import javafx.fxml.FXMLLoader;
 	import javafx.scene.Group;

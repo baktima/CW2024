@@ -8,11 +8,11 @@ import java.util.Observer;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import com.example.demo.LevelParent;
+import com.example.demo.level.LevelParent;
 
 public class Controller implements Observer {
 
-	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelOne";
+	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.level.LevelOne";
 	private final Stage stage;
 
 	public void launchGame() throws ClassNotFoundException, NoSuchMethodException, SecurityException,
