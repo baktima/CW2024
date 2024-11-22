@@ -2,7 +2,7 @@ package com.example.demo.plane;
 
 import com.example.demo.projectile.BossProjectile;
 import com.example.demo.display.ShieldImage;
-import com.example.demo.actor.ActiveActorDestructible;
+import com.example.demo.actor.ActiveActor;
 
 import java.util.*;
 
@@ -64,7 +64,7 @@ public class Boss extends FighterPlane {
 	}
 
 	@Override
-	public ActiveActorDestructible fireProjectile() {
+	public ActiveActor fireProjectile() {
 		return bossFiresInCurrentFrame() ? new BossProjectile(getProjectileInitialPosition()) : null;
 	}
 
@@ -145,8 +145,8 @@ public class Boss extends FighterPlane {
 	//this will make the shield move according to the boss
 	private void updateShieldPosition() {
 	    if (shieldImage != null) {
-	    	 shieldImage.setLayoutX(this.getLayoutX()-60 + this.getTranslateX()); // Sync X position with translations
-	         shieldImage.setLayoutY(this.getLayoutY()-20 + this.getTranslateY()); // Sync Y position with translations
+	    	 shieldImage.setLayoutX(this.getLayoutX()-60 + this.getTranslateX());
+	         shieldImage.setLayoutY(this.getLayoutY()-20 + this.getTranslateY());
 	    }
 	}
 

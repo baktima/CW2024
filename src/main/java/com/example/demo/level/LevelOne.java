@@ -1,9 +1,9 @@
 package com.example.demo.level;
 
 import com.example.demo.level.levelView.LevelView;
-import com.example.demo.actor.ActiveActorDestructible;
 import com.example.demo.plane.EnemyPlane;
 import com.example.demo.plane.EnemyPlaneSpecial;
+import com.example.demo.actor.ActiveActor;
 
 public class LevelOne extends LevelParent {
 	
@@ -34,14 +34,14 @@ public class LevelOne extends LevelParent {
 		for (int i = 0; i < TOTAL_ENEMIES - currentNumberOfEnemies; i++) {
 			if (Math.random() < ENEMY_SPAWN_PROBABILITY) {
 				double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();
-				ActiveActorDestructible newEnemy = new EnemyPlane(getScreenWidth(), newEnemyInitialYPosition);
+				ActiveActor newEnemy = new EnemyPlane(getScreenWidth(), newEnemyInitialYPosition);
 				addEnemyUnit(newEnemy);
 			}
 
 			//limiting the spawn to upper half of the screen
 			if (Math.random() < SPECIAL_ENEMY_SPAWN_PROBABILITY) {
 				double newEnemySpecialInitialYPosition = Math.random() * getEnemyMaximumYPosition()/2;
-				ActiveActorDestructible newEnemy = new EnemyPlaneSpecial(getScreenWidth(), newEnemySpecialInitialYPosition);
+				ActiveActor newEnemy = new EnemyPlaneSpecial(getScreenWidth(), newEnemySpecialInitialYPosition);
 				addEnemyUnit(newEnemy);
 			}
 		}

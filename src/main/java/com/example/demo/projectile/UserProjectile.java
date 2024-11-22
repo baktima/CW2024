@@ -19,5 +19,10 @@ public class UserProjectile extends Projectile {
 	public void updateActor() {
 		updatePosition();
 	}
+
+	@Override
+	protected double getHorizontalVelocity() {
+		return HORIZONTAL_VELOCITY;
+	}
 	
 }

@@ -20,5 +20,10 @@ public class EnemyProjectile extends Projectile {
 		updatePosition();
 	}
 
+	//testing
+	@Override
+	protected double getHorizontalVelocity() {
+		return HORIZONTAL_VELOCITY;
+	}
 
 }

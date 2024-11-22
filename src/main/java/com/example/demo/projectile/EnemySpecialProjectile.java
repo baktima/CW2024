@@ -13,5 +13,12 @@ public class EnemySpecialProjectile extends EnemyProjectile {
         moveHorizontally(HORIZONTAL_VELOCITY);
         moveVertically(VERTICAL_VELOCITY);
     }
+
+    //testing
+//    @Override
+//    public void UpdatePosition(){
+//        super.UpdatePosition();
+//        moveVertically(VERTICAL_VELOCITY);
+//    }
 }
 

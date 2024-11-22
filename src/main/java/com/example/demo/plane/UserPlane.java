@@ -2,7 +2,8 @@ package com.example.demo.plane;
 
 import com.example.demo.sound.SoundEffects;
 import com.example.demo.projectile.UserProjectile;
-import com.example.demo.actor.ActiveActorDestructible;
+import com.example.demo.actor.ActiveActor;
+
 
 public class UserPlane extends FighterPlane {
 
@@ -43,7 +44,7 @@ public class UserPlane extends FighterPlane {
 	}
 	
 	@Override
-	public ActiveActorDestructible fireProjectile() {
+	public ActiveActor fireProjectile() {
 		SoundEffects soundEffects = new SoundEffects();
 		soundEffects.playSound();
 		return new UserProjectile(PROJECTILE_X_POSITION, getProjectileYPosition(PROJECTILE_Y_POSITION_OFFSET));

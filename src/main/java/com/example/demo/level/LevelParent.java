@@ -5,8 +5,8 @@
 	import java.util.stream.Collectors;
 
 	import com.example.demo.level.levelView.LevelView;
-	import com.example.demo.actor.ActiveActorDestructible;
 	import com.example.demo.controller.PauseMenuController;
+	import com.example.demo.actor.ActiveActor;
 
 	import com.example.demo.plane.FighterPlane;
 	import com.example.demo.plane.UserPlane;
@@ -37,10 +37,10 @@
 		private final Scene scene;
 		private final ImageView background;
 
-		private final List<ActiveActorDestructible> friendlyUnits = new ArrayList<>();
-		private final List<ActiveActorDestructible> enemyUnits = new ArrayList<>();
-		private final List<ActiveActorDestructible> userProjectiles = new ArrayList<>();
-		private final List<ActiveActorDestructible> enemyProjectiles = new ArrayList<>();
+		private final List<ActiveActor> friendlyUnits = new ArrayList<>();
+		private final List<ActiveActor> enemyUnits = new ArrayList<>();
+		private final List<ActiveActor> userProjectiles = new ArrayList<>();
+		private final List<ActiveActor> enemyProjectiles = new ArrayList<>();
 
 		private int currentNumberOfEnemies;
 		private final LevelView levelView;
@@ -338,7 +338,7 @@
 		}
 
 		private void fireProjectile() {
-			ActiveActorDestructible projectile = user.fireProjectile();
+			ActiveActor projectile = user.fireProjectile();
 			gamePlayRoot.getChildren().add(projectile);
 			userProjectiles.add(projectile);
 		}
@@ -360,7 +360,7 @@
 			enemyUnits.forEach(enemy -> spawnEnemyProjectile(((FighterPlane) enemy).fireProjectile()));
 		}
 
-		private void spawnEnemyProjectile(ActiveActorDestructible projectile) {
+		private void spawnEnemyProjectile(ActiveActor projectile) {
 			if (projectile != null) {
 				gamePlayRoot.getChildren().add(projectile);
 				enemyProjectiles.add(projectile);
@@ -381,8 +381,8 @@
 			removeDestroyedActors(enemyProjectiles);
 		}
 
-		private void removeDestroyedActors(List<ActiveActorDestructible> actors) {
-			List<ActiveActorDestructible> destroyedActors = actors.stream().filter(actor -> actor.isDestroyed())
+		private void removeDestroyedActors(List<ActiveActor> actors) {
+			List<ActiveActor> destroyedActors = actors.stream().filter(actor -> actor.isDestroyed())
 					.collect(Collectors.toList());
 			gamePlayRoot.getChildren().removeAll(destroyedActors);
 			actors.removeAll(destroyedActors);
@@ -400,10 +400,10 @@
 			handleCollisions(enemyProjectiles, friendlyUnits);
 		}
 
-		private void handleCollisions(List<ActiveActorDestructible> actors1,
-				List<ActiveActorDestructible> actors2) {
-			for (ActiveActorDestructible actor : actors2) {
-				for (ActiveActorDestructible otherActor : actors1) {
+		private void handleCollisions(List<ActiveActor> actors1,
+				List<ActiveActor> actors2) {
+			for (ActiveActor actor : actors2) {
+				for (ActiveActor otherActor : actors1) {
 					if (actor.getBoundsInParent().intersects(otherActor.getBoundsInParent())) {
 						actor.takeDamage();
 						otherActor.takeDamage();
@@ -413,7 +413,7 @@
 		}
 
 		private void handleEnemyPenetration() {
-			for (ActiveActorDestructible enemy : enemyUnits) {
+			for (ActiveActor enemy : enemyUnits) {
 				if (enemyHasPenetratedDefenses(enemy)) {
 					user.takeDamage();
 					enemy.destroy();
@@ -431,7 +431,7 @@
 			}
 		}
 
-		private boolean enemyHasPenetratedDefenses(ActiveActorDestructible enemy) {
+		private boolean enemyHasPenetratedDefenses(ActiveActor enemy) {
 			return Math.abs(enemy.getTranslateX()) > screenWidth;
 		}
 
@@ -461,7 +461,7 @@
 			return enemyUnits.size();
 		}
 
-		protected void addEnemyUnit(ActiveActorDestructible enemy) {
+		protected void addEnemyUnit(ActiveActor enemy) {
 			enemyUnits.add(enemy);
 			gamePlayRoot.getChildren().add(enemy);
 		}

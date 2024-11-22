@@ -20,5 +20,11 @@ public class BossProjectile extends Projectile {
 	public void updateActor() {
 		updatePosition();
 	}
+
+	//testing
+	@Override
+	protected double getHorizontalVelocity() {
+		return HORIZONTAL_VELOCITY;
+	}
 	
 }
