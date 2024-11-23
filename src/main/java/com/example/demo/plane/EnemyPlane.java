@@ -30,8 +30,6 @@ public class EnemyPlane extends FighterPlane {
 		return PROJECTILE_Y_POSITION_OFFSET;
 	}
 
-
-	//fix minor typo
 	@Override
 	public ActiveActor fireProjectile() {
 

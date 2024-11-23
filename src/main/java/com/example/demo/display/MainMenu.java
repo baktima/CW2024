@@ -28,4 +28,12 @@ public class MainMenu {
         stage.setHeight(SCREEN_HEIGHT);
         stage.show();
     }
+
+    public static int GetScreenwidth(){
+        return SCREEN_WIDTH;
+    }
+
+    public static int GetScreenHeight(){
+        return SCREEN_HEIGHT;
+    }
 }

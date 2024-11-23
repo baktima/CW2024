@@ -4,15 +4,14 @@
 	import java.util.*;
 	import java.util.stream.Collectors;
 
+	import com.example.demo.display.PauseMenu;
 	import com.example.demo.level.levelView.LevelView;
-	import com.example.demo.controller.PauseMenuController;
-	import com.example.demo.actor.ActiveActor;
+    import com.example.demo.actor.ActiveActor;
 
 	import com.example.demo.plane.FighterPlane;
 	import com.example.demo.plane.UserPlane;
 	import javafx.animation.*;
-	import javafx.fxml.FXMLLoader;
-	import javafx.scene.Group;
+    import javafx.scene.Group;
 	import javafx.scene.Scene;
 	import javafx.scene.image.*;
 	import javafx.scene.input.*;
@@ -292,7 +291,7 @@
 			pauseMenuRoot.getChildren().clear();
 			paused = false;
 
-			//this is the function that fix the pause menu supposidely
+			//this is the function that fix the pause menu supposedly
 			gamePlayRoot.getChildren().remove(background);
 			gamePlayRoot.getChildren().add(0, background);
 
@@ -301,17 +300,7 @@
 		private void displayPauseMenu() {
 			try {
 				if (cachedPauseMenu == null) {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/fxml/PauseMenu.fxml"));
-					cachedPauseMenu = loader.load();
-
-					// Access the controller to pass necessary references
-					PauseMenuController pauseController = loader.getController();
-					pauseController.initialize(this);
-
-					double centerX = (screenWidth - cachedPauseMenu.getLayoutBounds().getWidth()) / 4;
-					double centerY = (screenHeight - cachedPauseMenu.getLayoutBounds().getHeight()) / 4;
-					cachedPauseMenu.setLayoutX(centerX);
-					cachedPauseMenu.setLayoutY(centerY);
+					cachedPauseMenu = PauseMenu.showPauseMenu(this);
 				}
 
 				// Ensure the pause menu is added to the root and visible
