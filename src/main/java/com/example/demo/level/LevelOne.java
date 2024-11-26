@@ -1,6 +1,7 @@
 package com.example.demo.level;
 
 import com.example.demo.level.levelView.LevelView;
+import com.example.demo.manager.ActorManager;
 import com.example.demo.plane.EnemyPlane;
 import com.example.demo.plane.EnemyPlaneSpecial;
 import com.example.demo.actor.ActiveActor;
@@ -30,7 +31,8 @@ public class LevelOne extends LevelParent {
 
 	@Override
 	protected void spawnEnemyUnits() {
-		int currentNumberOfEnemies = getCurrentNumberOfEnemies();
+		int currentNumberOfEnemies = GetActorManager().GetCurrentNumberOfEnemies();
+		System.out.println(currentNumberOfEnemies);
 		for (int i = 0; i < TOTAL_ENEMIES - currentNumberOfEnemies; i++) {
 			if (Math.random() < ENEMY_SPAWN_PROBABILITY) {
 				double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();

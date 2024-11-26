@@ -30,8 +30,15 @@ public class LevelTwo extends LevelParent {
 	@Override
 	protected void spawnEnemyUnits() {
 		if (getCurrentNumberOfEnemies() == 0) {
-			addEnemyUnit(boss);
-			getRoot().getChildren().add(boss.getShieldImage()); 
+			// Add the boss only if it hasn't been added yet
+			if (!GetActorManager().GetGamePlayRoot().getChildren().contains(boss)) {
+				GetActorManager().AddEnemyUnit(boss);
+			}
+
+			// Add shield image only if it hasn't been added yet
+			if (!GetActorManager().GetGamePlayRoot().getChildren().contains(boss.getShieldImage())) {
+				GetActorManager().GetGamePlayRoot().getChildren().add(boss.getShieldImage());
+			}
 		}
 	}
 

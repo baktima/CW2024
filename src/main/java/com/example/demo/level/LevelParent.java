@@ -2,11 +2,11 @@
 
 	import java.io.IOException;
 	import java.util.*;
-	import java.util.stream.Collectors;
 
 	import com.example.demo.display.PauseMenu;
 	import com.example.demo.level.levelView.LevelView;
     import com.example.demo.actor.ActiveActor;
+	import com.example.demo.manager.ActorManager;
 
 	import com.example.demo.plane.FighterPlane;
 	import com.example.demo.plane.UserPlane;
@@ -30,18 +30,14 @@
 		private final Group root;
 		private final Group gamePlayRoot;
 		private final Group pauseMenuRoot;
+		private final Group backgroundRoot;
 
 		private final Timeline timeline;
 		private final UserPlane user;
 		private final Scene scene;
 		private final ImageView background;
 
-		private final List<ActiveActor> friendlyUnits = new ArrayList<>();
-		private final List<ActiveActor> enemyUnits = new ArrayList<>();
-		private final List<ActiveActor> userProjectiles = new ArrayList<>();
-		private final List<ActiveActor> enemyProjectiles = new ArrayList<>();
-
-		private int currentNumberOfEnemies;
+		private int currentNumberOfEnemies = 0;
 		private final LevelView levelView;
 		private boolean paused = false;
 		private Parent cachedPauseMenu = null;
@@ -49,6 +45,7 @@
 		//testing
 		private Stage stage;
 		private boolean canFire = true;
+		private final ActorManager actorManager;
 
         /**
 		 * changing the constructor since there's a lot of redundant use of this.
@@ -64,21 +61,30 @@
 			this.screenWidth = screenWidth;
 
 			//initializing all the variables
-			root = new Group();
+			root = 	new Group();
 			scene = new Scene(root, screenWidth, screenHeight);
 			timeline = new Timeline();
 			user = new UserPlane(playerInitialHealth);
 			background = new ImageView(new Image(getClass().getResource(backgroundImageName).toExternalForm()));
+
+
 			enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
 			levelView = instantiateLevelView();
-			currentNumberOfEnemies = 0;
+
 			initializeTimeline();
-			friendlyUnits.add(user);
 
 			gamePlayRoot = new Group();
 			pauseMenuRoot = new Group();
+			backgroundRoot = new Group();
 
-			root.getChildren().addAll(gamePlayRoot, pauseMenuRoot);
+			//_____
+			//still considering this cause there's a lot to change from this
+			actorManager = new ActorManager(gamePlayRoot);
+			actorManager.UpdateActors();
+//			PauseMenuManager pauseMenuManager = new PauseMenuManager(gamePlayRoot, timeline, gamePlayRoot, background,this);
+			//-------
+
+			root.getChildren().addAll(backgroundRoot,gamePlayRoot, pauseMenuRoot);
 
 		}
 
@@ -98,7 +104,6 @@
 				timeline.stop();
 			}
 			root.getChildren().clear();
-			deleteObservers();
 		}
 
 		//not yet now
@@ -110,12 +115,11 @@
 			//resetting heart
 			user.setHealth(5);
 
-			//resting the heart display but i modified it from the class itself, maybe pass some value would be better
+			//resting the heart display, but I modified it from the class itself, maybe pass some value would be better
 			levelView.resetHeartDisplay();
 
-
 			// Reset user's projectiles
-			userProjectiles.clear();
+			actorManager.GetUserProjectiles().clear();
 		}
 
 
@@ -123,7 +127,7 @@
 	 * most of these function will be used by the inherited levels
 	 */
 		private void initializeFriendlyUnits() {
-			gamePlayRoot.getChildren().add(user);
+			actorManager.AddFriendlyUnit(user);
 
 		}
 
@@ -154,7 +158,7 @@
 		public void goToNextLevel(String levelName) {
 			//the change that makes the transition works
 			//later maybe need to make it nicer.
-			user.destroy();
+			cleanup();
 			setChanged();
 			notifyObservers(levelName);
 		}
@@ -178,19 +182,19 @@
 
 		// Method to update the movement and state of all actors
 		private void handleUserActions() {
-			updateActors();
+			actorManager.UpdateActors();
 		}
 
 		// Method to handle collisions between different actors
 		private void handleCollisions() {
-			handleUserProjectileCollisions();
-			handleEnemyProjectileCollisions();
-			handlePlaneCollisions();
+			actorManager.HandleUserProjectileCollisions();
+			actorManager.HandleEnemyProjectileCollisions();
+			actorManager.HandlePlaneCollisions();
 		}
 
 		// Method to remove actors that have been destroyed
 		private void cleanUpActors() {
-			removeAllDestroyedActors();
+			actorManager.RemoveAllDestroyedActors();
 		}
 
 		// Method to update various game state elements (e.g., score or health display)
@@ -214,7 +218,7 @@
 			background.setFitWidth(screenWidth);
 			background.setOnKeyPressed(e -> handleKeyPress(e.getCode()));
 			background.setOnKeyReleased(e-> handleKeyRelease(e.getCode()));
-			gamePlayRoot.getChildren().add(background);
+			backgroundRoot.getChildren().add(background);
 		}
 
 		/**
@@ -226,8 +230,6 @@
 			if (kc == KeyCode.UP) user.moveUp();
 			if (kc == KeyCode.DOWN) user.moveDown();
 			if (kc == KeyCode.SPACE) fireWithCooldown();
-
-			//testing
 			if (kc == KeyCode.ESCAPE) togglePauseResume();
 
 		}
@@ -262,26 +264,26 @@
 			root.getChildren().add(pauseMenuRoot);
 
 			// Reinitialize background and ensure it's in focus
-			gamePlayRoot.getChildren().remove(background);
-			gamePlayRoot.getChildren().add(0, background);
+			backgroundRoot.getChildren().remove(background);
+			backgroundRoot.getChildren().add(0, background);
 
 			// Restart the timeline
 			timeline.playFromStart();
 		}
 
 		private void resetGameEntities() {
-			// Clear all game-related lists
-			enemyUnits.clear();
-			userProjectiles.clear();
-			enemyProjectiles.clear();
+			//the actor manager
+			actorManager.GetEnemyUnits().clear();
+			actorManager.GetUserProjectiles().clear();
+			actorManager.GetEnemyProjectiles().clear();
 
 			// Reset player position and health
 			// Reset user position, health, etc.
 			userReset();
 
-			// Reset gameplay root
-			gamePlayRoot.getChildren().clear();
-			gamePlayRoot.getChildren().add(user); // Add user back to the scene
+			//actor Manager
+			actorManager.GetGamePlayRoot().getChildren().clear();
+			actorManager.GetGamePlayRoot().getChildren().add(user);
 
 			// Reset other game state variables
 			currentNumberOfEnemies = 0;
@@ -292,9 +294,8 @@
 			paused = false;
 
 			//this is the function that fix the pause menu supposedly
-			gamePlayRoot.getChildren().remove(background);
-			gamePlayRoot.getChildren().add(0, background);
-
+			backgroundRoot.getChildren().remove(background);
+			backgroundRoot.getChildren().add(0, background);
 		}
 
 		private void displayPauseMenu() {
@@ -328,8 +329,7 @@
 
 		private void fireProjectile() {
 			ActiveActor projectile = user.fireProjectile();
-			gamePlayRoot.getChildren().add(projectile);
-			userProjectiles.add(projectile);
+			actorManager.AddUserProjectile(projectile);
 		}
 
 		private void fireWithCooldown(){
@@ -338,7 +338,7 @@
 				canFire = false; // Prevent firing until cooldown expires
 
 				// Start a cooldown timer using the Timeline
-                int fireCooldown = 200;
+                int fireCooldown = 100;
                 Timeline cooldownTimer = new Timeline(new KeyFrame(Duration.millis(fireCooldown), e -> canFire = true));
 				cooldownTimer.setCycleCount(1);
 				cooldownTimer.play();
@@ -346,63 +346,21 @@
 		}
 
 		private void generateEnemyFire() {
-			enemyUnits.forEach(enemy -> spawnEnemyProjectile(((FighterPlane) enemy).fireProjectile()));
+			actorManager.GetEnemyUnits().forEach(enemy -> {
+				if (enemy instanceof FighterPlane) {
+					spawnEnemyProjectile(((FighterPlane) enemy).fireProjectile());
+				}
+			});
 		}
 
 		private void spawnEnemyProjectile(ActiveActor projectile) {
 			if (projectile != null) {
-				gamePlayRoot.getChildren().add(projectile);
-				enemyProjectiles.add(projectile);
-			}
-		}
-
-		private void updateActors() {
-			friendlyUnits.forEach(plane -> plane.updateActor());
-			enemyUnits.forEach(enemy -> enemy.updateActor());
-			userProjectiles.forEach(projectile -> projectile.updateActor());
-			enemyProjectiles.forEach(projectile -> projectile.updateActor());
-		}
-
-		private void removeAllDestroyedActors() {
-			removeDestroyedActors(friendlyUnits);
-			removeDestroyedActors(enemyUnits);
-			removeDestroyedActors(userProjectiles);
-			removeDestroyedActors(enemyProjectiles);
-		}
-
-		private void removeDestroyedActors(List<ActiveActor> actors) {
-			List<ActiveActor> destroyedActors = actors.stream().filter(actor -> actor.getIsDestroyed())
-					.collect(Collectors.toList());
-			gamePlayRoot.getChildren().removeAll(destroyedActors);
-			actors.removeAll(destroyedActors);
-		}
-
-		private void handlePlaneCollisions() {
-			handleCollisions(friendlyUnits, enemyUnits);
-		}
-
-		private void handleUserProjectileCollisions() {
-			handleCollisions(userProjectiles, enemyUnits);
-		}
-
-		private void handleEnemyProjectileCollisions() {
-			handleCollisions(enemyProjectiles, friendlyUnits);
-		}
-
-		private void handleCollisions(List<ActiveActor> actors1,
-				List<ActiveActor> actors2) {
-			for (ActiveActor actor : actors2) {
-				for (ActiveActor otherActor : actors1) {
-					if (actor.getBoundsInParent().intersects(otherActor.getBoundsInParent())) {
-						actor.takeDamage();
-						otherActor.takeDamage();
-					}
-				}
+				actorManager.AddEnemyProjectile(projectile);
 			}
 		}
 
 		private void handleEnemyPenetration() {
-			for (ActiveActor enemy : enemyUnits) {
+			for (ActiveActor enemy : actorManager.GetEnemyUnits()) {
 				if (enemyHasPenetratedDefenses(enemy)) {
 					user.takeDamage();
 					enemy.destroy();
@@ -415,7 +373,7 @@
 		}
 
 		private void updateKillCount() {
-			for (int i = 0; i < currentNumberOfEnemies - enemyUnits.size(); i++) {
+			for (int i = 0; i < currentNumberOfEnemies - actorManager.GetEnemyUnits().size(); i++) {
 				user.incrementKillCount();
 			}
 		}
@@ -447,12 +405,15 @@
 		 *
 		 */
 		protected int getCurrentNumberOfEnemies() {
-			return enemyUnits.size();
+			return actorManager.GetEnemyUnits().size();
 		}
 
 		protected void addEnemyUnit(ActiveActor enemy) {
-			enemyUnits.add(enemy);
-			gamePlayRoot.getChildren().add(enemy);
+			actorManager.AddEnemyUnit(enemy);
+		}
+
+		public ActorManager GetActorManager(){
+			return actorManager;
 		}
 
 		protected double getEnemyMaximumYPosition() {
@@ -468,7 +429,7 @@
 		}
 
 		private void updateNumberOfEnemies() {
-			currentNumberOfEnemies = enemyUnits.size();
+			currentNumberOfEnemies =actorManager.GetEnemyUnits().size();
 		}
 
 	}

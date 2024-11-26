@@ -3,6 +3,7 @@ module com.example.demo {
     requires javafx.fxml;
     //added javafx media in here and the dependencies and then need to also reload the maven, so it can be used.
     requires javafx.media;
+    requires java.logging;
 
 
     opens com.example.demo to javafx.fxml;

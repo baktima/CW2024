@@ -13,17 +13,17 @@ public class Boss extends FighterPlane {
 	private static final double INITIAL_Y_POSITION = 400;
 	private static final double PROJECTILE_Y_POSITION_OFFSET = 75.0;
 	private static final double BOSS_FIRE_RATE = .04;
-	private static final double BOSS_SHIELD_PROBABILITY = 0;
+	private static final double BOSS_SHIELD_PROBABILITY = 0.5;
 	private static final int IMAGE_HEIGHT = 50;
 	private static final int VERTICAL_VELOCITY = 8;
 	private static final double HORIZONTAL_VELOCITY = 0;
 	private static final int MOVE_FREQUENCY_PER_CYCLE = 5;
 	private static final int ZERO = 0;
 	private static final int MAX_FRAMES_WITH_SAME_MOVE = 10;
-	private static final int Y_POSITION_UPPER_BOUND = -100;
+	private static final int Y_POSITION_UPPER_BOUND = -50;
 	private static final int Y_POSITION_LOWER_BOUND = 475;
 	private static final int MAX_FRAMES_WITH_SHIELD = 100;
-	private final int INITIAL_HEALTH = 3; // Instance variable for health
+	private static final int INITIAL_HEALTH = 3; // Instance variable for health
 	private final List<Integer> movePattern;
 	private boolean isShielded;
 	private int consecutiveMovesInSameDirection;
@@ -55,8 +55,7 @@ public class Boss extends FighterPlane {
 		
 		updateShieldPosition();
 	}
-	
-	
+
 	//this is the reason why it needs to update actors not the update position, the update shield;
 	@Override
 	public void updateActor() {
@@ -68,7 +67,6 @@ public class Boss extends FighterPlane {
 	public ActiveActor fireProjectile() {
 		return bossFiresInCurrentFrame() ? new BossProjectile(getProjectileInitialPosition()) : null;
 	}
-
 
 	@Override
 	public void takeDamage() {
@@ -94,7 +92,6 @@ public class Boss extends FighterPlane {
 	private void updateShield() {
 		if (isShielded) {
 			framesWithShieldActivated++;
-			//shieldImage.showShield();
 			}
 		
 		else if (shieldShouldBeActivated()) activateShield();	

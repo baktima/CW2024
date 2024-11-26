@@ -41,8 +41,6 @@ public class Controller implements Observer {
 		this.stage = stage;
 	}
 
-	//maybe the update is wrong i need to change it first to know the root cause 
-
 //	@Override
 //	public void update(Observable arg0, Object arg1) {
 //		try {

@@ -2,6 +2,8 @@ package com.example.demo.actor;
 
 import javafx.scene.image.*;
 
+import java.util.Objects;
+
 //this is the source where a lot of class extends from here for the player and the enemy projectile
 
 public abstract class ActiveActor extends ImageView implements Destructible {
@@ -10,8 +12,7 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 	private boolean isDestroyed;
 
 	public ActiveActor(String imageName, int imageHeight, double initialXPos, double initialYPos) {
-		//this.setImage(new Image(IMAGE_LOCATION + imageName));
-		this.setImage(new Image(getClass().getResource(IMAGE_LOCATION + imageName).toExternalForm()));
+		this.setImage(new Image(Objects.requireNonNull(getClass().getResource(IMAGE_LOCATION + imageName)).toExternalForm()));
 		this.setLayoutX(initialXPos);
 		this.setLayoutY(initialYPos);
 		this.setFitHeight(imageHeight);
