@@ -9,6 +9,9 @@ public class EnemyProjectile extends Projectile {
 	public EnemyProjectile(double initialXPos, double initialYPos) {
 		super(IMAGE_NAME, IMAGE_HEIGHT, initialXPos, initialYPos);
 	}
+	public EnemyProjectile(String imageName, double initialXPos, double initialYPos) {
+		super(imageName, IMAGE_HEIGHT, initialXPos, initialYPos);
+	}
 
 	//testing
 	@Override

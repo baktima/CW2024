@@ -1,7 +1,6 @@
 package com.example.demo.level;
 
 import com.example.demo.level.levelView.LevelView;
-import com.example.demo.manager.ActorManager;
 import com.example.demo.plane.EnemyPlane;
 import com.example.demo.plane.EnemyPlaneSpecial;
 import com.example.demo.actor.ActiveActor;
@@ -29,6 +28,7 @@ public class LevelOne extends LevelParent {
 			goToNextLevel(NEXT_LEVEL);
 	}
 
+	//maybe moving this up to the parent class but with parameters since I want to use it again in levelThree
 	@Override
 	protected void spawnEnemyUnits() {
 		int currentNumberOfEnemies = GetActorManager().GetCurrentNumberOfEnemies();

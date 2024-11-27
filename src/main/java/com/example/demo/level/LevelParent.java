@@ -33,7 +33,7 @@
 		private final Group backgroundRoot;
 
 		private final Timeline timeline;
-		private final UserPlane user;
+		private UserPlane user;
 		private final Scene scene;
 		private final ImageView background;
 
@@ -126,10 +126,9 @@
 	/**
 	 * most of these function will be used by the inherited levels
 	 */
-		private void initializeFriendlyUnits() {
-			actorManager.AddFriendlyUnit(user);
-
-		}
+	protected void initializeFriendlyUnits() {
+		actorManager.AddFriendlyUnit(user);
+	}
 
 		protected abstract void checkIfGameOver();
 
@@ -366,8 +365,8 @@
 					enemy.destroy();
 				}
 			}
-		}
 
+		}
 		private void updateLevelView() {
 			levelView.removeHearts(user.getHealth());
 		}

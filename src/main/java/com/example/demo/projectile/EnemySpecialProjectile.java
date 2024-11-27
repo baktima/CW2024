@@ -1,11 +1,12 @@
 package com.example.demo.projectile;
 
 public class EnemySpecialProjectile extends EnemyProjectile {
+    private static final String IMAGE_NAME = "Bomb.png";
     private static final int HORIZONTAL_VELOCITY = -8;
-    private static final double VERTICAL_VELOCITY = 1; // need to be something small so the bullet is actually really annoying
+    private static final double VERTICAL_VELOCITY = 1.5; // need to be something small so the bullet is actually really annoying
 
     public EnemySpecialProjectile(double initialXPos, double initialYPos) {
-        super(initialXPos, initialYPos);
+        super(IMAGE_NAME, initialXPos, initialYPos);
     }
 
     @Override

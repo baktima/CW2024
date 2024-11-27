@@ -12,7 +12,7 @@ import com.example.demo.level.LevelParent;
 
 public class Controller implements Observer {
 
-	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.level.LevelOne";
+	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.level.LevelThree";
 	private final Stage stage;
 
 	public void launchGame() throws ClassNotFoundException, NoSuchMethodException, SecurityException,

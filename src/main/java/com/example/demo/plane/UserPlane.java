@@ -24,7 +24,23 @@ public class UserPlane extends FighterPlane {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth);
 		velocityMultiplier = 0;
 	}
-	
+
+	public static double getyUpperBound() {
+		return Y_UPPER_BOUND;
+	}
+
+	public static double getyLowerBound() {
+		return Y_LOWER_BOUND;
+	}
+
+	public static int getProjectileXPosition() {
+		return PROJECTILE_X_POSITION;
+	}
+
+	public static int getProjectileYPositionOffset(){
+		return PROJECTILE_Y_POSITION_OFFSET;
+	}
+
 	@Override
 	public void updatePosition() {
 		if (isMoving()) {

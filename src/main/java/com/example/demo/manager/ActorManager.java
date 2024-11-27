@@ -75,7 +75,7 @@ public class ActorManager {
             for (ActiveActor actor2 : actors2) {
                 if (actor1.getBoundsInParent().intersects(actor2.getBoundsInParent())) {
                     actor1.takeDamage();
-                    actor2.takeDamage();
+                    actor2.destroy();
                 }
             }
         }
