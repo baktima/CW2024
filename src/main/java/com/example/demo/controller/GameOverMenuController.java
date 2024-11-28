@@ -1,13 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.level.LevelParent;
 import com.example.demo.display.MainMenu;
+import com.example.demo.level.LevelParent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
-public class PauseMenuController {
-
+public class GameOverMenuController {
     private LevelParent levelParent;
 
     public void initialize(LevelParent levelParent) {
@@ -15,14 +15,8 @@ public class PauseMenuController {
     }
 
     @FXML
-    private void resumeButton() {
-        levelParent.resumeGame();
-    }
-
-    //still kinda funky need to fix this instantly
-    @FXML
     private void restartButton() {
-    	levelParent.restartGame();
+        levelParent.restartGame();
     }
 
     //it works now
@@ -36,4 +30,5 @@ public class PauseMenuController {
         Controller controller = new Controller(stage);
         MainMenu.showMainMenu(stage, controller);
     }
+
 }

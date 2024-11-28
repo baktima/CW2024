@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.controller.GameOverMenuController">
+   <children>
+      <Button fx:id="restartButton" layoutY="400.0" mnemonicParsing="false" onAction="#restartButton" prefHeight="40.0" prefWidth="79.0" text="Restart" />
+      <Button fx:id="exitButton" layoutX="674.0" layoutY="400.0" mnemonicParsing="false" onAction="#exitButton" prefHeight="40.0" prefWidth="79.0" text="Exit" />
+   </children>
+</AnchorPane>

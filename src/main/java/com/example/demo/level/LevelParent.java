@@ -3,6 +3,7 @@
 	import java.io.IOException;
 	import java.util.*;
 
+	import com.example.demo.display.GameOverMenu;
 	import com.example.demo.display.PauseMenu;
 	import com.example.demo.level.levelView.LevelView;
     import com.example.demo.actor.ActiveActor;
@@ -41,6 +42,7 @@
 		private final LevelView levelView;
 		private boolean paused = false;
 		private Parent cachedPauseMenu = null;
+		private Parent cachedGameOverMenu = null;
 
 		//testing
 		private Stage stage;
@@ -55,7 +57,7 @@
 		 * @param screenHeight passing the screen height value to the levelParent.
 		 * making it more readable
 		 */
-		public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
+		protected LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
 
 			this.screenHeight = screenHeight;
 			this.screenWidth = screenWidth;
@@ -114,6 +116,8 @@
 
 			//resetting heart
 			user.setHealth(5);
+
+
 
 			//resting the heart display, but I modified it from the class itself, maybe pass some value would be better
 			levelView.resetHeartDisplay();
@@ -254,6 +258,8 @@
 			// Reset game entities
 			resetGameEntities();
 
+			user.setDestroyed(false);
+
 			// Clear the pause menu
 			pauseMenuRoot.getChildren().clear();
 			pauseMenuRoot.setVisible(false);
@@ -261,6 +267,7 @@
 
 			root.getChildren().remove(pauseMenuRoot);
 			root.getChildren().add(pauseMenuRoot);
+			levelView.removeGameOverImage();
 
 			// Reinitialize background and ensure it's in focus
 			backgroundRoot.getChildren().remove(background);
@@ -311,6 +318,25 @@
 
 				// Focus the pause menu
 				cachedPauseMenu.requestFocus();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		private void displayGameOverMenu(){
+			try {
+				if (cachedGameOverMenu == null) {
+					cachedGameOverMenu = GameOverMenu.showGameOverMenu(this);
+				}
+
+				// Ensure the pause menu is added to the root and visible
+				pauseMenuRoot.getChildren().clear();
+				pauseMenuRoot.getChildren().add(cachedGameOverMenu);
+				cachedGameOverMenu.setVisible(true);
+				pauseMenuRoot.setVisible(true);
+
+				// Focus the pause menu
+				cachedGameOverMenu.requestFocus();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -384,11 +410,16 @@
 		protected void winGame() {
 			timeline.stop();
 			levelView.showWinImage();
+
+			displayGameOverMenu();
 		}
 
 		protected void loseGame() {
 			timeline.stop();
 			levelView.showGameOverImage();
+
+			//pepek
+			displayGameOverMenu();
 		}
 
 		protected UserPlane getUser() {
@@ -401,7 +432,6 @@
 
 		/**
 		 * return the enemyUnits size
-		 *
 		 */
 		protected int getCurrentNumberOfEnemies() {
 			return actorManager.GetEnemyUnits().size();

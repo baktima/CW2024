@@ -28,6 +28,9 @@ public class MainMenu {
         stage.setHeight(SCREEN_HEIGHT);
         stage.show();
     }
+    private MainMenu(){
+        throw new IllegalStateException("Utility class");
+    }
 
     public static int GetScreenwidth(){
         return SCREEN_WIDTH;

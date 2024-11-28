@@ -10,6 +10,10 @@ import java.io.IOException;
 public class PauseMenu {
     private static Parent cachedPauseMenu = null;
 
+    private PauseMenu() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static Parent showPauseMenu(LevelParent levelParent) throws IOException {
         if (cachedPauseMenu == null) {
             FXMLLoader loader = new FXMLLoader(PauseMenu.class.getResource("/com/example/demo/fxml/PauseMenu.fxml"));

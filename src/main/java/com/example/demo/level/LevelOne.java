@@ -32,7 +32,6 @@ public class LevelOne extends LevelParent {
 	@Override
 	protected void spawnEnemyUnits() {
 		int currentNumberOfEnemies = GetActorManager().GetCurrentNumberOfEnemies();
-		System.out.println(currentNumberOfEnemies);
 		for (int i = 0; i < TOTAL_ENEMIES - currentNumberOfEnemies; i++) {
 			if (Math.random() < ENEMY_SPAWN_PROBABILITY) {
 				double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();

@@ -40,7 +40,6 @@ public class ActorManager {
         enemyUnits.add(actor);
         gamePlayRoot.getChildren().add(actor);
 
-        System.out.println("Added Enemy: " + actor + ", Total Enemies: " + enemyUnits.size());
     }
 
     public void AddUserProjectile(ActiveActor projectile) {
@@ -55,8 +54,9 @@ public class ActorManager {
 
     // Remove Destroyed Actors by making it as an array list and iterate one by one to the removed
     //destroyed
+    //temporary making the user not destroyed so the restart works
     public void RemoveAllDestroyedActors() {
-        Arrays.asList(friendlyUnits, enemyUnits, userProjectiles, enemyProjectiles)
+        Arrays.asList(enemyUnits, userProjectiles, enemyProjectiles)
                 .forEach(this::removeDestroyedActors);
     }
 
@@ -75,7 +75,7 @@ public class ActorManager {
             for (ActiveActor actor2 : actors2) {
                 if (actor1.getBoundsInParent().intersects(actor2.getBoundsInParent())) {
                     actor1.takeDamage();
-                    actor2.destroy();
+                    actor2.takeDamage();
                 }
             }
         }
@@ -94,7 +94,6 @@ public class ActorManager {
     }
 
     public int GetCurrentNumberOfEnemies(){
-        System.out.println(enemyUnits.size());
         return enemyUnits.size();
     }
 

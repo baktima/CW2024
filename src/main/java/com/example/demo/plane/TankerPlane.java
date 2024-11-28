@@ -3,7 +3,6 @@ package com.example.demo.plane;
 import com.example.demo.actor.ActiveActor;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 public class TankerPlane extends FighterPlane {

@@ -11,7 +11,7 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 	private static final String IMAGE_LOCATION = "/com/example/demo/images/";
 	private boolean isDestroyed;
 
-	public ActiveActor(String imageName, int imageHeight, double initialXPos, double initialYPos) {
+	protected ActiveActor(String imageName, int imageHeight, double initialXPos, double initialYPos) {
 		this.setImage(new Image(Objects.requireNonNull(getClass().getResource(IMAGE_LOCATION + imageName)).toExternalForm()));
 		this.setLayoutX(initialXPos);
 		this.setLayoutY(initialYPos);
@@ -33,15 +33,12 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 		updatePosition();
 	}
 
-	//destructible
-	public abstract void takeDamage();
-
 	//can be changed to this.getIsDestroyed = true since there's no other application of the setter
 	public void destroy() {
 		setDestroyed(true);
 	}
 
-	protected void setDestroyed(boolean isDestroyed) {
+	public void setDestroyed(boolean isDestroyed) {
 		this.isDestroyed = isDestroyed;
 	}
 

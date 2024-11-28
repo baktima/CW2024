@@ -11,7 +11,6 @@ public class BossProjectile extends Projectile {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, initialYPos);
 	}
 
-
 	//testing
 	@Override
 	public double GetHorizontalVelocity() {

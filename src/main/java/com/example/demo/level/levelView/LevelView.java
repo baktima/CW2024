@@ -38,6 +38,13 @@ public class LevelView {
 	
 	public void showGameOverImage() {
 		root.getChildren().add(gameOverImage);
+
+		System.out.println("showing");
+	}
+
+	public void removeGameOverImage(){
+		root.getChildren().remove(gameOverImage);
+		System.out.println("removing");
 	}
 	
 	public void removeHearts(int heartsRemaining) {

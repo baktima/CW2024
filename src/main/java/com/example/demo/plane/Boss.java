@@ -56,7 +56,6 @@ public class Boss extends FighterPlane {
 		updateShieldPosition();
 	}
 
-	//this is the reason why it needs to update actors not the update position, the update shield;
 	@Override
 	public void updateActor() {
 		super.updateActor();

@@ -4,7 +4,7 @@ import com.example.demo.actor.ActiveActor;
 
 public abstract class Projectile extends ActiveActor {
 
-	public Projectile(String imageName, int imageHeight, double initialXPos, double initialYPos) {
+	protected Projectile(String imageName, int imageHeight, double initialXPos, double initialYPos) {
 		super(imageName, imageHeight, initialXPos, initialYPos);
 	}
 

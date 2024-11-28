@@ -14,7 +14,7 @@ public class LevelThree extends LevelParent {
     private LevelView levelView;
     private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background1.jpg";
     private static final String NEXT_LEVEL = "com.example.demo.level.LevelTwo";
-    private static final int TOTAL_ENEMIES = 1;
+    private static final int TOTAL_ENEMIES = 7;
     private static final int KILLS_TO_ADVANCE = 8;
     private static final double ENEMY_SPAWN_PROBABILITY = .05;
     private static final int PLAYER_INITIAL_HEALTH = 5;
@@ -47,7 +47,6 @@ public class LevelThree extends LevelParent {
     @Override
     protected void spawnEnemyUnits() {
         int currentNumberOfEnemies = GetActorManager().GetCurrentNumberOfEnemies();
-        System.out.println(currentNumberOfEnemies);
         for (int i = 0; i < TOTAL_ENEMIES - currentNumberOfEnemies; i++) {
             if (Math.random() < ENEMY_SPAWN_PROBABILITY) {
                 double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();
