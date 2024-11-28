@@ -6,16 +6,14 @@ import com.example.demo.plane.EnemyPlane;
 import com.example.demo.plane.EnemyPlaneSpecial;
 import com.example.demo.plane.TankerPlane;
 
-//also make an enemy counter (notyet)
 //maybe make the third level have the special enemies and make the special enemies bullet different. (done ish with the tanker)
 
 public class LevelThree extends LevelParent {
 
     private LevelView levelView;
     private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background1.jpg";
-    private static final String NEXT_LEVEL = "com.example.demo.level.LevelTwo";
-    private static final int TOTAL_ENEMIES = 7;
-    private static final int KILLS_TO_ADVANCE = 8;
+    private static final int TOTAL_ENEMIES = 5;
+    private static final int KILLS_TO_ADVANCE = 1;
     private static final double ENEMY_SPAWN_PROBABILITY = .05;
     private static final int PLAYER_INITIAL_HEALTH = 5;
     private static final double SPECIAL_ENEMY_SPAWN_PROBABILITY = 0.0125;
@@ -56,7 +54,7 @@ public class LevelThree extends LevelParent {
 
             //limiting the spawn to upper half of the screen
             if (Math.random() < SPECIAL_ENEMY_SPAWN_PROBABILITY) {
-                double newEnemySpecialInitialYPosition = Math.random() * getEnemyMaximumYPosition()/2;
+                double newEnemySpecialInitialYPosition = Math.random() * getEnemyMaximumYPosition()/4;
                 ActiveActor newEnemy = new EnemyPlaneSpecial(getScreenWidth(), newEnemySpecialInitialYPosition);
                 addEnemyUnit(newEnemy);
             }

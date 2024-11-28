@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.demo.actor.ActiveActor;
+import com.example.demo.display.MainMenu;
+import com.example.demo.level.LevelParent;
 import javafx.scene.Group;
 
 public class ActorManager {
@@ -13,10 +15,11 @@ public class ActorManager {
     private List<ActiveActor> userProjectiles;
     private List<ActiveActor> enemyProjectiles;
     private Group gamePlayRoot;
+    private LevelParent levelParent;
 
     public ActorManager(Group gamePlayRoot) {
         this.friendlyUnits = new ArrayList<>();
-        enemyUnits =new ArrayList<>();
+        this.enemyUnits =new ArrayList<>();
         this.userProjectiles = new ArrayList<>();
         this.enemyProjectiles = new ArrayList<>();
         this.gamePlayRoot = gamePlayRoot;
@@ -80,6 +83,19 @@ public class ActorManager {
             }
         }
     }
+
+//    private void handleEnemyPenetration() {
+//        for (ActiveActor enemy : enemyUnits) {
+//            if (enemyHasPenetratedDefenses(enemy)) {
+//
+//                enemy.destroy();
+//            }
+//        }
+//    }
+//
+//    private boolean enemyHasPenetratedDefenses(ActiveActor enemy) {
+//        return Math.abs(enemy.getTranslateX()) > LevelParent.getScreenWidth();
+//    }
 
     public void HandlePlaneCollisions() {
         HandleCollisions(friendlyUnits, enemyUnits);

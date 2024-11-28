@@ -4,19 +4,24 @@ package com.example.demo.display;
 //need to refactor also the levelParent
 
 import com.example.demo.controller.GameOverMenuController;
-import com.example.demo.controller.PauseMenuController;
 import com.example.demo.level.LevelParent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 
-//make counter and endless
-public class GameOverMenu {
+public class GameOverMenu extends ImageView {
     private static Parent cachedGameOverMenu = null;
+    private static final String IMAGE_NAME = "/com/example/demo/images/gameover.png";
+    private static final String FXML_PATH = "/com/example/demo/fxml/GameOverMenu.fxml";
+    private static final int HEIGHT = 500;
+    private static final int WIDTH = 600;
+
     public static Parent showGameOverMenu(LevelParent levelParent) throws IOException {
         if (cachedGameOverMenu == null) {
-            FXMLLoader loader = new FXMLLoader(PauseMenu.class.getResource("/com/example/demo/fxml/GameOverMenu.fxml"));
+            FXMLLoader loader = new FXMLLoader(GameOverMenu.class.getResource(FXML_PATH));
             cachedGameOverMenu = loader.load();
 
             // Access the controller to pass necessary references
@@ -31,5 +36,12 @@ public class GameOverMenu {
         return cachedGameOverMenu;
     }
 
+    public GameOverMenu(double xPosition, double yPosition) {
+        setImage(new Image(getClass().getResource(IMAGE_NAME).toExternalForm()) );
+        setLayoutX(xPosition);
+        setLayoutY(yPosition);
+        setFitHeight(HEIGHT);
+        setFitWidth(WIDTH);
+    }
 
 }

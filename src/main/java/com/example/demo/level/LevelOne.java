@@ -48,6 +48,10 @@ public class LevelOne extends LevelParent {
 		}
 	}
 
+	public static int getKillToAdvance(){
+		return KILLS_TO_ADVANCE;
+	}
+
 	@Override
 	protected LevelView instantiateLevelView() {
 		return new LevelView(getRoot(), PLAYER_INITIAL_HEALTH);

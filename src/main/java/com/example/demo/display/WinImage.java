@@ -22,4 +22,8 @@ public class WinImage extends ImageView {
 		this.setVisible(true);
 	}
 
+	public void hideWinImage(){
+		this.setVisible(false);
+	}
+
 }

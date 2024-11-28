@@ -4,7 +4,9 @@
 	import java.util.*;
 
 	import com.example.demo.display.GameOverMenu;
+	import com.example.demo.display.KillDisplay;
 	import com.example.demo.display.PauseMenu;
+	import com.example.demo.display.WinMenu;
 	import com.example.demo.level.levelView.LevelView;
     import com.example.demo.actor.ActiveActor;
 	import com.example.demo.manager.ActorManager;
@@ -24,6 +26,7 @@
 
 		private static final double SCREEN_HEIGHT_ADJUSTMENT = 150;
 		private static final int MILLISECOND_DELAY = 50;
+		private static final int RESET_HEALTH = 5;
 		private final double screenHeight;
 		private final double screenWidth;
 		private final double enemyMaximumYPosition;
@@ -43,11 +46,13 @@
 		private boolean paused = false;
 		private Parent cachedPauseMenu = null;
 		private Parent cachedGameOverMenu = null;
+		private Parent cachedWinMenu = null;
 
 		//testing
 		private Stage stage;
 		private boolean canFire = true;
 		private final ActorManager actorManager;
+		private KillDisplay killDisplay;
 
         /**
 		 * changing the constructor since there's a lot of redundant use of this.
@@ -68,6 +73,7 @@
 			timeline = new Timeline();
 			user = new UserPlane(playerInitialHealth);
 			background = new ImageView(new Image(getClass().getResource(backgroundImageName).toExternalForm()));
+			killDisplay = new KillDisplay();
 
 
 			enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
@@ -87,6 +93,7 @@
 			//-------
 
 			root.getChildren().addAll(backgroundRoot,gamePlayRoot, pauseMenuRoot);
+			killDisplay.addToRoot(root);
 
 		}
 
@@ -111,19 +118,19 @@
 		//not yet now
 		//based from the user reset maybe I can like put the reset heart display, so it can change dynamically;
 		private void userReset() {
+
 			// Reset user position to the initial state (e.g., bottom-center of the screen)
 			user.setTranslateY(0);
 
 			//resetting heart
-			user.setHealth(5);
-
-
+			user.setHealth(RESET_HEALTH);
 
 			//resting the heart display, but I modified it from the class itself, maybe pass some value would be better
 			levelView.resetHeartDisplay();
 
 			// Reset user's projectiles
 			actorManager.GetUserProjectiles().clear();
+			user.setNumberOfKills(0);
 		}
 
 
@@ -167,20 +174,24 @@
 		}
 
 		private void updateScene() {
+
 			handleEnemyActions();
 			handleUserActions();
 			handleCollisions();
 			cleanUpActors();
 			updateGameState();
 			checkIfGameOver();
+
 		}
 
 		// Method to handle enemy-specific actions like spawning and firing
 		private void handleEnemyActions() {
+
 			spawnEnemyUnits();
 			generateEnemyFire();
 			updateNumberOfEnemies();
 			handleEnemyPenetration();
+
 		}
 
 		// Method to update the movement and state of all actors
@@ -268,6 +279,7 @@
 			root.getChildren().remove(pauseMenuRoot);
 			root.getChildren().add(pauseMenuRoot);
 			levelView.removeGameOverImage();
+			levelView.removeWinImage();
 
 			// Reinitialize background and ensure it's in focus
 			backgroundRoot.getChildren().remove(background);
@@ -286,6 +298,7 @@
 			// Reset player position and health
 			// Reset user position, health, etc.
 			userReset();
+			killDisplay.reset();
 
 			//actor Manager
 			actorManager.GetGamePlayRoot().getChildren().clear();
@@ -342,6 +355,26 @@
 			}
 		}
 
+		private void displayWinMenu(){
+			try {
+				if (cachedWinMenu == null) {
+					cachedWinMenu = WinMenu.showWinMenu(this);
+				}
+
+				// Ensure the pause menu is added to the root and visible
+				pauseMenuRoot.getChildren().clear();
+				pauseMenuRoot.getChildren().add(cachedWinMenu);
+				cachedWinMenu.setVisible(true);
+				pauseMenuRoot.setVisible(true);
+
+				// Focus the pause menu
+				cachedWinMenu.requestFocus();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 		/**
 		 * @param kc where it will receive inputs
 		 * for some reason this part doesn't work really well since the up will overtake the down
@@ -391,7 +424,6 @@
 					enemy.destroy();
 				}
 			}
-
 		}
 		private void updateLevelView() {
 			levelView.removeHearts(user.getHealth());
@@ -400,6 +432,7 @@
 		private void updateKillCount() {
 			for (int i = 0; i < currentNumberOfEnemies - actorManager.GetEnemyUnits().size(); i++) {
 				user.incrementKillCount();
+				killDisplay.increment();
 			}
 		}
 
@@ -411,14 +444,14 @@
 			timeline.stop();
 			levelView.showWinImage();
 
-			displayGameOverMenu();
+			//dont forget to change this into restart from the beginning level rather than the current level
+			displayWinMenu();
 		}
 
 		protected void loseGame() {
 			timeline.stop();
 			levelView.showGameOverImage();
 
-			//pepek
 			displayGameOverMenu();
 		}
 
@@ -449,7 +482,7 @@
 			return enemyMaximumYPosition;
 		}
 
-		protected double getScreenWidth() {
+		public double getScreenWidth() {
 			return screenWidth;
 		}
 

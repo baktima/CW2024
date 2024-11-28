@@ -1,6 +1,7 @@
 package com.example.demo.level.levelView;
 
 import com.example.demo.display.GameOverImage;
+import com.example.demo.display.GameOverMenu;
 import com.example.demo.display.HeartDisplay;
 import com.example.demo.display.WinImage;
 import javafx.scene.Group;
@@ -19,12 +20,16 @@ public class LevelView {
 	private final WinImage winImage;
 	private final GameOverImage gameOverImage;
 	private final HeartDisplay heartDisplay;
+	private final GameOverMenu gameOverMenu;
 	
 	public LevelView(Group root, int heartsToDisplay) {
 		this.root = root;
 		this.heartDisplay = new HeartDisplay(HEART_DISPLAY_X_POSITION, HEART_DISPLAY_Y_POSITION, heartsToDisplay);
-		this.winImage = new WinImage(WIN_IMAGE_X_POSITION, WIN_IMAGE_Y_POSITION);
-		this.gameOverImage = new GameOverImage(LOSS_SCREEN_X_POSITION, LOSS_SCREEN_Y_POSITION);
+
+		winImage = new WinImage(WIN_IMAGE_X_POSITION, WIN_IMAGE_Y_POSITION);
+		gameOverImage = new GameOverImage(LOSS_SCREEN_X_POSITION, LOSS_SCREEN_Y_POSITION);
+
+		gameOverMenu = new GameOverMenu(LOSS_SCREEN_X_POSITION,LOSS_SCREEN_Y_POSITION);
 	}
 	
 	public void showHeartDisplay() {
@@ -37,13 +42,18 @@ public class LevelView {
 	}
 	
 	public void showGameOverImage() {
-		root.getChildren().add(gameOverImage);
+		root.getChildren().add(gameOverMenu);
 
 		System.out.println("showing");
 	}
 
+	public void removeWinImage(){
+		winImage.hideWinImage();
+		root.getChildren().remove(winImage);
+	}
+
 	public void removeGameOverImage(){
-		root.getChildren().remove(gameOverImage);
+		root.getChildren().remove(gameOverMenu);
 		System.out.println("removing");
 	}
 	
