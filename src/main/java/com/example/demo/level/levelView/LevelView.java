@@ -1,9 +1,6 @@
 package com.example.demo.level.levelView;
 
-import com.example.demo.display.GameOverImage;
-import com.example.demo.display.GameOverMenu;
-import com.example.demo.display.HeartDisplay;
-import com.example.demo.display.WinImage;
+import com.example.demo.display.*;
 import javafx.scene.Group;
 
 public class LevelView {
@@ -12,23 +9,18 @@ public class LevelView {
 	private static final double HEART_DISPLAY_Y_POSITION = 25;
 	private static final int WIN_IMAGE_X_POSITION = 355;
 	private static final int WIN_IMAGE_Y_POSITION = 175;
-
-	//CHANGING THE WEIRD CONSTANT
 	private static final int LOSS_SCREEN_X_POSITION = 355;
 	private static final int LOSS_SCREEN_Y_POSITION = 175;
 	private final Group root;
-	private final WinImage winImage;
-	private final GameOverImage gameOverImage;
 	private final HeartDisplay heartDisplay;
 	private final GameOverMenu gameOverMenu;
+	private final WinMenu winMenu;
 	
 	public LevelView(Group root, int heartsToDisplay) {
 		this.root = root;
 		this.heartDisplay = new HeartDisplay(HEART_DISPLAY_X_POSITION, HEART_DISPLAY_Y_POSITION, heartsToDisplay);
 
-		winImage = new WinImage(WIN_IMAGE_X_POSITION, WIN_IMAGE_Y_POSITION);
-		gameOverImage = new GameOverImage(LOSS_SCREEN_X_POSITION, LOSS_SCREEN_Y_POSITION);
-
+		winMenu = new WinMenu(WIN_IMAGE_X_POSITION,WIN_IMAGE_Y_POSITION);
 		gameOverMenu = new GameOverMenu(LOSS_SCREEN_X_POSITION,LOSS_SCREEN_Y_POSITION);
 	}
 	
@@ -37,8 +29,8 @@ public class LevelView {
 	}
 
 	public void showWinImage() {
-		root.getChildren().add(winImage);
-		winImage.showWinImage();
+		root.getChildren().add(winMenu);
+		winMenu.showWinImage();
 	}
 	
 	public void showGameOverImage() {
@@ -48,8 +40,8 @@ public class LevelView {
 	}
 
 	public void removeWinImage(){
-		winImage.hideWinImage();
-		root.getChildren().remove(winImage);
+		winMenu.hideWinImage();
+		root.getChildren().remove(winMenu);
 	}
 
 	public void removeGameOverImage(){

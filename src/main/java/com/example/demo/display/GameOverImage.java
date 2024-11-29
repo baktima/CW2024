@@ -16,4 +16,5 @@ public class GameOverImage extends ImageView {
 		setFitHeight(HEIGHT);
 		setFitWidth(WIDTH);
 	}
+	//delete
 }

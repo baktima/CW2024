@@ -1,5 +1,6 @@
 package com.example.demo.plane;
 
+import com.example.demo.display.MainMenu;
 import com.example.demo.projectile.BossProjectile;
 import com.example.demo.display.ShieldImage;
 import com.example.demo.actor.ActiveActor;
@@ -8,13 +9,13 @@ import java.util.*;
 
 public class Boss extends FighterPlane {
 
-	private static final String IMAGE_NAME = "bossplane.png";
+	private static final String IMAGE_NAME = "BossPlaneSlug.png";
 	private static final double INITIAL_X_POSITION = 1000.0;
 	private static final double INITIAL_Y_POSITION = 400;
 	private static final double PROJECTILE_Y_POSITION_OFFSET = 75.0;
 	private static final double BOSS_FIRE_RATE = .04;
-	private static final double BOSS_SHIELD_PROBABILITY = 0;
-	private static final int IMAGE_HEIGHT = 50;
+	private static final double BOSS_SHIELD_PROBABILITY = 1;
+	private static final int IMAGE_HEIGHT = 200;
 	private static final int VERTICAL_VELOCITY = 8;
 	private static final double HORIZONTAL_VELOCITY = 0;
 	private static final int MOVE_FREQUENCY_PER_CYCLE = 5;
@@ -46,16 +47,53 @@ public class Boss extends FighterPlane {
 
 	@Override
 	public void updatePosition() {
-		double initialTranslateY = getTranslateY();
 		moveVertically(getNextMove());
-		double currentPosition = getLayoutY() + getTranslateY();
-		if (currentPosition < Y_POSITION_UPPER_BOUND || currentPosition > Y_POSITION_LOWER_BOUND) {
-			setTranslateY(initialTranslateY);
+
+		// Calculate the current position of the Boss
+		double currentPositionY = getLayoutY() + getTranslateY();
+		double currentPositionX = getLayoutX() + getTranslateX();
+
+		// Ensure the Boss stays within the screen bounds (Y-axis)
+		if (currentPositionY < 0) { // Top bound
+			setTranslateY(-getLayoutY());
+		} else if (currentPositionY > Y_POSITION_LOWER_BOUND) { // Bottom bound
+			setTranslateY(Y_POSITION_LOWER_BOUND - getLayoutY());
 		}
-		
+
+		// Ensure the Boss stays within the screen bounds (X-axis, if needed)
+		if (currentPositionX < 0) { // Left bound
+			setTranslateX(-getLayoutX());
+		} else if (currentPositionX > MainMenu.GetScreenwidth() - IMAGE_HEIGHT) { // Right bound (screen width - boss width)
+			setTranslateX(MainMenu.GetScreenwidth() - IMAGE_HEIGHT - getLayoutX());
+		}
+
 		updateShieldPosition();
 	}
+	public void updatePositionTesting(){
+		double initialTranslateY = getTranslateY();
+		moveVertically(getNextMove());
 
+		// Calculate the current position of the Boss
+		double currentPositionY = getLayoutY() + getTranslateY();
+		double currentPositionX = getLayoutX() + getTranslateX();
+
+		// Ensure the Boss stays within the screen bounds (Y-axis)
+		if (currentPositionY < 0) { // Top bound
+			setTranslateY(-getLayoutY());
+		} else if (currentPositionY > Y_POSITION_LOWER_BOUND) { // Bottom bound
+			setTranslateY(Y_POSITION_LOWER_BOUND - getLayoutY());
+		}
+
+		// Ensure the Boss stays within the screen bounds (X-axis, if needed)
+		if (currentPositionX < 0) { // Left bound
+			setTranslateX(-getLayoutX());
+		} else if (currentPositionX > MainMenu.GetScreenwidth() - IMAGE_HEIGHT) { // Right bound (screen width - boss width)
+			setTranslateX(MainMenu.GetScreenwidth() - IMAGE_HEIGHT - getLayoutX());
+		}
+
+		updateShieldPosition();
+
+	}
 	@Override
 	public void updateActor() {
 		super.updateActor();

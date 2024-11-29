@@ -7,38 +7,22 @@ import com.example.demo.actor.ActiveActor;
 
 public class UserPlane extends FighterPlane {
 
-	private static final String IMAGE_NAME = "userplane.png";
-	private static final double Y_UPPER_BOUND = -40;
-	private static final double Y_LOWER_BOUND = 600.0;
+	private static final String IMAGE_NAME = "UserPlaneSlug2.png";
+	private static final double Y_UPPER_BOUND = 0;
+	private static final double Y_LOWER_BOUND = 650.0;
 	private static final double INITIAL_X_POSITION = 5.0;
 	private static final double INITIAL_Y_POSITION = 300.0;
-	private static final int IMAGE_HEIGHT = 50;
+	private static final int IMAGE_HEIGHT = 100;
 	private static final int VERTICAL_VELOCITY = 12;
 	private static final double HORIZONTAL_VELOCITY = 0;
 	private static final int PROJECTILE_X_POSITION = 110;
-	private static final int PROJECTILE_Y_POSITION_OFFSET = 20;
+	private static final int PROJECTILE_Y_POSITION_OFFSET = 60;
 	private double velocityMultiplier;
 	private int numberOfKills;
 
 	public UserPlane(int initialHealth) {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth);
 		velocityMultiplier = 0;
-	}
-
-	public static double getyUpperBound() {
-		return Y_UPPER_BOUND;
-	}
-
-	public static double getyLowerBound() {
-		return Y_LOWER_BOUND;
-	}
-
-	public static int getProjectileXPosition() {
-		return PROJECTILE_X_POSITION;
-	}
-
-	public static int getProjectileYPositionOffset(){
-		return PROJECTILE_Y_POSITION_OFFSET;
 	}
 
 	@Override

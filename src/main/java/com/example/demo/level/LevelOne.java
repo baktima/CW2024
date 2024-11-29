@@ -7,7 +7,7 @@ import com.example.demo.actor.ActiveActor;
 
 public class LevelOne extends LevelParent {
 	
-	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background1.jpg";
+	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/MetalSlugBackground1.jpg";
 	private static final String NEXT_LEVEL = "com.example.demo.level.LevelTwo";
 	private static final int TOTAL_ENEMIES = 6;
 	private static final int KILLS_TO_ADVANCE = 2;
@@ -31,7 +31,7 @@ public class LevelOne extends LevelParent {
 	//maybe moving this up to the parent class but with parameters since I want to use it again in levelThree
 	@Override
 	protected void spawnEnemyUnits() {
-		int currentNumberOfEnemies = GetActorManager().GetCurrentNumberOfEnemies();
+		int currentNumberOfEnemies = GetActorManager().getCurrentNumberOfEnemies();
 		for (int i = 0; i < TOTAL_ENEMIES - currentNumberOfEnemies; i++) {
 			if (Math.random() < ENEMY_SPAWN_PROBABILITY) {
 				double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();
@@ -46,10 +46,6 @@ public class LevelOne extends LevelParent {
 				addEnemyUnit(newEnemy);
 			}
 		}
-	}
-
-	public static int getKillToAdvance(){
-		return KILLS_TO_ADVANCE;
 	}
 
 	@Override

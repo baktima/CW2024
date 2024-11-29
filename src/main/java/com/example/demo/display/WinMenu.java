@@ -44,5 +44,13 @@ public class WinMenu extends ImageView {
         this.setLayoutY(yPosition);
     }
 
+    public void showWinImage() {
+        this.setVisible(true);
+    }
+
+    public void hideWinImage(){
+        this.setVisible(false);
+    }
+
 
 }

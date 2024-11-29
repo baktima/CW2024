@@ -5,17 +5,14 @@ import java.util.stream.Collectors;
 
 import com.example.demo.actor.ActiveActor;
 import com.example.demo.display.MainMenu;
-import com.example.demo.level.LevelParent;
 import javafx.scene.Group;
 
 public class ActorManager {
-    //let's just leave it here first
-    private List<ActiveActor> friendlyUnits;
-    private List<ActiveActor> enemyUnits;
-    private List<ActiveActor> userProjectiles;
-    private List<ActiveActor> enemyProjectiles;
-    private Group gamePlayRoot;
-    private LevelParent levelParent;
+    private final List<ActiveActor> friendlyUnits;
+    private final List<ActiveActor> enemyUnits;
+    private final List<ActiveActor> userProjectiles;
+    private final List<ActiveActor> enemyProjectiles;
+    private final Group gamePlayRoot;
 
     public ActorManager(Group gamePlayRoot) {
         this.friendlyUnits = new ArrayList<>();
@@ -26,7 +23,7 @@ public class ActorManager {
     }
 
     // Actor Updates
-    public void UpdateActors() {
+    public void updateActors() {
         friendlyUnits.forEach(ActiveActor::updateActor);
         enemyUnits.forEach(ActiveActor::updateActor);
         userProjectiles.forEach(ActiveActor::updateActor);
@@ -34,23 +31,23 @@ public class ActorManager {
     }
 
     // Add Actors
-    public void AddFriendlyUnit(ActiveActor actor) {
+    public void addFriendlyUnit(ActiveActor actor) {
         friendlyUnits.add(actor);
         gamePlayRoot.getChildren().add(actor);
     }
 
-    public void AddEnemyUnit(ActiveActor actor) {
+    public void addEnemyUnit(ActiveActor actor) {
         enemyUnits.add(actor);
         gamePlayRoot.getChildren().add(actor);
 
     }
 
-    public void AddUserProjectile(ActiveActor projectile) {
+    public void addUserProjectile(ActiveActor projectile) {
         userProjectiles.add(projectile);
         gamePlayRoot.getChildren().add(projectile);
     }
 
-    public void AddEnemyProjectile(ActiveActor projectile) {
+    public void addEnemyProjectile(ActiveActor projectile) {
         enemyProjectiles.add(projectile);
         gamePlayRoot.getChildren().add(projectile);
     }
@@ -58,7 +55,7 @@ public class ActorManager {
     // Remove Destroyed Actors by making it as an array list and iterate one by one to the removed
     //destroyed
     //temporary making the user not destroyed so the restart works
-    public void RemoveAllDestroyedActors() {
+    public void removeAllDestroyedActors() {
         Arrays.asList(enemyUnits, userProjectiles, enemyProjectiles)
                 .forEach(this::removeDestroyedActors);
     }
@@ -73,7 +70,7 @@ public class ActorManager {
 
     // Handle Collisions
     //remove handle collision from levelParent to here
-    public void HandleCollisions(List<ActiveActor> actors1, List<ActiveActor> actors2) {
+    public void handleCollisions(List<ActiveActor> actors1, List<ActiveActor> actors2) {
         for (ActiveActor actor1 : actors1) {
             for (ActiveActor actor2 : actors2) {
                 if (actor1.getBoundsInParent().intersects(actor2.getBoundsInParent())) {
@@ -84,52 +81,54 @@ public class ActorManager {
         }
     }
 
-//    private void handleEnemyPenetration() {
-//        for (ActiveActor enemy : enemyUnits) {
-//            if (enemyHasPenetratedDefenses(enemy)) {
-//
-//                enemy.destroy();
-//            }
-//        }
-//    }
-//
-//    private boolean enemyHasPenetratedDefenses(ActiveActor enemy) {
-//        return Math.abs(enemy.getTranslateX()) > LevelParent.getScreenWidth();
-//    }
+    public void handleEnemyPenetration() {
+        for(ActiveActor user : friendlyUnits) {
+            for (ActiveActor enemy : enemyUnits) {
+                if (enemyHasPenetratedDefenses(enemy)) {
+                    user.takeDamage();
+                    enemy.destroy();
+                }
+            }
+        }
 
-    public void HandlePlaneCollisions() {
-        HandleCollisions(friendlyUnits, enemyUnits);
     }
 
-    public void HandleUserProjectileCollisions() {
-        HandleCollisions(userProjectiles, enemyUnits);
+    private boolean enemyHasPenetratedDefenses(ActiveActor enemy) {
+        return Math.abs(enemy.getTranslateX()) > MainMenu.GetScreenwidth();
     }
 
-    public void HandleEnemyProjectileCollisions() {
-        HandleCollisions(enemyProjectiles, friendlyUnits);
+    public void handlePlaneCollisions() {
+        handleCollisions(friendlyUnits, enemyUnits);
     }
 
-    public int GetCurrentNumberOfEnemies(){
+    public void handleUserProjectileCollisions() {
+        handleCollisions(userProjectiles, enemyUnits);
+    }
+
+    public void handleEnemyProjectileCollisions() {
+        handleCollisions(enemyProjectiles, friendlyUnits);
+    }
+
+    public int getCurrentNumberOfEnemies(){
         return enemyUnits.size();
     }
 
     // Getters for Actor Lists
 
-    public List<ActiveActor> GetEnemyUnits() {
+    public List<ActiveActor> getEnemyUnits() {
         return enemyUnits;
     }
 
-    public List<ActiveActor> GetUserProjectiles() {
+    public List<ActiveActor> getUserProjectiles() {
         return userProjectiles;
     }
 
-    public List<ActiveActor> GetEnemyProjectiles() {
+    public List<ActiveActor> getEnemyProjectiles() {
         return enemyProjectiles;
     }
 
-    public Group GetGamePlayRoot(){
+    public Group getGamePlayRoot(){
         return gamePlayRoot;
     }
-
-    }
+}
 

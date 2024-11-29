@@ -6,10 +6,10 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 public class TankerPlane extends FighterPlane {
-    private static final int HORIZONTAL_VELOCITY = -10;
+    private static final int HORIZONTAL_VELOCITY = -3;
     private int VERTICAL_VELOCITY = -1; // Initial direction is upward
-    private static final String IMAGE_NAME = "TankerPlane.png";
-    private static final int IMAGE_HEIGHT = 90;
+    private static final String IMAGE_NAME = "TankerPlaneSlug.png";
+    private static final int IMAGE_HEIGHT = 180;
     private static final int INITIAL_HEALTH = 8;
 
     private final Timeline zigZagTimer;

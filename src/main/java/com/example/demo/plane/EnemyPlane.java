@@ -5,8 +5,8 @@ import com.example.demo.actor.ActiveActor;
 
 public class EnemyPlane extends FighterPlane {
 
-	private static final String IMAGE_NAME = "enemyplane.png";
-	private static final int IMAGE_HEIGHT = 50;
+	private static final String IMAGE_NAME = "EnemyPlane1.png";
+	private static final int IMAGE_HEIGHT = 70;
 	private static final int HORIZONTAL_VELOCITY = -6;
 	private static final double PROJECTILE_X_POSITION_OFFSET = -100.0;
 	private static final double PROJECTILE_Y_POSITION_OFFSET = 50.0;

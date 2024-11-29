@@ -26,4 +26,5 @@ public class WinImage extends ImageView {
 		this.setVisible(false);
 	}
 
+	//delete
 }

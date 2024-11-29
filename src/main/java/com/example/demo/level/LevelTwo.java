@@ -5,7 +5,7 @@ import com.example.demo.plane.Boss;
 
 public class LevelTwo extends LevelParent {
 
-	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background2.jpg";
+	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/BossBackGround.png";
 	private static final String NEXT_LEVEL = "com.example.demo.level.LevelThree";
 	private static final int PLAYER_INITIAL_HEALTH = 5;
 	private final Boss boss;
@@ -14,7 +14,6 @@ public class LevelTwo extends LevelParent {
 	public LevelTwo(double screenHeight, double screenWidth) {
 		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, PLAYER_INITIAL_HEALTH);
 		boss = new Boss();
-		
 	}
 
 	@Override
@@ -31,13 +30,13 @@ public class LevelTwo extends LevelParent {
 	protected void spawnEnemyUnits() {
 		if (getCurrentNumberOfEnemies() == 0) {
 			// Add the boss only if it hasn't been added yet
-			if (!GetActorManager().GetGamePlayRoot().getChildren().contains(boss)) {
-				GetActorManager().AddEnemyUnit(boss);
+			if (!GetActorManager().getGamePlayRoot().getChildren().contains(boss)) {
+				GetActorManager().addEnemyUnit(boss);
 			}
 
 			// Add shield image only if it hasn't been added yet
-			if (!GetActorManager().GetGamePlayRoot().getChildren().contains(boss.getShieldImage())) {
-				GetActorManager().GetGamePlayRoot().getChildren().add(boss.getShieldImage());
+			if (!GetActorManager().getGamePlayRoot().getChildren().contains(boss.getShieldImage())) {
+				GetActorManager().getGamePlayRoot().getChildren().add(boss.getShieldImage());
 			}
 		}
 	}
