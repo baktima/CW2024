@@ -13,6 +13,8 @@ public class Boss extends FighterPlane {
 	private static final double INITIAL_X_POSITION = 1000.0;
 	private static final double INITIAL_Y_POSITION = 400;
 	private static final double PROJECTILE_Y_POSITION_OFFSET = 75.0;
+	private static final int SHIELD_X_POSITION_OFFSET = 30;
+	private static final int SHIELD_Y_POSITION_OFFSET = 50;
 	private static final double BOSS_FIRE_RATE = .04;
 	private static final double BOSS_SHIELD_PROBABILITY = 1;
 	private static final int IMAGE_HEIGHT = 200;
@@ -21,7 +23,6 @@ public class Boss extends FighterPlane {
 	private static final int MOVE_FREQUENCY_PER_CYCLE = 5;
 	private static final int ZERO = 0;
 	private static final int MAX_FRAMES_WITH_SAME_MOVE = 10;
-	private static final int Y_POSITION_UPPER_BOUND = -50;
 	private static final int Y_POSITION_LOWER_BOUND = 475;
 	private static final int MAX_FRAMES_WITH_SHIELD = 100;
 	private static final int INITIAL_HEALTH = 3; // Instance variable for health
@@ -63,36 +64,11 @@ public class Boss extends FighterPlane {
 		// Ensure the Boss stays within the screen bounds (X-axis, if needed)
 		if (currentPositionX < 0) { // Left bound
 			setTranslateX(-getLayoutX());
-		} else if (currentPositionX > MainMenu.GetScreenwidth() - IMAGE_HEIGHT) { // Right bound (screen width - boss width)
-			setTranslateX(MainMenu.GetScreenwidth() - IMAGE_HEIGHT - getLayoutX());
+		} else if (currentPositionX > MainMenu.getScreenWidth() - IMAGE_HEIGHT) { // Right bound (screen width - boss width)
+			setTranslateX(MainMenu.getScreenWidth() - IMAGE_HEIGHT - getLayoutX());
 		}
 
 		updateShieldPosition();
-	}
-	public void updatePositionTesting(){
-		double initialTranslateY = getTranslateY();
-		moveVertically(getNextMove());
-
-		// Calculate the current position of the Boss
-		double currentPositionY = getLayoutY() + getTranslateY();
-		double currentPositionX = getLayoutX() + getTranslateX();
-
-		// Ensure the Boss stays within the screen bounds (Y-axis)
-		if (currentPositionY < 0) { // Top bound
-			setTranslateY(-getLayoutY());
-		} else if (currentPositionY > Y_POSITION_LOWER_BOUND) { // Bottom bound
-			setTranslateY(Y_POSITION_LOWER_BOUND - getLayoutY());
-		}
-
-		// Ensure the Boss stays within the screen bounds (X-axis, if needed)
-		if (currentPositionX < 0) { // Left bound
-			setTranslateX(-getLayoutX());
-		} else if (currentPositionX > MainMenu.GetScreenwidth() - IMAGE_HEIGHT) { // Right bound (screen width - boss width)
-			setTranslateX(MainMenu.GetScreenwidth() - IMAGE_HEIGHT - getLayoutX());
-		}
-
-		updateShieldPosition();
-
 	}
 	@Override
 	public void updateActor() {
@@ -113,7 +89,7 @@ public class Boss extends FighterPlane {
 	}
 
 	@Override
-	public double GetHorizontalVelocity() {
+	public double getHorizontalVelocity() {
 		return HORIZONTAL_VELOCITY;
 	}
 
@@ -185,8 +161,8 @@ public class Boss extends FighterPlane {
 	//this will make the shield move according to the boss
 	private void updateShieldPosition() {
 	    if (shieldImage != null) {
-	    	 shieldImage.setLayoutX(this.getLayoutX()-60 + this.getTranslateX());
-	         shieldImage.setLayoutY(this.getLayoutY()-20 + this.getTranslateY());
+	    	 shieldImage.setLayoutX(this.getLayoutX()-SHIELD_X_POSITION_OFFSET + this.getTranslateX());
+	         shieldImage.setLayoutY(this.getLayoutY()-SHIELD_Y_POSITION_OFFSET + this.getTranslateY());
 	    }
 	}
 

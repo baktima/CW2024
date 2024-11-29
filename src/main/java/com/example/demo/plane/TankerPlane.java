@@ -7,10 +7,11 @@ import javafx.util.Duration;
 
 public class TankerPlane extends FighterPlane {
     private static final int HORIZONTAL_VELOCITY = -3;
-    private int VERTICAL_VELOCITY = -1; // Initial direction is upward
     private static final String IMAGE_NAME = "TankerPlaneSlug.png";
     private static final int IMAGE_HEIGHT = 180;
     private static final int INITIAL_HEALTH = 8;
+
+    private int verticalVelocity = -1; // Initial direction is upward
 
     private final Timeline zigZagTimer;
 
@@ -29,7 +30,7 @@ public class TankerPlane extends FighterPlane {
      * Toggles the vertical velocity between positive and negative.
      */
     private void toggleVerticalVelocity() {
-        VERTICAL_VELOCITY *= -1;
+        verticalVelocity *= -1;
     }
 
     @Override
@@ -40,19 +41,13 @@ public class TankerPlane extends FighterPlane {
     @Override
     public void updatePosition() {
         super.updatePosition();
-        moveVertically(VERTICAL_VELOCITY);
+        moveVertically(verticalVelocity);
     }
 
     @Override
-    public double GetHorizontalVelocity() {
+    public double getHorizontalVelocity() {
         return HORIZONTAL_VELOCITY;
     }
 
-    /**
-     * Stops the zig-zag motion when the plane is destroyed or removed.
-     */
-//    public void stopZigZagMotion() {
-//        zigZagTimer.stop();
-//    }
 
 }

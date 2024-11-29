@@ -21,7 +21,7 @@ public class LevelOne extends LevelParent {
 
 	@Override
 	protected void checkIfGameOver() {
-		if (userIsDestroyed()) {
+		if (getUserIsDestroyed()) {
 			loseGame();
 		}
 		else if (userHasReachedKillTarget())
@@ -31,7 +31,7 @@ public class LevelOne extends LevelParent {
 	//maybe moving this up to the parent class but with parameters since I want to use it again in levelThree
 	@Override
 	protected void spawnEnemyUnits() {
-		int currentNumberOfEnemies = GetActorManager().getCurrentNumberOfEnemies();
+		int currentNumberOfEnemies = getActorManager().getCurrentNumberOfEnemies();
 		for (int i = 0; i < TOTAL_ENEMIES - currentNumberOfEnemies; i++) {
 			if (Math.random() < ENEMY_SPAWN_PROBABILITY) {
 				double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();

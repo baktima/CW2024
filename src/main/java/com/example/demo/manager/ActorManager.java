@@ -94,7 +94,7 @@ public class ActorManager {
     }
 
     private boolean enemyHasPenetratedDefenses(ActiveActor enemy) {
-        return Math.abs(enemy.getTranslateX()) > MainMenu.GetScreenwidth();
+        return Math.abs(enemy.getTranslateX()) > MainMenu.getScreenWidth();
     }
 
     public void handlePlaneCollisions() {

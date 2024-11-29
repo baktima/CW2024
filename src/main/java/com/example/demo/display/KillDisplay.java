@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 
 public class KillDisplay {
     private int count;
-    private Label counterLabel;
+    private final Label counterLabel;
     private static final int X_POSITION = 1150;
     private static final int Y_POSITION = 30;
 

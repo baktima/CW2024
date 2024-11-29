@@ -1,6 +1,5 @@
 package com.example.demo.display;
 
-import com.example.demo.controller.GameOverMenuController;
 import com.example.demo.controller.WinMenuController;
 import com.example.demo.level.LevelParent;
 import javafx.fxml.FXMLLoader;
@@ -27,8 +26,8 @@ public class WinMenu extends ImageView {
             WinMenuController winMenuController = loader.getController();
             winMenuController.initialize(levelParent);
 
-            double centerX = (MainMenu.GetScreenwidth() - cachedWinMenu.getLayoutBounds().getWidth()) / 4;
-            double centerY = (MainMenu.GetScreenHeight() - cachedWinMenu.getLayoutBounds().getHeight()) / 4;
+            double centerX = (MainMenu.getScreenWidth() - cachedWinMenu.getLayoutBounds().getWidth()) / 4;
+            double centerY = (MainMenu.getScreenHeight() - cachedWinMenu.getLayoutBounds().getHeight()) / 4;
             cachedWinMenu.setLayoutX(centerX);
             cachedWinMenu.setLayoutY(centerY);
         }
@@ -36,6 +35,8 @@ public class WinMenu extends ImageView {
     }
 
     public WinMenu(double xPosition, double yPosition) {
+
+        //display the image
         this.setImage(new Image(getClass().getResource(IMAGE_NAME).toExternalForm()));
         this.setVisible(false);
         this.setFitHeight(HEIGHT);

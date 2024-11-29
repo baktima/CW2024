@@ -35,8 +35,6 @@ public class LevelView {
 	
 	public void showGameOverImage() {
 		root.getChildren().add(gameOverMenu);
-
-		System.out.println("showing");
 	}
 
 	public void removeWinImage(){
@@ -46,7 +44,6 @@ public class LevelView {
 
 	public void removeGameOverImage(){
 		root.getChildren().remove(gameOverMenu);
-		System.out.println("removing");
 	}
 	
 	public void removeHearts(int heartsRemaining) {

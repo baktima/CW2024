@@ -23,8 +23,8 @@ public class PauseMenu {
             PauseMenuController pauseController = loader.getController();
             pauseController.initialize(levelParent);
 
-            double centerX = (MainMenu.GetScreenwidth() - cachedPauseMenu.getLayoutBounds().getWidth()) / 4;
-            double centerY = (MainMenu.GetScreenHeight() - cachedPauseMenu.getLayoutBounds().getHeight()) / 4;
+            double centerX = (MainMenu.getScreenWidth() - cachedPauseMenu.getLayoutBounds().getWidth()) / 4;
+            double centerY = (MainMenu.getScreenHeight() - cachedPauseMenu.getLayoutBounds().getHeight()) / 4;
             cachedPauseMenu.setLayoutX(centerX);
             cachedPauseMenu.setLayoutY(centerY);
         }

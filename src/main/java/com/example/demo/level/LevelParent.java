@@ -1,7 +1,6 @@
 	package com.example.demo.level;
 
 	import java.io.IOException;
-	import java.util.*;
 
 	import com.example.demo.display.GameOverMenu;
 	import com.example.demo.display.KillDisplay;
@@ -10,6 +9,7 @@
 	import com.example.demo.level.levelView.LevelView;
     import com.example.demo.actor.ActiveActor;
 	import com.example.demo.manager.ActorManager;
+	import com.example.demo.implementation.LevelChangeListener;
 
 	import com.example.demo.plane.FighterPlane;
 	import com.example.demo.plane.UserPlane;
@@ -22,7 +22,7 @@
 	import javafx.util.Duration;
 	import javafx.scene.Parent;
 
-	public abstract class LevelParent extends Observable {
+	public abstract class LevelParent{
 
 		private static final double SCREEN_HEIGHT_ADJUSTMENT = 150;
 		private static final int MILLISECOND_DELAY = 50;
@@ -33,11 +33,11 @@
 
 		private final Group root;
 		private final Group gamePlayRoot;
-		private final Group pauseMenuRoot;
+		private final Group menuRoot;
 		private final Group backgroundRoot;
 
 		private final Timeline timeline;
-		private UserPlane user;
+		private final UserPlane user;
 		private final Scene scene;
 		private final ImageView background;
 
@@ -52,7 +52,8 @@
 		private Stage stage;
 		private boolean canFire = true;
 		private final ActorManager actorManager;
-		private KillDisplay killDisplay;
+		private final KillDisplay killDisplay;
+		private LevelChangeListener levelChangeListener;
 
         /**
 		 * changing the constructor since there's a lot of redundant use of this.
@@ -82,30 +83,32 @@
 			initializeTimeline();
 
 			gamePlayRoot = new Group();
-			pauseMenuRoot = new Group();
+			menuRoot = new Group();
 			backgroundRoot = new Group();
 
 			//_____
-			//still considering this cause there's a lot to change from this
 			actorManager = new ActorManager(gamePlayRoot);
 			actorManager.updateActors();
-//			PauseMenuManager pauseMenuManager = new PauseMenuManager(gamePlayRoot, timeline, gamePlayRoot, background,this);
+			//PauseMenuManager pauseMenuManager = new PauseMenuManager(gamePlayRoot, timeline, gamePlayRoot, background,this);
 			//-------
 
-			root.getChildren().addAll(backgroundRoot,gamePlayRoot, pauseMenuRoot);
+			root.getChildren().addAll(backgroundRoot,gamePlayRoot, menuRoot);
 			killDisplay.addToRoot(root);
 
 		}
 
-		//------------------------------------------------------------------
-
-		public Stage getStage() {
-			return stage;
+		//-----------------------------------------------------------------
+		public void setLevelChangeListener(LevelChangeListener listener) {
+			this.levelChangeListener = listener;
 		}
 
-		public void setStage(Stage stage){
-			this.stage = stage;
-        }
+		protected void notifyLevelChange(String nextLevelClassName) {
+			if (levelChangeListener != null) {
+				levelChangeListener.levelChange(nextLevelClassName);
+			}
+		}
+
+		//------------------------------------------------------------------
 
 		public void cleanup() {
 			// Stop animations, clear resources, etc.
@@ -115,8 +118,6 @@
 			root.getChildren().clear();
 		}
 
-		//not yet now
-		//based from the user reset maybe I can like put the reset heart display, so it can change dynamically;
 		private void userReset() {
 
 			// Reset user position to the initial state (e.g., bottom-center of the screen)
@@ -166,11 +167,8 @@
 		 */
 
 		public void goToNextLevel(String levelName) {
-			//the change that makes the transition works
-			//later maybe need to make it nicer.
 			cleanup();
-			setChanged();
-			notifyObservers(levelName);
+			notifyLevelChange(levelName);
 		}
 
 		private void updateScene() {
@@ -257,11 +255,17 @@
 			paused = !paused;
 		}
 
+		/**
+		 * Pause the game
+		 */
 		private void pauseGame() {
 			timeline.pause();
 			displayPauseMenu();
 		}
 
+		/**
+		 * Restart the game from the beginning of the current level
+		 */
 		public void restartGame() {
 			timeline.stop(); // Stop the timeline
 
@@ -271,12 +275,12 @@
 			user.setDestroyed(false);
 
 			// Clear the pause menu
-			pauseMenuRoot.getChildren().clear();
-			pauseMenuRoot.setVisible(false);
+			menuRoot.getChildren().clear();
+			menuRoot.setVisible(false);
 			paused = false;
 
-			root.getChildren().remove(pauseMenuRoot);
-			root.getChildren().add(pauseMenuRoot);
+			root.getChildren().remove(menuRoot);
+			root.getChildren().add(menuRoot);
 			levelView.removeGameOverImage();
 			levelView.removeWinImage();
 
@@ -289,29 +293,32 @@
 		}
 
 		private void resetGameEntities() {
-			//the actor manager
+			//clear all entities except user plane
 			actorManager.getEnemyUnits().clear();
 			actorManager.getUserProjectiles().clear();
 			actorManager.getEnemyProjectiles().clear();
 
-			// Reset player position and health
-			// Reset user position, health, etc.
+			// Reset player position, health, and kill count
 			userReset();
 			killDisplay.reset();
 
-			//actor Manager
+			//clear everything on the gamePlay plane and add the user
 			actorManager.getGamePlayRoot().getChildren().clear();
 			actorManager.getGamePlayRoot().getChildren().add(user);
 
 			// Reset other game state variables
 			currentNumberOfEnemies = 0;
 		}
+
+		/**
+		 * Resume the gameplay
+		 */
 		public void resumeGame() {
 			timeline.play();
-			pauseMenuRoot.getChildren().clear();
+			menuRoot.getChildren().clear();
 			paused = false;
 
-			//this is the function that fix the pause menu supposedly
+			//this is the code that fix the lingering pause menu
 			backgroundRoot.getChildren().remove(background);
 			backgroundRoot.getChildren().add(0, background);
 		}
@@ -323,10 +330,10 @@
 				}
 
 				// Ensure the pause menu is added to the root and visible
-				pauseMenuRoot.getChildren().clear();
-				pauseMenuRoot.getChildren().add(cachedPauseMenu);
+				menuRoot.getChildren().clear();
+				menuRoot.getChildren().add(cachedPauseMenu);
 				cachedPauseMenu.setVisible(true);
-				pauseMenuRoot.setVisible(true);
+				menuRoot.setVisible(true);
 
 				// Focus the pause menu
 				cachedPauseMenu.requestFocus();
@@ -342,10 +349,10 @@
 				}
 
 				// Ensure the pause menu is added to the root and visible
-				pauseMenuRoot.getChildren().clear();
-				pauseMenuRoot.getChildren().add(cachedGameOverMenu);
+				menuRoot.getChildren().clear();
+				menuRoot.getChildren().add(cachedGameOverMenu);
 				cachedGameOverMenu.setVisible(true);
-				pauseMenuRoot.setVisible(true);
+				menuRoot.setVisible(true);
 
 				// Focus the pause menu
 				cachedGameOverMenu.requestFocus();
@@ -361,10 +368,10 @@
 				}
 
 				// Ensure the pause menu is added to the root and visible
-				pauseMenuRoot.getChildren().clear();
-				pauseMenuRoot.getChildren().add(cachedWinMenu);
+				menuRoot.getChildren().clear();
+				menuRoot.getChildren().add(cachedWinMenu);
 				cachedWinMenu.setVisible(true);
-				pauseMenuRoot.setVisible(true);
+				menuRoot.setVisible(true);
 
 				// Focus the pause menu
 				cachedWinMenu.requestFocus();
@@ -376,8 +383,6 @@
 
 		/**
 		 * @param kc where it will receive inputs
-		 * for some reason this part doesn't work really well since the up will overtake the down
-		 * maybe will delete later on the future
 		 */
 
 		private void handleKeyRelease(KeyCode kc) {
@@ -431,7 +436,6 @@
 			timeline.stop();
 			levelView.showWinImage();
 
-			//dont forget to change this into restart from the beginning level rather than the current level
 			displayWinMenu();
 		}
 
@@ -441,6 +445,16 @@
 
 			displayGameOverMenu();
 		}
+
+		private void updateNumberOfEnemies() {
+			currentNumberOfEnemies =actorManager.getEnemyUnits().size();
+		}
+
+		protected void addEnemyUnit(ActiveActor enemy) {
+			actorManager.addEnemyUnit(enemy);
+		}
+
+		//getter and setter
 
 		protected UserPlane getUser() {
 			return user;
@@ -457,11 +471,7 @@
 			return actorManager.getEnemyUnits().size();
 		}
 
-		protected void addEnemyUnit(ActiveActor enemy) {
-			actorManager.addEnemyUnit(enemy);
-		}
-
-		public ActorManager GetActorManager(){
+		public ActorManager getActorManager(){
 			return actorManager;
 		}
 
@@ -473,12 +483,16 @@
 			return screenWidth;
 		}
 
-		protected boolean userIsDestroyed() {
+		protected boolean getUserIsDestroyed() {
 			return user.getIsDestroyed();
 		}
 
-		private void updateNumberOfEnemies() {
-			currentNumberOfEnemies =actorManager.getEnemyUnits().size();
+		public Stage getStage() {
+			return stage;
+		}
+
+		public void setStage(Stage stage){
+			this.stage = stage;
 		}
 
 	}

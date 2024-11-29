@@ -1,5 +1,6 @@
 package com.example.demo.actor;
 
+import com.example.demo.implementation.Destructible;
 import javafx.scene.image.*;
 
 import java.util.Objects;
@@ -12,6 +13,8 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 	private boolean isDestroyed;
 
 	protected ActiveActor(String imageName, int imageHeight, double initialXPos, double initialYPos) {
+
+		//set the base path name for the images of the actors
 		this.setImage(new Image(Objects.requireNonNull(getClass().getResource(IMAGE_LOCATION + imageName)).toExternalForm()));
 		this.setLayoutX(initialXPos);
 		this.setLayoutY(initialYPos);
@@ -47,7 +50,7 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 	}
 
 	public void updatePosition(){
-		moveHorizontally(GetHorizontalVelocity());
+		moveHorizontally(getHorizontalVelocity());
 	}
-	public abstract double GetHorizontalVelocity();
+	public abstract double getHorizontalVelocity();
 }

@@ -13,6 +13,10 @@ public class MainMenu {
     private static final int SCREEN_HEIGHT = 750;
     private static final String TITLE = "Sky Battle";
 
+    private MainMenu(){
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void showMainMenu(Stage stage, Controller gameController)throws IOException {
         FXMLLoader loader = new FXMLLoader(MainMenu.class.getResource("/com/example/demo/fxml/MainMenu.fxml"));
         Parent root = loader.load();
@@ -28,15 +32,12 @@ public class MainMenu {
         stage.setHeight(SCREEN_HEIGHT);
         stage.show();
     }
-    private MainMenu(){
-        throw new IllegalStateException("Utility class");
-    }
 
-    public static int GetScreenwidth(){
+    public static int getScreenWidth(){
         return SCREEN_WIDTH;
     }
 
-    public static int GetScreenHeight(){
+    public static int getScreenHeight(){
         return SCREEN_HEIGHT;
     }
 }

@@ -1,8 +1,5 @@
 package com.example.demo.display;
 
-//need to finish this asap today
-//need to refactor also the levelParent
-
 import com.example.demo.controller.GameOverMenuController;
 import com.example.demo.level.LevelParent;
 import javafx.fxml.FXMLLoader;
@@ -28,8 +25,8 @@ public class GameOverMenu extends ImageView {
             GameOverMenuController gameOverMenuController = loader.getController();
             gameOverMenuController.initialize(levelParent);
 
-            double centerX = (MainMenu.GetScreenwidth() - cachedGameOverMenu.getLayoutBounds().getWidth()) / 4;
-            double centerY = (MainMenu.GetScreenHeight() - cachedGameOverMenu.getLayoutBounds().getHeight()) / 4;
+            double centerX = (MainMenu.getScreenWidth() - cachedGameOverMenu.getLayoutBounds().getWidth()) / 4;
+            double centerY = (MainMenu.getScreenHeight() - cachedGameOverMenu.getLayoutBounds().getHeight()) / 4;
             cachedGameOverMenu.setLayoutX(centerX);
             cachedGameOverMenu.setLayoutY(centerY);
         }
@@ -37,6 +34,8 @@ public class GameOverMenu extends ImageView {
     }
 
     public GameOverMenu(double xPosition, double yPosition) {
+
+        //display the image
         setImage(new Image(getClass().getResource(IMAGE_NAME).toExternalForm()) );
         setLayoutX(xPosition);
         setLayoutY(yPosition);

@@ -9,7 +9,6 @@ public class LevelTwo extends LevelParent {
 	private static final String NEXT_LEVEL = "com.example.demo.level.LevelThree";
 	private static final int PLAYER_INITIAL_HEALTH = 5;
 	private final Boss boss;
-	private LevelView levelView;
 
 	public LevelTwo(double screenHeight, double screenWidth) {
 		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, PLAYER_INITIAL_HEALTH);
@@ -18,7 +17,7 @@ public class LevelTwo extends LevelParent {
 
 	@Override
 	protected void checkIfGameOver() {
-		if (userIsDestroyed()) {
+		if (getUserIsDestroyed()) {
 			loseGame();
 		}
 		else if (boss.getIsDestroyed()) {
@@ -30,19 +29,20 @@ public class LevelTwo extends LevelParent {
 	protected void spawnEnemyUnits() {
 		if (getCurrentNumberOfEnemies() == 0) {
 			// Add the boss only if it hasn't been added yet
-			if (!GetActorManager().getGamePlayRoot().getChildren().contains(boss)) {
-				GetActorManager().addEnemyUnit(boss);
+			if (!getActorManager().getGamePlayRoot().getChildren().contains(boss)) {
+				getActorManager().addEnemyUnit(boss);
 			}
 
 			// Add shield image only if it hasn't been added yet
-			if (!GetActorManager().getGamePlayRoot().getChildren().contains(boss.getShieldImage())) {
-				GetActorManager().getGamePlayRoot().getChildren().add(boss.getShieldImage());
+			if (!getActorManager().getGamePlayRoot().getChildren().contains(boss.getShieldImage())) {
+				getActorManager().getGamePlayRoot().getChildren().add(boss.getShieldImage());
 			}
 		}
 	}
 
 	@Override
 	protected LevelView instantiateLevelView() {
+		LevelView levelView;
 		levelView = new LevelView(getRoot(), PLAYER_INITIAL_HEALTH);
 		return levelView;
 	}

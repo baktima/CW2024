@@ -28,7 +28,7 @@ public class EnemyPlaneSpecial extends EnemyPlane {
     }
 
     @Override
-    public double GetHorizontalVelocity(){
+    public double getHorizontalVelocity(){
         return HORIZONTAL_MOVEMENT;
     }
 

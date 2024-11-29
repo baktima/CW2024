@@ -17,7 +17,7 @@ public class EnemySpecialProjectile extends EnemyProjectile {
 
     //testing
     @Override
-    public double GetHorizontalVelocity() {
+    public double getHorizontalVelocity() {
         return HORIZONTAL_VELOCITY;
     }
 

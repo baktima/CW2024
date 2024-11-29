@@ -11,7 +11,7 @@ public class UserProjectile extends Projectile {
 	}
 
 	@Override
-	public double GetHorizontalVelocity() {
+	public double getHorizontalVelocity() {
 		return HORIZONTAL_VELOCITY;
 	}
 	
