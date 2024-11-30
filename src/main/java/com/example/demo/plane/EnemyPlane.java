@@ -2,6 +2,7 @@ package com.example.demo.plane;
 
 import com.example.demo.projectile.EnemyProjectile;
 import com.example.demo.actor.ActiveActor;
+import com.example.demo.sound.SoundEffects;
 
 public class EnemyPlane extends FighterPlane {
 
@@ -15,6 +16,21 @@ public class EnemyPlane extends FighterPlane {
 
 	public EnemyPlane(double initialXPos, double initialYPos) {
 		super(IMAGE_NAME, IMAGE_HEIGHT, initialXPos, initialYPos, INITIAL_HEALTH);
+	}
+
+	//only added the sound effect for testing but considering it
+	@Override
+	public void takeDamage() {
+		super.takeDamage();
+		SoundEffects soundEffects = new SoundEffects();
+		soundEffects.playSound();
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		SoundEffects soundEffects = new SoundEffects();
+		soundEffects.playSound();
 	}
 
 	//for the EnemySpecialPlane

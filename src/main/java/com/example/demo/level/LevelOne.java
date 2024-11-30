@@ -9,8 +9,8 @@ public class LevelOne extends LevelParent {
 	
 	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/MetalSlugBackground1.jpg";
 	private static final String NEXT_LEVEL = "com.example.demo.level.LevelTwo";
-	private static final int TOTAL_ENEMIES = 6;
-	private static final int KILLS_TO_ADVANCE = 2;
+	private static final int TOTAL_ENEMIES = 5;
+	private static final int KILLS_TO_ADVANCE = 1;
 	private static final double ENEMY_SPAWN_PROBABILITY = .05;
 	private static final int PLAYER_INITIAL_HEALTH = 5;
 	private static final double SPECIAL_ENEMY_SPAWN_PROBABILITY = 0.0125;
@@ -24,8 +24,9 @@ public class LevelOne extends LevelParent {
 		if (getUserIsDestroyed()) {
 			loseGame();
 		}
-		else if (userHasReachedKillTarget())
+		else if (userHasReachedKillTarget()) {
 			goToNextLevel(NEXT_LEVEL);
+		}
 	}
 
 	//maybe moving this up to the parent class but with parameters since I want to use it again in levelThree

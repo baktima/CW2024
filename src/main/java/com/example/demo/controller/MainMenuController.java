@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.display.LevelMenu;
 import com.example.demo.sound.SoundEffects;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
@@ -11,7 +12,7 @@ import javafx.util.Duration;
 
 public class MainMenuController {
 
-	private Stage stage; 
+	private Stage stage;
 	private Controller gameController;
 	@FXML
 	private Slider soundEffect;
@@ -44,7 +45,7 @@ public class MainMenuController {
 	@FXML
 	private void buttonPlay() { 
 		try {
-            gameController.launchGame();
+			LevelMenu.showLevelMenu(stage,gameController);
         } catch (Exception e) {
             e.printStackTrace();  // Handle or log exception as appropriate for your application
         }

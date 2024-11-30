@@ -19,7 +19,6 @@ public class GameOverMenuController {
         levelParent.restartGame();
     }
 
-    //it works now
     @FXML
     private void exitButton() throws IOException {
 
@@ -27,6 +26,8 @@ public class GameOverMenuController {
         levelParent.cleanup();
 
         Stage stage = levelParent.getStage();
+
+        //this will generate new controller
         Controller controller = new Controller(stage);
         MainMenu.showMainMenu(stage, controller);
     }

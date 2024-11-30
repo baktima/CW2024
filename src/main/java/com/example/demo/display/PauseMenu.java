@@ -8,26 +8,19 @@ import javafx.scene.Parent;
 import java.io.IOException;
 
 public class PauseMenu {
-    private static Parent cachedPauseMenu = null;
 
     private PauseMenu() {
         throw new IllegalStateException("Utility class");
     }
 
     public static Parent showPauseMenu(LevelParent levelParent) throws IOException {
-        if (cachedPauseMenu == null) {
-            FXMLLoader loader = new FXMLLoader(PauseMenu.class.getResource("/com/example/demo/fxml/PauseMenu.fxml"));
-            cachedPauseMenu = loader.load();
+        FXMLLoader loader = new FXMLLoader(PauseMenu.class.getResource("/com/example/demo/fxml/PauseMenu.fxml"));
+        Parent root = loader.load();
 
-            // Access the controller to pass necessary references
-            PauseMenuController pauseController = loader.getController();
-            pauseController.initialize(levelParent);
+        PauseMenuController controller = loader.getController();
+        controller.initialize(levelParent); // Pass the current LevelParent to the controller
 
-            double centerX = (MainMenu.getScreenWidth() - cachedPauseMenu.getLayoutBounds().getWidth()) / 4;
-            double centerY = (MainMenu.getScreenHeight() - cachedPauseMenu.getLayoutBounds().getHeight()) / 4;
-            cachedPauseMenu.setLayoutX(centerX);
-            cachedPauseMenu.setLayoutY(centerY);
-        }
-        return cachedPauseMenu;
+        root.setUserData(controller); // Store the controller in the Parent for later use
+        return root;
     }
 }

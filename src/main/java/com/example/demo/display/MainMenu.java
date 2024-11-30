@@ -40,4 +40,8 @@ public class MainMenu {
     public static int getScreenHeight(){
         return SCREEN_HEIGHT;
     }
+
+    public static String getTitle(){
+        return TITLE;
+    }
 }
