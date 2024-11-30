@@ -8,10 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.controller.MainMenuController">
    <children>
-      <VBox alignment="CENTER" layoutX="320.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="640.0" spacing="40.0">
+      <VBox alignment="CENTER" layoutX="320.0" layoutY="217.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="640.0" spacing="40.0">
          <children>
             <Button fx:id="menuPlay" mnemonicParsing="false" onAction="#buttonPlay" text="Play">
                <font>
@@ -35,5 +36,10 @@
             <Slider fx:id="soundEffect" orientation="VERTICAL" value="50.0" />
          </items>
       </ToolBar>
+      <Text layoutX="421.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SKY ATTACK">
+         <font>
+            <Font size="80.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
