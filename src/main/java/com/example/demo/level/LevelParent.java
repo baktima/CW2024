@@ -11,6 +11,8 @@
 		import com.example.demo.manager.ActorManager;
 		import com.example.demo.implementation.LevelChangeListener;
 
+		import com.example.demo.manager.GameLoopManager;
+		import com.example.demo.manager.InputManager;
 		import com.example.demo.plane.FighterPlane;
 		import com.example.demo.plane.UserPlane;
 		import javafx.animation.*;
@@ -54,6 +56,8 @@
 			private final ActorManager actorManager;
 			private final KillDisplay killDisplay;
 			private LevelChangeListener levelChangeListener;
+			private GameLoopManager gameLoopManager;
+			private InputManager inputManager;
 
 			/**
 			 * changing the constructor since there's a lot of redundant use of this.
@@ -80,7 +84,9 @@
 				enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
 				levelView = instantiateLevelView();
 
+				//initializing class
 				initializeTimeline();
+				initializeInputHandler();
 
 				gamePlayRoot = new Group();
 				menuRoot = new Group();
@@ -88,7 +94,7 @@
 
 				//_____
 				actorManager = new ActorManager(gamePlayRoot);
-				actorManager.updateActors();
+				//actorManager.updateActors();
 				//PauseMenuManager pauseMenuManager = new PauseMenuManager(gamePlayRoot, timeline, gamePlayRoot, background,this);
 				//-------
 
@@ -111,8 +117,8 @@
 
 			public void cleanup() {
 				// Stop animations, clear resources, etc.
-				if (timeline != null) {
-					timeline.stop();
+				if (gameLoopManager != null) {
+					gameLoopManager.stop();
 				}
 				menuRoot.getChildren().clear();
 
@@ -122,7 +128,7 @@
 				gamePlayRoot.getChildren().clear();
 
 				// Clear background elements (only dynamically added ones)
-				backgroundRoot.getChildren().removeIf(node -> node != background);
+				//backgroundRoot.getChildren().removeIf(node -> node != background);
 
 				// Reset cached menus
 				cachedPauseMenu = null;
@@ -173,7 +179,7 @@
 
 			public void startGame() {
 				background.requestFocus();
-				timeline.play();
+				gameLoopManager.start();
 			}
 
 			/**
@@ -190,9 +196,7 @@
 			private void updateScene() {
 
 				handleEnemyActions();
-				handleUserActions();
-				handleCollisions();
-				cleanUpActors();
+				updateActorAndCollisions();
 				updateGameState();
 				checkIfGameOver();
 
@@ -208,21 +212,9 @@
 
 			}
 
-			// Method to update the movement and state of all actors
-			private void handleUserActions() {
-				actorManager.updateActors();
-			}
-
-			// Method to handle collisions between different actors
-			private void handleCollisions() {
-				actorManager.handleUserProjectileCollisions();
-				actorManager.handleEnemyProjectileCollisions();
-				actorManager.handlePlaneCollisions();
-			}
-
-			// Method to remove actors that have been destroyed
-			private void cleanUpActors() {
-				actorManager.removeAllDestroyedActors();
+			//update actor and collisions and safely delete
+			private void updateActorAndCollisions(){
+				actorManager.updateActorsAndCollision();
 			}
 
 			// Method to update various game state elements (e.g., score or health display)
@@ -232,16 +224,12 @@
 			}
 
 			private void initializeTimeline() {
+				gameLoopManager = new GameLoopManager(MILLISECOND_DELAY, this::updateScene);
+			}
 
-				if (timeline != null) {
-					timeline.stop(); // Stop the current timeline if it exists
-					timeline.getKeyFrames().clear(); // Clear any existing keyframes
-				}
+			private void initializeInputHandler(){
+				inputManager = new InputManager(user, this::togglePauseResume);
 
-                timeline.setCycleCount(Timeline.INDEFINITE);
-
-				KeyFrame gameLoop = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> updateScene());
-				timeline.getKeyFrames().add(gameLoop);
 			}
 
 			/**
@@ -283,7 +271,7 @@
 			 * Pause the game
 			 */
 			private void pauseGame() {
-				timeline.pause();
+				gameLoopManager.stop();
 				displayPauseMenu();
 			}
 
@@ -291,7 +279,7 @@
 			 * Restart the game from the beginning of the current level
 			 */
 			public void restartGame() {
-				timeline.stop(); // Stop the timeline
+				gameLoopManager.stop(); // Stop the timeline
 
 				// Reset game entities
 				resetGameEntities();
@@ -305,15 +293,15 @@
 
 				root.getChildren().remove(menuRoot);
 				root.getChildren().add(menuRoot);
-				levelView.removeGameOverImage();
-				levelView.removeWinImage();
 
 				// Reinitialize background and ensure it's in focus
 				backgroundRoot.getChildren().remove(background);
 				backgroundRoot.getChildren().add(0, background);
 
+				levelView.removeGameOverImage();
+
 				// Restart the timeline
-				timeline.playFromStart();
+				gameLoopManager.playFromBeginning();
 			}
 
 			private void resetGameEntities() {
@@ -332,6 +320,7 @@
 
 				// Reset other game state variables
 				currentNumberOfEnemies = 0;
+				canFire = true;
 			}
 
 			/**
@@ -339,7 +328,7 @@
 			 */
 			public void resumeGame() {
 
-				timeline.play();
+				gameLoopManager.start();
 				if (cachedPauseMenu != null) {
 					menuRoot.getChildren().remove(cachedPauseMenu);
 					cachedPauseMenu = null; // Optional: Prevent reusing a lingering reference
@@ -462,21 +451,16 @@
 			}
 
 			protected void winGame() {
-				timeline.stop();
+				gameLoopManager.stop();
 				levelView.showWinImage();
-
 				cleanup();
-
 				displayWinMenu();
 			}
 
 			protected void loseGame() {
-				timeline.stop();
+				gameLoopManager.stop();
 				levelView.showGameOverImage();
-
 				cleanup();
-
-
 				displayGameOverMenu();
 			}
 
@@ -528,5 +512,4 @@
 			public void setStage(Stage stage){
 				this.stage = stage;
 			}
-
 		}

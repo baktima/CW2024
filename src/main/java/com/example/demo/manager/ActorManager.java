@@ -8,26 +8,26 @@ import com.example.demo.display.MainMenu;
 import javafx.scene.Group;
 
 public class ActorManager {
-    private final List<ActiveActor> friendlyUnits;
-    private final List<ActiveActor> enemyUnits;
-    private final List<ActiveActor> userProjectiles;
-    private final List<ActiveActor> enemyProjectiles;
+    private final List<ActiveActor> friendlyUnits = new ArrayList<>();
+    private final List<ActiveActor> enemyUnits = new ArrayList<>();
+    private final List<ActiveActor> userProjectiles = new ArrayList<>();
+    private final List<ActiveActor> enemyProjectiles = new ArrayList<>();
     private final Group gamePlayRoot;
 
     public ActorManager(Group gamePlayRoot) {
-        this.friendlyUnits = new ArrayList<>();
-        this.enemyUnits =new ArrayList<>();
-        this.userProjectiles = new ArrayList<>();
-        this.enemyProjectiles = new ArrayList<>();
         this.gamePlayRoot = gamePlayRoot;
     }
 
+    public void updateActorsAndCollision(){
+        updateActors();
+        handleAllCollisions();
+        removeAllDestroyedActors();
+    }
+
     // Actor Updates
-    public void updateActors() {
-        friendlyUnits.forEach(ActiveActor::updateActor);
-        enemyUnits.forEach(ActiveActor::updateActor);
-        userProjectiles.forEach(ActiveActor::updateActor);
-        enemyProjectiles.forEach(ActiveActor::updateActor);
+    private void updateActors() {
+        Arrays.asList(friendlyUnits, enemyUnits, userProjectiles, enemyProjectiles)
+                .forEach(actors -> actors.forEach(ActiveActor::updateActor));
     }
 
     // Add Actors
@@ -39,7 +39,6 @@ public class ActorManager {
     public void addEnemyUnit(ActiveActor actor) {
         enemyUnits.add(actor);
         gamePlayRoot.getChildren().add(actor);
-
     }
 
     public void addUserProjectile(ActiveActor projectile) {
@@ -55,7 +54,7 @@ public class ActorManager {
     // Remove Destroyed Actors by making it as an array list and iterate one by one to the removed
     //destroyed
     //temporary making the user not destroyed so the restart works
-    public void removeAllDestroyedActors() {
+    private void removeAllDestroyedActors() {
         Arrays.asList(enemyUnits, userProjectiles, enemyProjectiles)
                 .forEach(this::removeDestroyedActors);
     }
@@ -70,7 +69,7 @@ public class ActorManager {
 
     // Handle Collisions
     //remove handle collision from levelParent to here
-    public void handleCollisions(List<ActiveActor> actors1, List<ActiveActor> actors2) {
+    private void handleCollisions(List<ActiveActor> actors1, List<ActiveActor> actors2) {
         for (ActiveActor actor1 : actors1) {
             for (ActiveActor actor2 : actors2) {
                 if (actor1.getBoundsInParent().intersects(actor2.getBoundsInParent())) {
@@ -97,23 +96,28 @@ public class ActorManager {
         return Math.abs(enemy.getTranslateX()) > MainMenu.getScreenWidth();
     }
 
-    public void handlePlaneCollisions() {
+    private void handlePlaneCollisions() {
         handleCollisions(friendlyUnits, enemyUnits);
     }
 
-    public void handleUserProjectileCollisions() {
+    private void handleUserProjectileCollisions() {
         handleCollisions(userProjectiles, enemyUnits);
     }
 
-    public void handleEnemyProjectileCollisions() {
+    private void handleEnemyProjectileCollisions() {
         handleCollisions(enemyProjectiles, friendlyUnits);
     }
 
-    public int getCurrentNumberOfEnemies(){
-        return enemyUnits.size();
+    private void handleAllCollisions(){
+        handlePlaneCollisions();
+        handleUserProjectileCollisions();
+        handleEnemyProjectileCollisions();
     }
 
     // Getters for Actor Lists
+    public int getCurrentNumberOfEnemies(){
+        return enemyUnits.size();
+    }
 
     public List<ActiveActor> getEnemyUnits() {
         return enemyUnits;

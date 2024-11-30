@@ -17,7 +17,6 @@ public class GameOverMenu extends ImageView {
     private static final int WIDTH = 600;
 
     public static Parent showGameOverMenu(LevelParent levelParent) throws IOException {
-        if (cachedGameOverMenu == null) {
             FXMLLoader loader = new FXMLLoader(GameOverMenu.class.getResource(FXML_PATH));
             cachedGameOverMenu = loader.load();
 
@@ -29,8 +28,7 @@ public class GameOverMenu extends ImageView {
             double centerY = (MainMenu.getScreenHeight() - cachedGameOverMenu.getLayoutBounds().getHeight()) / 4;
             cachedGameOverMenu.setLayoutX(centerX);
             cachedGameOverMenu.setLayoutY(centerY);
-        }
-        return cachedGameOverMenu;
+            return cachedGameOverMenu;
     }
 
     public GameOverMenu(double xPosition, double yPosition) {
