@@ -17,7 +17,7 @@ public class SoundEffects {
         gunShotClip.setVolume(volume);
     }
 
-    public void playSound() {
+    public void playGunShotSound() {
         gunShotClip.play();
     }
 }

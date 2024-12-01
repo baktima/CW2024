@@ -41,5 +41,6 @@
             <Font size="80.0" />
          </font>
       </Text>
+      <Text fx:id="sFX" fill="#e2e2e2" layoutX="1211.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SFX" visible="false" wrappingWidth="26.0" />
    </children>
 </AnchorPane>

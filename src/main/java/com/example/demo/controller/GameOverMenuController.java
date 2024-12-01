@@ -22,7 +22,6 @@ public class GameOverMenuController {
     @FXML
     private void exitButton() throws IOException {
 
-        //the cleanup is only semi
         levelParent.cleanup();
 
         Stage stage = levelParent.getStage();

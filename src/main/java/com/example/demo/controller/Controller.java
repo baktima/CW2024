@@ -33,7 +33,6 @@ public record Controller(Stage stage) implements LevelChangeListener {
 		Scene scene = myLevel.initializeScene();
 		stage.setScene(scene);
 		myLevel.startGame();
-
 	}
 
 	@Override
@@ -47,8 +46,4 @@ public record Controller(Stage stage) implements LevelChangeListener {
 			alert.show();
 		}
 	}
-
-	//getter and setter
-
-
 }

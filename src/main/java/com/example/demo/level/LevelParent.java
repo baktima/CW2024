@@ -3,7 +3,7 @@
 		import java.io.IOException;
 
 		import com.example.demo.display.GameOverMenu;
-		import com.example.demo.display.KillDisplay;
+		import com.example.demo.display.TextDisplay;
 		import com.example.demo.display.PauseMenu;
 		import com.example.demo.display.WinMenu;
 		import com.example.demo.level.levelView.LevelView;
@@ -31,14 +31,12 @@
 			private static final int RESET_HEALTH = 5;
 			private final double screenHeight;
 			private final double screenWidth;
-			private final double enemyMaximumYPosition;
 
 			private final Group root;
 			private final Group gamePlayRoot;
 			private final Group menuRoot;
 			private final Group backgroundRoot;
 
-			private final Timeline timeline;
 			private final UserPlane user;
 			private final Scene scene;
 			private final ImageView background;
@@ -53,11 +51,13 @@
 			//testing
 			private Stage stage;
 			private boolean canFire = true;
+			private boolean canClearBullets = true;
 			private final ActorManager actorManager;
-			private final KillDisplay killDisplay;
+			private final TextDisplay textDisplay;
 			private LevelChangeListener levelChangeListener;
 			private GameLoopManager gameLoopManager;
 			private InputManager inputManager;
+			private static final int SKILL_COOLDOWN = 10;
 
 			/**
 			 * changing the constructor since there's a lot of redundant use of this.
@@ -75,13 +75,10 @@
 				//initializing all the variables
 				root = 	new Group();
 				scene = new Scene(root, screenWidth, screenHeight);
-				timeline = new Timeline();
 				user = new UserPlane(playerInitialHealth);
 				background = new ImageView(new Image(getClass().getResource(backgroundImageName).toExternalForm()));
-				killDisplay = new KillDisplay();
+				textDisplay = new TextDisplay();
 
-
-				enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
 				levelView = instantiateLevelView();
 
 				//initializing class
@@ -91,15 +88,10 @@
 				gamePlayRoot = new Group();
 				menuRoot = new Group();
 				backgroundRoot = new Group();
-
-				//_____
 				actorManager = new ActorManager(gamePlayRoot);
-				//actorManager.updateActors();
-				//PauseMenuManager pauseMenuManager = new PauseMenuManager(gamePlayRoot, timeline, gamePlayRoot, background,this);
-				//-------
 
 				root.getChildren().addAll(backgroundRoot,gamePlayRoot, menuRoot);
-				killDisplay.addToRoot(root);
+				textDisplay.addToRoot(root);
 			}
 
 			//-----------------------------------------------------------------
@@ -126,9 +118,6 @@
 
 				// Clear gameplay-specific elements
 				gamePlayRoot.getChildren().clear();
-
-				// Clear background elements (only dynamically added ones)
-				//backgroundRoot.getChildren().removeIf(node -> node != background);
 
 				// Reset cached menus
 				cachedPauseMenu = null;
@@ -184,7 +173,7 @@
 
 			/**
 			 *@param levelName the name of the next level will be passed here
-			 * destroy the current level and change to the next level
+			 * clean all the objects of the current level and change to the next level
 			 *
 			 */
 
@@ -228,8 +217,7 @@
 			}
 
 			private void initializeInputHandler(){
-				inputManager = new InputManager(user, this::togglePauseResume);
-
+				inputManager = new InputManager(user, this::togglePauseResume, this::fireWithCooldown, this::clearBulletWithCooldown);
 			}
 
 			/**
@@ -250,10 +238,11 @@
 			 *
 			 * */
 			private void handleKeyPress(KeyCode kc) {
-				if (kc == KeyCode.UP) user.moveUp();
-				if (kc == KeyCode.DOWN) user.moveDown();
-				if (kc == KeyCode.SPACE) fireWithCooldown();
-				if (kc == KeyCode.ESCAPE) togglePauseResume();
+				inputManager.handleKeyPress(kc);
+			}
+
+			private void handleKeyRelease(KeyCode kc) {
+				inputManager.handleKeyRelease(kc);
 			}
 
 			//adding a stopping and resume method to stop the timeline
@@ -312,7 +301,7 @@
 
 				// Reset player position, health, and kill count
 				userReset();
-				killDisplay.reset();
+				textDisplay.reset();
 
 				//clear everything on the gamePlay plane and add the user
 				actorManager.getGamePlayRoot().getChildren().clear();
@@ -399,14 +388,6 @@
 
 			}
 
-			/**
-			 * @param kc where it will receive inputs
-			 */
-
-			private void handleKeyRelease(KeyCode kc) {
-				if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stop();
-			}
-
 			private void fireProjectile() {
 				ActiveActor projectile = user.fireProjectile();
 				actorManager.addUserProjectile(projectile);
@@ -423,6 +404,51 @@
 					cooldownTimer.setCycleCount(1);
 					cooldownTimer.play();
 				}
+			}
+
+			private void clearBulletWithCooldown() {
+				// Check if the skill is available
+				if (!canClearBullets) {
+					System.out.println("Skill is on cooldown!");
+					return; // Exit the method if the skill is on cooldown
+				}
+
+				// Trigger the skill
+				userSkillClearEnemyBullet();
+				canClearBullets = false; // Set the skill to unavailable
+				textDisplay.updateSkillTimer("Cooldown: " + SKILL_COOLDOWN + "s");
+
+				// Start the cooldown timer
+				Timeline cooldownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+					int currentCooldown = Integer.parseInt(textDisplay.getSkillTimerLabel().getText().replace("Cooldown: ", "").replace("s", ""));
+					currentCooldown--;
+					if (currentCooldown > 0) {
+						textDisplay.updateSkillTimer("Cooldown: " + currentCooldown + "s");
+					} else {
+						textDisplay.updateSkillTimer("Skill Ready");
+						canClearBullets = true; // Reset skill availability
+					}
+				}));
+				cooldownTimeline.setCycleCount(SKILL_COOLDOWN);
+				cooldownTimeline.play();
+			}
+
+			private void userSkillClearEnemyBullet() {
+				Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> {
+					// Remove all user projectiles from the gamePlayRoot individually
+					for (ActiveActor projectile : actorManager.getUserProjectiles()) {
+						actorManager.getGamePlayRoot().getChildren().remove(projectile);
+					}
+					actorManager.getUserProjectiles().clear(); // Clear the list after removing
+
+					// Remove all enemy projectiles from the gamePlayRoot individually
+					for (ActiveActor projectile : actorManager.getEnemyProjectiles()) {
+						actorManager.getGamePlayRoot().getChildren().remove(projectile);
+					}
+					actorManager.getEnemyProjectiles().clear(); // Clear the list after removing
+				}));
+				timeline.setCycleCount(1); // Execute once
+				timeline.play();
 			}
 
 			private void generateEnemyFire() {
@@ -446,7 +472,7 @@
 			private void updateKillCount() {
 				for (int i = 0; i < currentNumberOfEnemies - actorManager.getEnemyUnits().size(); i++) {
 					user.incrementKillCount();
-					killDisplay.increment();
+					textDisplay.increment();
 				}
 			}
 
@@ -494,7 +520,8 @@
 			}
 
 			protected double getEnemyMaximumYPosition() {
-				return enemyMaximumYPosition;
+				//EnemyMax Y position = screen_height - screen height adjustment
+				return screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
 			}
 
 			public double getScreenWidth() {

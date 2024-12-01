@@ -17,7 +17,6 @@ public class LevelMenuController {
     private void levelOne(){
         try {
             gameController.launchGame();
-            System.out.println("this is the LevelMenuController stage" + stage);
         } catch (Exception e) {
             e.printStackTrace();  // Handle or log exception as appropriate for your application
         }

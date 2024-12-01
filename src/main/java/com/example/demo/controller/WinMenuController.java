@@ -24,9 +24,7 @@ public class WinMenuController {
     @FXML
     private void exitButton() throws IOException {
 
-        //the cleanup is only semi
         levelParent.cleanup();
-
         Stage stage = levelParent.getStage();
         Controller controller = new Controller(stage);
         MainMenu.showMainMenu(stage, controller);

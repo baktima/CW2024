@@ -5,6 +5,7 @@ import com.example.demo.sound.SoundEffects;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.animation.FadeTransition;
 import javafx.util.Duration;
@@ -17,7 +18,9 @@ public class MainMenuController {
 	@FXML
 	private Slider soundEffect;
 	@FXML
-	ToolBar volumeSliders;
+	private ToolBar volumeSliders;
+	@FXML
+	private Text sFX;
 	private SoundEffects soundEffects;
 
 	/**
@@ -62,6 +65,7 @@ public class MainMenuController {
 		boolean currentlyVisible = volumeSliders.isVisible();
 		if (!currentlyVisible) {
 			volumeSliders.setVisible(true);
+			sFX.setVisible(true);
 			FadeTransition fadeIn = new FadeTransition(Duration.millis(300), volumeSliders);
 			fadeIn.setFromValue(0);
 			fadeIn.setToValue(1);
@@ -70,7 +74,11 @@ public class MainMenuController {
 			FadeTransition fadeOut = new FadeTransition(Duration.millis(300), volumeSliders);
 			fadeOut.setFromValue(1);
 			fadeOut.setToValue(0);
-			fadeOut.setOnFinished(e -> volumeSliders.setVisible(false));
+			fadeOut.setOnFinished(e ->
+			{
+				volumeSliders.setVisible(false);
+				sFX.setVisible(false);
+			});
 			fadeOut.play();
 		}
 	}

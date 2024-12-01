@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.controller.PauseMenuController">
    <children>
@@ -27,5 +28,6 @@
             <Slider fx:id="soundEffect" orientation="VERTICAL" value="50.0" />
          </items>
       </ToolBar>
+      <Text fx:id="sFX" fill="WHITE" layoutX="1221.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SFX" visible="false" wrappingWidth="26.0" />
    </children>
 </AnchorPane>

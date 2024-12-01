@@ -4,6 +4,7 @@ import com.example.demo.level.LevelParent;
 import com.example.demo.display.MainMenu;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.Slider;
@@ -18,7 +19,9 @@ public class PauseMenuController {
     @FXML
     private Slider soundEffect;
     @FXML
-    ToolBar volumeSliders;
+    private ToolBar volumeSliders;
+    @FXML
+    private Text sFX;
     private SoundEffects soundEffects;
 
     public void initialize(LevelParent levelParent) {
@@ -56,6 +59,7 @@ public class PauseMenuController {
         boolean currentlyVisible = volumeSliders.isVisible();
         if (!currentlyVisible) {
             volumeSliders.setVisible(true);
+            sFX.setVisible(true);
             FadeTransition fadeIn = new FadeTransition(Duration.millis(300), volumeSliders);
             fadeIn.setFromValue(0);
             fadeIn.setToValue(1);
@@ -64,7 +68,10 @@ public class PauseMenuController {
             FadeTransition fadeOut = new FadeTransition(Duration.millis(300), volumeSliders);
             fadeOut.setFromValue(1);
             fadeOut.setToValue(0);
-            fadeOut.setOnFinished(e -> volumeSliders.setVisible(false));
+            fadeOut.setOnFinished(e -> {
+                volumeSliders.setVisible(false);
+                sFX.setVisible(false);
+            });
             fadeOut.play();
         }
     }

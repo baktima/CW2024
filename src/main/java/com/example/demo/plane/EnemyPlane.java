@@ -23,14 +23,14 @@ public class EnemyPlane extends FighterPlane {
 	public void takeDamage() {
 		super.takeDamage();
 		SoundEffects soundEffects = new SoundEffects();
-		soundEffects.playSound();
+		soundEffects.playGunShotSound();
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
 		SoundEffects soundEffects = new SoundEffects();
-		soundEffects.playSound();
+		soundEffects.playGunShotSound();
 	}
 
 	//for the EnemySpecialPlane

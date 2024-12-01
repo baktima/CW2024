@@ -38,17 +38,21 @@ public class UserPlane extends FighterPlane {
 	}
 
     @Override
-    public double getHorizontalVelocity() {
-        return HORIZONTAL_VELOCITY;
-    }
-
-    @Override
 	public ActiveActor fireProjectile() {
-		SoundEffects soundEffects = new SoundEffects();
-		soundEffects.playSound();
+		userShootingSoundEffect();
 		return new UserProjectile(PROJECTILE_X_POSITION, getProjectileYPosition(PROJECTILE_Y_POSITION_OFFSET));
 	}
 
+	private void userShootingSoundEffect(){
+		SoundEffects soundEffects = new SoundEffects();
+		soundEffects.playGunShotSound();
+	}
+
+	public void incrementKillCount() {
+		numberOfKills++;
+	}
+
+	//movement
 	private boolean isMoving() {
 		return velocityMultiplier != 0;
 	}
@@ -65,6 +69,7 @@ public class UserPlane extends FighterPlane {
 		velocityMultiplier = 0;
 	}
 
+	//getter and setter
 	public int getNumberOfKills() {
 		return numberOfKills;
 	}
@@ -73,8 +78,8 @@ public class UserPlane extends FighterPlane {
 		this.numberOfKills = numberOfKills;
 	}
 
-	public void incrementKillCount() {
-		numberOfKills++;
+	@Override
+	public double getHorizontalVelocity() {
+		return HORIZONTAL_VELOCITY;
 	}
-
 }
