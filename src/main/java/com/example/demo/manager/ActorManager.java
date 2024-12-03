@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.demo.actor.ActiveActor;
-import com.example.demo.display.MainMenu;
+import com.example.demo.display.menu.MainMenu;
 import javafx.scene.Group;
 
 /**

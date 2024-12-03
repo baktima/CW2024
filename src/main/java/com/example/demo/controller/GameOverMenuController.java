@@ -1,34 +1,27 @@
 package com.example.demo.controller;
 
-import com.example.demo.display.MainMenu;
 import com.example.demo.level.LevelParent;
 import javafx.fxml.FXML;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class GameOverMenuController {
-    private LevelParent levelParent;
-
-    public void initialize(LevelParent levelParent) {
-        this.levelParent = levelParent;
-    }
-
+public class GameOverMenuController extends BaseGameEndMenuController {
+    /**
+     * Handles the "Restart" button click event.
+     * Restarts the current game level.
+     */
     @FXML
     private void restartButton() {
         levelParent.restartGame();
     }
 
+    /**
+     * Exit to main menu.
+     * @throws IOException Throws an error
+     */
     @FXML
     private void exitButton() throws IOException {
-
-        levelParent.cleanup();
-
-        Stage stage = levelParent.getStage();
-
-        //this will generate new controller
-        Controller controller = new Controller(stage);
-        MainMenu.showMainMenu(stage, controller);
+        exitToMainMenu();
     }
 
 }

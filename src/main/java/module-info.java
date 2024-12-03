@@ -28,4 +28,6 @@ module com.example.demo {
     opens com.example.demo.sound to javafx.fxml;
     exports com.example.demo.implementation;
     opens com.example.demo.implementation to javafx.fxml;
+    exports com.example.demo.display.menu;
+    opens com.example.demo.display.menu to javafx.fxml;
 }

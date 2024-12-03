@@ -1,18 +1,28 @@
 package com.example.demo.controller;
 
 import javafx.fxml.FXML;
-import javafx.stage.Stage;
 
+/**
+ * Controller class for managing the level selection menu.
+ * Provides functionality to launch and navigate between specific game levels.
+ */
 public class LevelMenuController {
 
-    private Stage stage;
     private Controller gameController;
 
-    public void initialize(Stage stage, Controller gameController) {
-        this.stage = stage;
+    /**
+     * Initializes the level menu controller with the main game controller.
+     *
+     * @param gameController The main game controller instance.
+     */
+    public void initialize(Controller gameController) {
         this.gameController = gameController;
     }
 
+    /**
+     * Handles the button click event to launch Level One.
+     * Starts the game from the first level.
+     */
     @FXML
     private void levelOne(){
         try {
@@ -22,6 +32,10 @@ public class LevelMenuController {
         }
     }
 
+    /**
+     * Handles the button click event to navigate to Level Two.
+     * Loads and transitions to the second level.
+     */
     @FXML
     private void levelTwo(){
         try {
@@ -32,6 +46,10 @@ public class LevelMenuController {
 
     }
 
+    /**
+     * Handles the button click event to navigate to Level Three.
+     * Loads and transitions to the third level.
+     */
     @FXML
     private void levelThree(){
         try {
@@ -41,6 +59,10 @@ public class LevelMenuController {
         }
     }
 
+    /**
+     * Handles the button click event to navigate to the Endless Level.
+     * Loads and transitions to the endless level mode.
+     */
     @FXML
     private void levelEndless(){
         try {

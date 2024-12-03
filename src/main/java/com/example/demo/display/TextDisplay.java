@@ -3,6 +3,11 @@ package com.example.demo.display;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 
+/**
+ * The {@code TextDisplay} class manages the on-screen text elements for the game,
+ * such as the kill counter, pause instructions, and skill timer.
+ * It provides methods to update and reset these elements dynamically during gameplay.
+ */
 public class TextDisplay {
     private int count;
 
@@ -19,6 +24,10 @@ public class TextDisplay {
     private static final int X_POSITION_SKILL_TIMER_LABEL = 400;
     private static final int Y_POSITION_SKILL_TIMER_LABEL = 50;
 
+    /**
+     * Constructs a {@code TextDisplay} instance and initializes the text elements
+     * with default values and positions.
+     */
     public TextDisplay() {
         count = 0;
         counterLabel = new Label("Kill" + ": " + count);
@@ -31,34 +40,58 @@ public class TextDisplay {
         pauseInstructionLabel.setLayoutX(X_POSITION_INSTRUCTION_LABEL);
         pauseInstructionLabel.setLayoutY(Y_POSITION_INSTRUCTION_LABEL);
 
-        skillTimerLabel = new Label("Skill Ready");
+        skillTimerLabel = new Label("Skill Ready Press S To Clear All Projectile");
         skillTimerLabel.setStyle("-fx-font-size: 20; -fx-fill: white;");
         skillTimerLabel.setLayoutX(X_POSITION_SKILL_TIMER_LABEL); // Position X (adjust as needed)
         skillTimerLabel.setLayoutY(Y_POSITION_SKILL_TIMER_LABEL); // Position Y (adjust as needed)
     }
 
+    /**
+     * Increments the kill counter by 1 and updates the kill counter label.
+     */
     public void increment() {
         count++;
         updateLabel();
     }
 
+    /**
+     * Resets the kill counter to 0 and updates the kill counter label.
+     */
     public void reset() {
         count = 0;
         updateLabel();
     }
 
+    /**
+     * Updates the kill counter label to reflect the current count.
+     */
     private void updateLabel() {
         counterLabel.setText("Kills: " + count);
     }
 
+    /**
+     * Updates the text of the skill timer label.
+     *
+     * @param text the new text for the skill timer
+     */
     public void updateSkillTimer(String text) {
         skillTimerLabel.setText(text);
     }
 
+    /**
+     * Returns the skill timer label.
+     *
+     * @return the {@link Label} representing the skill timer
+     */
     public Label getSkillTimerLabel(){
         return skillTimerLabel;
     }
 
+    /**
+     * Adds all text elements (kill counter, pause instructions, skill timer) to the given root.
+     *
+     * @param root the root {@link Group} to which the text elements will be added
+     */
     public void addToRoot(Group root) {
         root.getChildren().addAll(counterLabel, pauseInstructionLabel, skillTimerLabel);
     }

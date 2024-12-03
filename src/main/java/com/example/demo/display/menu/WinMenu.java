@@ -1,4 +1,4 @@
-package com.example.demo.display;
+package com.example.demo.display.menu;
 
 import com.example.demo.controller.WinMenuController;
 import com.example.demo.level.LevelParent;
@@ -9,6 +9,10 @@ import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 
+/**
+ * Class representing the Win Menu in the game.
+ * This class displays a win image and provides functionality to load and manage the Win Menu FXML.
+ */
 public class WinMenu extends ImageView {
 
     private static Parent cachedWinMenu = null;
@@ -17,6 +21,14 @@ public class WinMenu extends ImageView {
     private static final int HEIGHT = 500;
     private static final int WIDTH = 600;
 
+    /**
+     * Loads and displays the Win Menu FXML.
+     * If the menu is already cached, it reuses the cached instance.
+     *
+     * @param levelParent The current {@link LevelParent} instance to associate with the Win Menu.
+     * @return A {@link Parent} object representing the Win Menu.
+     * @throws IOException If there is an issue loading the FXML file.
+     */
     public static Parent showWinMenu(LevelParent levelParent) throws IOException {
         if (cachedWinMenu == null) {
             FXMLLoader loader = new FXMLLoader(WinMenu.class.getResource(FXML_PATH));
@@ -34,6 +46,12 @@ public class WinMenu extends ImageView {
         return cachedWinMenu;
     }
 
+    /**
+     * Constructs a WinMenu instance with the specified position and default dimensions.
+     *
+     * @param xPosition The x-coordinate of the Win Menu.
+     * @param yPosition The y-coordinate of the Win Menu.
+     */
     public WinMenu(double xPosition, double yPosition) {
 
         //display the image
@@ -45,10 +63,16 @@ public class WinMenu extends ImageView {
         this.setLayoutY(yPosition);
     }
 
+    /**
+     * Displays the win image.
+     */
     public void showWinImage() {
         this.setVisible(true);
     }
 
+    /**
+     * Hides the win image.
+     */
     public void hideWinImage(){
         this.setVisible(false);
     }

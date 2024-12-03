@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.level.LevelParent;
-import com.example.demo.display.MainMenu;
+import com.example.demo.display.menu.MainMenu;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
@@ -13,6 +13,11 @@ import com.example.demo.sound.SoundEffects;
 
 import java.io.IOException;
 
+/**
+ * Controller for the Pause Menu in the game.
+ * Manages functionality such as resuming the game, restarting, exiting to the main menu,
+ * and controlling volume sliders.
+ */
 public class PauseMenuController {
 
     private LevelParent levelParent;
@@ -22,38 +27,54 @@ public class PauseMenuController {
     private ToolBar volumeSliders;
     @FXML
     private Text sFX;
-    private SoundEffects soundEffects;
 
+    /**
+     * Initializes the Pause Menu with the current level instance.
+     *
+     * @param levelParent the current level instance.
+     */
     public void initialize(LevelParent levelParent) {
         this.levelParent = levelParent;
-
         initializingSoundEffect();
-
     }
 
+    /**
+     * Handles the "Resume" button action.
+     * Resumes the game from the paused state.
+     */
     @FXML
     private void resumeButton() {
         levelParent.resumeGame();
     }
 
-    //still kinda funky need to fix this instantly
+    /**
+     * Handles the "Restart" button action.
+     * Restarts the game from the beginning of the current level.
+     */
     @FXML
     private void restartButton() {
     	levelParent.restartGame();
     }
 
-    //it works now
+    /**
+     * Handles the "Exit" button action.
+     * Cleans up the current level and transitions back to the main menu.
+     *
+     * @throws IOException if there is an issue loading the main menu resources.
+     */
     @FXML
     private void exitButton() throws IOException {
 
-        //the cleanup is only semi
         levelParent.cleanup();
-
         Stage stage = levelParent.getStage();
         Controller controller = new Controller(stage);
         MainMenu.showMainMenu(stage, controller);
     }
 
+    /**
+     * Toggles the visibility of the volume sliders.
+     * Includes a fade-in and fade-out animation for smoother transitions.
+     */
     @FXML
     private void toggleVolumeSliders() {
         boolean currentlyVisible = volumeSliders.isVisible();
@@ -75,18 +96,19 @@ public class PauseMenuController {
             fadeOut.play();
         }
     }
-    private void initializingSoundEffect(){
-        soundEffects = new SoundEffects();
 
+    /**
+     * Initializes the sound effect slider and binds it to the global volume.
+     * The slider dynamically updates the global volume level as it is adjusted.
+     */
+    private void initializingSoundEffect(){
         // Set the slider value to the current global volume
-        soundEffect.setValue(SoundEffects.getGlobalVolume() * 100); // Convert 0-1 to 0-100
+        soundEffect.setValue(SoundEffects.getInitialSfxVolume() * 100); // Convert 0-1 to 0-100
 
         // Add a listener to update the global volume when the slider changes
         soundEffect.valueProperty().addListener((obs, oldVal, newVal) -> {
             double newVolume = newVal.doubleValue() / 100; // Convert 0-100 to 0-1 range
-            SoundEffects.setGlobalVolume(newVolume);
+            SoundEffects.setInitialSfxVolume(newVolume);
         });
-
-
     }
 }

@@ -1,4 +1,4 @@
-package com.example.demo.display;
+package com.example.demo.display.menu;
 
 import com.example.demo.controller.GameOverMenuController;
 import com.example.demo.level.LevelParent;
@@ -9,6 +9,11 @@ import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 
+/**
+ * Represents the Game Over menu in the game.
+ * The menu includes a background image and provides functionality for displaying
+ * an interactive menu using an FXML layout.
+ */
 public class GameOverMenu extends ImageView {
     private static Parent cachedGameOverMenu = null;
     private static final String IMAGE_NAME = "/com/example/demo/images/gameover.png";
@@ -16,6 +21,13 @@ public class GameOverMenu extends ImageView {
     private static final int HEIGHT = 500;
     private static final int WIDTH = 600;
 
+    /**
+     * Displays the Game Over menu.
+     *
+     * @param levelParent The current level parent to pass to the controller.
+     * @return A {@link Parent} object representing the Game Over menu layout.
+     * @throws IOException If there is an issue loading the FXML file.
+     */
     public static Parent showGameOverMenu(LevelParent levelParent) throws IOException {
             FXMLLoader loader = new FXMLLoader(GameOverMenu.class.getResource(FXML_PATH));
             cachedGameOverMenu = loader.load();
@@ -31,6 +43,12 @@ public class GameOverMenu extends ImageView {
             return cachedGameOverMenu;
     }
 
+    /**
+     * Constructs a {@code GameOverMenu} with the specified position and default image dimensions.
+     *
+     * @param xPosition The x-coordinate for the menu's position.
+     * @param yPosition The y-coordinate for the menu's position.
+     */
     public GameOverMenu(double xPosition, double yPosition) {
 
         //display the image
@@ -40,5 +58,4 @@ public class GameOverMenu extends ImageView {
         setFitHeight(HEIGHT);
         setFitWidth(WIDTH);
     }
-
 }

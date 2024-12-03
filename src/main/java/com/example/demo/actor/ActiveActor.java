@@ -5,7 +5,6 @@ import javafx.scene.image.*;
 
 import java.util.Objects;
 
-//this is the source where a lot of class extends from here for the player and the enemy projectile
 
 public abstract class ActiveActor extends ImageView implements Destructible {
 
@@ -52,5 +51,6 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 	public void updatePosition(){
 		moveHorizontally(getHorizontalVelocity());
 	}
+
 	public abstract double getHorizontalVelocity();
 }

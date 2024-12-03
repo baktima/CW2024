@@ -31,9 +31,10 @@
             <Image url="@../images/gear.png" />
          </image>
       </ImageView>
-      <ToolBar fx:id="volumeSliders" layoutX="1209.0" layoutY="445.0" prefHeight="172.0" prefWidth="26.0" visible="false">
+      <ToolBar fx:id="volumeSliders" layoutX="1201.0" layoutY="445.0" prefHeight="172.0" prefWidth="46.0">
          <items>
             <Slider fx:id="soundEffect" orientation="VERTICAL" value="50.0" />
+            <Slider fx:id="backgroundMusic" orientation="VERTICAL" />
          </items>
       </ToolBar>
       <Text layoutX="421.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SKY ATTACK">
@@ -41,6 +42,7 @@
             <Font size="80.0" />
          </font>
       </Text>
-      <Text fx:id="sFX" fill="#e2e2e2" layoutX="1211.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SFX" visible="false" wrappingWidth="26.0" />
+      <Text fx:id="sFX" fill="#e2e2e2" layoutX="1173.0" layoutY="536.0" rotate="-90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SFX" wrappingWidth="26.0" />
+      <Text fx:id="music" fill="#e2e2e2" layoutX="1239.0" layoutY="536.0" rotate="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Music" wrappingWidth="32.0" />
    </children>
 </AnchorPane>

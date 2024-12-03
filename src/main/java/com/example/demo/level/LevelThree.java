@@ -56,23 +56,9 @@ public class LevelThree extends LevelParent {
     protected void spawnEnemyUnits() {
         int currentNumberOfEnemies = getActorManager().getCurrentNumberOfEnemies();
         for (int i = 0; i < TOTAL_ENEMIES - currentNumberOfEnemies; i++) {
-            if (Math.random() < ENEMY_SPAWN_PROBABILITY) {
-                double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();
-                ActiveActor newEnemy = new EnemyPlane(getScreenWidth(), newEnemyInitialYPosition);
-                addEnemyUnit(newEnemy);
-            }
-
-            //limiting the spawn to upper half of the screen
-            if (Math.random() < SPECIAL_ENEMY_SPAWN_PROBABILITY) {
-                double newEnemySpecialInitialYPosition = Math.random() * getEnemyMaximumYPosition()/4;
-                ActiveActor newEnemy = new EnemyPlaneSpecial(getScreenWidth(), newEnemySpecialInitialYPosition);
-                addEnemyUnit(newEnemy);
-            }
-            if (Math.random() < SPECIAL_SPECIAL_ENEMY_SPAWN_PROBABILITY) {
-                double newEnemySpecialInitialYPosition = Math.random() * getEnemyMaximumYPosition();
-                ActiveActor newEnemy = new TankerPlane(getScreenWidth(), newEnemySpecialInitialYPosition);
-                addEnemyUnit(newEnemy);
-            }
+            spawnRegularEnemies(ENEMY_SPAWN_PROBABILITY);
+            spawnSpecialEnemies(SPECIAL_ENEMY_SPAWN_PROBABILITY, 0.25); // Upper quarter
+            spawnSpecialSpecialEnemies(SPECIAL_SPECIAL_ENEMY_SPAWN_PROBABILITY);
         }
     }
 

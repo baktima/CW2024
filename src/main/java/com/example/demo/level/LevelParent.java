@@ -2,10 +2,10 @@
 
 		import java.io.IOException;
 
-		import com.example.demo.display.GameOverMenu;
+		import com.example.demo.display.menu.GameOverMenu;
 		import com.example.demo.display.TextDisplay;
-		import com.example.demo.display.PauseMenu;
-		import com.example.demo.display.WinMenu;
+		import com.example.demo.display.menu.PauseMenu;
+		import com.example.demo.display.menu.WinMenu;
 		import com.example.demo.level.levelView.LevelView;
 		import com.example.demo.actor.ActiveActor;
 		import com.example.demo.manager.ActorManager;
@@ -13,8 +13,7 @@
 
 		import com.example.demo.manager.GameLoopManager;
 		import com.example.demo.manager.InputManager;
-		import com.example.demo.plane.FighterPlane;
-		import com.example.demo.plane.UserPlane;
+		import com.example.demo.plane.*;
 		import javafx.animation.*;
 		import javafx.scene.Group;
 		import javafx.scene.Scene;
@@ -58,6 +57,7 @@
 			private GameLoopManager gameLoopManager;
 			private InputManager inputManager;
 			private static final int SKILL_COOLDOWN = 10;
+			private Timeline cooldownTimeline;
 
 			/**
 			 * changing the constructor since there's a lot of redundant use of this.
@@ -83,6 +83,7 @@
 
 				//initializing class
 				initializeTimeline();
+				initializeCooldownTimeline();
 				initializeInputHandler();
 
 				gamePlayRoot = new Group();
@@ -142,28 +143,63 @@
 				user.setNumberOfKills(0);
 			}
 
-
-		/**
-		 * most of these function will be used by the inherited levels
-		 */
-		protected void initializeFriendlyUnits() {
-			actorManager.addFriendlyUnit(user);
-		}
-
 			protected abstract void checkIfGameOver();
 
+		//-----------------------------------------------------------------------
+			//handle the spawning enemy
 			protected abstract void spawnEnemyUnits();
 
+			/**
+			 * Spawns regular enemies based on a given probability.
+			 *
+			 * @param spawnProbability The probability of spawning each enemy.
+			 */
+			protected void spawnRegularEnemies(double spawnProbability) {
+				if (Math.random() < spawnProbability) {
+					double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();
+					ActiveActor newEnemy = new EnemyPlane(getScreenWidth(), newEnemyInitialYPosition);
+					addEnemyUnit(newEnemy);
+				}
+			}
+
+			/**
+			 * Spawns special enemies within a certain vertical range based on a given probability.
+			 *
+			 * @param spawnProbability The probability of spawning each special enemy.
+			 * @param positionMultiplier The fraction of the screen height to limit spawning.
+			 */
+			protected void spawnSpecialEnemies(double spawnProbability, double positionMultiplier) {
+				if (Math.random() < spawnProbability) {
+					double newEnemySpecialInitialYPosition = Math.random() * getEnemyMaximumYPosition() * positionMultiplier;
+					ActiveActor newEnemy = new EnemyPlaneSpecial(getScreenWidth(), newEnemySpecialInitialYPosition);
+					addEnemyUnit(newEnemy);
+				}
+			}
+
+			/**
+			 * Spawns special-special enemies based on a given probability.
+			 *
+			 * @param spawnProbability The probability of spawning each special-special enemy.
+			 */
+			protected void spawnSpecialSpecialEnemies(double spawnProbability) {
+				if (Math.random() < spawnProbability) {
+					double newEnemySpecialInitialYPosition = Math.random() * getEnemyMaximumYPosition();
+					ActiveActor newEnemy = new TankerPlane(getScreenWidth(), newEnemySpecialInitialYPosition);
+					addEnemyUnit(newEnemy);
+				}
+			}
+			//-----------------------------------------------------------------------------------------
 			protected abstract LevelView instantiateLevelView();
 
 			public Scene initializeScene() {
 				initializeBackground();
 				initializeFriendlyUnits();
 				levelView.showHeartDisplay();
-
 				scene.setUserData(this);
-
 				return scene;
+			}
+			protected void initializeFriendlyUnits() {
+				actorManager.addFriendlyUnit(user);
 			}
 
 			public void startGame() {
@@ -251,7 +287,6 @@
 					resumeGame();
 				} else {
 					pauseGame();
-
 				}
 				paused = !paused;
 			}
@@ -261,6 +296,7 @@
 			 */
 			private void pauseGame() {
 				gameLoopManager.stop();
+				cooldownTimeline.stop();
 				displayPauseMenu();
 			}
 
@@ -268,10 +304,17 @@
 			 * Restart the game from the beginning of the current level
 			 */
 			public void restartGame() {
-				gameLoopManager.stop(); // Stop the timeline
+				gameLoopManager.stop();
+				cooldownTimeline.stop();// Stop the timeline
 
 				// Reset game entities
 				resetGameEntities();
+
+				initializeCooldownTimeline();
+
+				// Reset cooldown text display
+				textDisplay.updateSkillTimer("Cooldown: " + SKILL_COOLDOWN + "s");
+				canClearBullets = false;
 
 				user.setDestroyed(false);
 
@@ -280,17 +323,19 @@
 				menuRoot.setVisible(false);
 				paused = false;
 
-				root.getChildren().remove(menuRoot);
-				root.getChildren().add(menuRoot);
+//				//remove the menuRoot and add it back (I don't think you actually need this part)
+//				root.getChildren().remove(menuRoot);
+//				root.getChildren().add(menuRoot);
 
-				// Reinitialize background and ensure it's in focus
-				backgroundRoot.getChildren().remove(background);
-				backgroundRoot.getChildren().add(0, background);
+//				// Reinitialize background and ensure it's in focus (trying this and I think you don't need this part to)
+//				backgroundRoot.getChildren().remove(background);
+//				backgroundRoot.getChildren().add(0, background);
 
 				levelView.removeGameOverImage();
 
 				// Restart the timeline
 				gameLoopManager.playFromBeginning();
+				cooldownTimeline.playFromStart();
 			}
 
 			private void resetGameEntities() {
@@ -317,11 +362,12 @@
 			 */
 			public void resumeGame() {
 
+				cooldownTimeline.play();
 				gameLoopManager.start();
+
 				if (cachedPauseMenu != null) {
 					menuRoot.getChildren().remove(cachedPauseMenu);
 					cachedPauseMenu = null; // Optional: Prevent reusing a lingering reference
-
 				}
 
 				menuRoot.getChildren().clear();
@@ -337,56 +383,95 @@
 			}
 
 			private void displayPauseMenu() {
-				try {
-					cachedPauseMenu = PauseMenu.showPauseMenu(this);
-					menuRoot.getChildren().clear();
-					menuRoot.getChildren().add(cachedPauseMenu);
-					cachedPauseMenu.setVisible(true);
-					menuRoot.setVisible(true);
-					cachedPauseMenu.requestFocus();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					cachedPauseMenu = PauseMenu.showPauseMenu(this);
+//					menuRoot.getChildren().clear();
+//					menuRoot.getChildren().add(cachedPauseMenu);
+//					cachedPauseMenu.setVisible(true);
+//					menuRoot.setVisible(true);
+//					cachedPauseMenu.requestFocus();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+				displayMenu("pause");
 			}
 
 			private void displayGameOverMenu(){
-				try {
-					if (cachedGameOverMenu == null) {
-						cachedGameOverMenu = GameOverMenu.showGameOverMenu(this);
-					}
-
-					// Ensure the pause menu is added to the root and visible
-					menuRoot.getChildren().clear();
-					menuRoot.getChildren().add(cachedGameOverMenu);
-					cachedGameOverMenu.setVisible(true);
-					menuRoot.setVisible(true);
-
-					// Focus the pause menu
-					cachedGameOverMenu.requestFocus();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					if (cachedGameOverMenu == null) {
+//						cachedGameOverMenu = GameOverMenu.showGameOverMenu(this);
+//					}
+//
+//					// Ensure the pause menu is added to the root and visible
+//					menuRoot.getChildren().clear();
+//					menuRoot.getChildren().add(cachedGameOverMenu);
+//					cachedGameOverMenu.setVisible(true);
+//					menuRoot.setVisible(true);
+//
+//					// Focus the pause menu
+//					cachedGameOverMenu.requestFocus();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+				displayMenu("gameOver");
 			}
 
 			private void displayWinMenu(){
+//				try {
+//					if (cachedWinMenu == null) {
+//						cachedWinMenu = WinMenu.showWinMenu(this);
+//					}
+//
+//					// Ensure the pause menu is added to the root and visible
+//					menuRoot.getChildren().clear();
+//					menuRoot.getChildren().add(cachedWinMenu);
+//					cachedWinMenu.setVisible(true);
+//					menuRoot.setVisible(true);
+//
+//					// Focus the pause menu
+//					cachedWinMenu.requestFocus();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+				displayMenu("win");
+			}
+
+			private void displayMenu(String menuType) {
 				try {
-					if (cachedWinMenu == null) {
-						cachedWinMenu = WinMenu.showWinMenu(this);
+					Parent menu = null;
+					switch (menuType) {
+						case "pause":
+							if (cachedPauseMenu == null) {
+								cachedPauseMenu = PauseMenu.showPauseMenu(this);
+							}
+							menu = cachedPauseMenu;
+							break;
+						case "gameOver":
+							if (cachedGameOverMenu == null) {
+								cachedGameOverMenu = GameOverMenu.showGameOverMenu(this);
+							}
+							menu = cachedGameOverMenu;
+							break;
+						case "win":
+							if (cachedWinMenu == null) {
+								cachedWinMenu = WinMenu.showWinMenu(this);
+							}
+							menu = cachedWinMenu;
+							break;
+						default:
+							throw new IllegalArgumentException("Invalid menu type: " + menuType);
 					}
 
-					// Ensure the pause menu is added to the root and visible
 					menuRoot.getChildren().clear();
-					menuRoot.getChildren().add(cachedWinMenu);
-					cachedWinMenu.setVisible(true);
+					menuRoot.getChildren().add(menu);
+					menu.setVisible(true);
 					menuRoot.setVisible(true);
-
-					// Focus the pause menu
-					cachedWinMenu.requestFocus();
+					menu.requestFocus();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 			}
+
 
 			private void fireProjectile() {
 				ActiveActor projectile = user.fireProjectile();
@@ -419,13 +504,13 @@
 				textDisplay.updateSkillTimer("Cooldown: " + SKILL_COOLDOWN + "s");
 
 				// Start the cooldown timer
-				Timeline cooldownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+				cooldownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
 					int currentCooldown = Integer.parseInt(textDisplay.getSkillTimerLabel().getText().replace("Cooldown: ", "").replace("s", ""));
 					currentCooldown--;
 					if (currentCooldown > 0) {
 						textDisplay.updateSkillTimer("Cooldown: " + currentCooldown + "s");
 					} else {
-						textDisplay.updateSkillTimer("Skill Ready");
+						textDisplay.updateSkillTimer("Skill Ready press S to clear all projectile");
 						canClearBullets = true; // Reset skill availability
 					}
 				}));
@@ -434,7 +519,7 @@
 			}
 
 			private void userSkillClearEnemyBullet() {
-				Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> {
+				Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
 					// Remove all user projectiles from the gamePlayRoot individually
 					for (ActiveActor projectile : actorManager.getUserProjectiles()) {
 						actorManager.getGamePlayRoot().getChildren().remove(projectile);
@@ -449,6 +534,22 @@
 				}));
 				timeline.setCycleCount(1); // Execute once
 				timeline.play();
+			}
+
+			private void initializeCooldownTimeline() {
+				cooldownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+					int currentCooldown = Integer.parseInt(textDisplay.getSkillTimerLabel().getText()
+							.replace("Cooldown: ", "").replace("s", ""));
+					currentCooldown--;
+					if (currentCooldown > 0) {
+						textDisplay.updateSkillTimer("Cooldown: " + currentCooldown + "s");
+					} else {
+						textDisplay.updateSkillTimer("Skill Ready press S to clear all projectile");
+						canClearBullets = true; // Reset skill availability
+						cooldownTimeline.stop(); // Stop the timeline once the cooldown is over
+					}
+				}));
+				cooldownTimeline.setCycleCount(SKILL_COOLDOWN); // Set the number of cycles
 			}
 
 			private void generateEnemyFire() {
@@ -478,6 +579,7 @@
 
 			protected void winGame() {
 				gameLoopManager.stop();
+				cooldownTimeline.stop();
 				levelView.showWinImage();
 				cleanup();
 				displayWinMenu();
@@ -485,6 +587,7 @@
 
 			protected void loseGame() {
 				gameLoopManager.stop();
+				cooldownTimeline.stop();
 				levelView.showGameOverImage();
 				cleanup();
 				displayGameOverMenu();

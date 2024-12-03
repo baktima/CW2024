@@ -1,33 +1,29 @@
 package com.example.demo.controller;
 
-import com.example.demo.display.MainMenu;
 import com.example.demo.level.LevelParent;
 import javafx.fxml.FXML;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class WinMenuController {
-    private LevelParent levelParent;
+public class WinMenuController extends BaseGameEndMenuController {
     private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.level.LevelOne";
 
-    public void initialize(LevelParent levelParent) {
-        this.levelParent = levelParent;
-    }
-
+    /**
+     * Handles the "Restart from Beginning" button click event.
+     * Restarts the game from the first level.
+     */
     @FXML
     private void restartBeginningButton() {
         levelParent.goToNextLevel(LEVEL_ONE_CLASS_NAME);
     }
 
-    //it works now
+    /**
+     * Exit to the main menu.
+     * @throws IOException Throws an error
+     */
     @FXML
     private void exitButton() throws IOException {
-
-        levelParent.cleanup();
-        Stage stage = levelParent.getStage();
-        Controller controller = new Controller(stage);
-        MainMenu.showMainMenu(stage, controller);
+        exitToMainMenu();
     }
 
 }
