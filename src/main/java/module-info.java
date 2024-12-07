@@ -22,8 +22,8 @@ module com.example.demo {
     opens com.example.demo.level to javafx.fxml;
     exports com.example.demo.display;
     opens com.example.demo.display to javafx.fxml;
-    exports com.example.demo.level.levelView;
-    opens com.example.demo.level.levelView to javafx.fxml;
+    exports com.example.demo.level.levelViews;
+    opens com.example.demo.level.levelViews to javafx.fxml;
     exports com.example.demo.sound;
     opens com.example.demo.sound to javafx.fxml;
     exports com.example.demo.implementation;

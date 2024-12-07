@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.level.LevelParent;
 import javafx.fxml.FXML;
 
 import java.io.IOException;

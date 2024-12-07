@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.level.LevelParent;
 import com.example.demo.display.menu.MainMenu;
+import com.example.demo.sound.GameMusic;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
@@ -21,12 +22,18 @@ import java.io.IOException;
 public class PauseMenuController {
 
     private LevelParent levelParent;
+    private static final int DURATION = 300;
+    private final GameMusic gameMusic = GameMusic.getInstance();
     @FXML
     private Slider soundEffect;
     @FXML
     private ToolBar volumeSliders;
     @FXML
+    private Slider backgroundMusic;
+    @FXML
     private Text sFX;
+    @FXML
+    private Text music;
 
     /**
      * Initializes the Pause Menu with the current level instance.
@@ -36,6 +43,9 @@ public class PauseMenuController {
     public void initialize(LevelParent levelParent) {
         this.levelParent = levelParent;
         initializingSoundEffect();
+        initializeBackgroundMusic();
+
+        gameMusic.playBackgroundMusic();
     }
 
     /**
@@ -81,17 +91,19 @@ public class PauseMenuController {
         if (!currentlyVisible) {
             volumeSliders.setVisible(true);
             sFX.setVisible(true);
-            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), volumeSliders);
+            music.setVisible(true);
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(DURATION), volumeSliders);
             fadeIn.setFromValue(0);
             fadeIn.setToValue(1);
             fadeIn.play();
         } else {
-            FadeTransition fadeOut = new FadeTransition(Duration.millis(300), volumeSliders);
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(DURATION), volumeSliders);
             fadeOut.setFromValue(1);
             fadeOut.setToValue(0);
             fadeOut.setOnFinished(e -> {
                 volumeSliders.setVisible(false);
                 sFX.setVisible(false);
+                music.setVisible(false);
             });
             fadeOut.play();
         }
@@ -109,6 +121,19 @@ public class PauseMenuController {
         soundEffect.valueProperty().addListener((obs, oldVal, newVal) -> {
             double newVolume = newVal.doubleValue() / 100; // Convert 0-100 to 0-1 range
             SoundEffects.setInitialSfxVolume(newVolume);
+        });
+    }
+
+    /**
+     * Initializes the sound effect slider and binds it to the global volume.
+     * The slider dynamically updates the global volume level as it is adjusted.
+     */
+    private void initializeBackgroundMusic() {
+        backgroundMusic.setValue(gameMusic.getVolume() * 100); // Convert 0-1 to 0-100
+
+        backgroundMusic.valueProperty().addListener((obs, oldVal, newVal) -> {
+            double newVolume = newVal.doubleValue() / 100; // Convert 0-100 to 0-1 range
+            gameMusic.setVolume(newVolume);
         });
     }
 }

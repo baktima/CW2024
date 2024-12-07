@@ -1,20 +1,24 @@
 package com.example.demo.level;
 
-import com.example.demo.actor.ActiveActor;
-import com.example.demo.level.levelView.LevelView;
-import com.example.demo.plane.EnemyPlane;
-import com.example.demo.plane.EnemyPlaneSpecial;
-import com.example.demo.plane.TankerPlane;
+import com.example.demo.level.levelViews.LevelView;
 
+/**
+ * Represents the third level of the game. This level features increased difficulty
+ * with multiple types of enemies, including regular, special, and tanker planes.
+ * The player must reach a specified number of kills to win the level.
+ * This class extends {@link LevelParent} and provides specific implementations
+ * for Level Three's behavior, including enemy spawning, game-over logic,
+ * and level-specific views.
+ */
 public class LevelThree extends LevelParent {
 
     private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/BackGroundLevel3.png";
     private static final int TOTAL_ENEMIES = 5;
-    private static final int KILLS_TO_ADVANCE = 1;
+    private static final int KILLS_TO_ADVANCE = 20;
     private static final double ENEMY_SPAWN_PROBABILITY = .05;
-    private static final int PLAYER_INITIAL_HEALTH = 5;
+    private static final int PLAYER_INITIAL_HEALTH = 6;
     private static final double SPECIAL_ENEMY_SPAWN_PROBABILITY = 0.0125;
-    private static final double SPECIAL_SPECIAL_ENEMY_SPAWN_PROBABILITY = 0.0125;
+    private static final double TANKER_SPAWN_PROBABILITY = 0.0125;
 
 
     /**
@@ -25,6 +29,7 @@ public class LevelThree extends LevelParent {
      */
     public LevelThree(double screenHeight, double screenWidth) {
         super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, PLAYER_INITIAL_HEALTH);
+        getTextDisplay().setBossHealthVisible(false);
     }
 
     /**
@@ -57,8 +62,8 @@ public class LevelThree extends LevelParent {
         int currentNumberOfEnemies = getActorManager().getCurrentNumberOfEnemies();
         for (int i = 0; i < TOTAL_ENEMIES - currentNumberOfEnemies; i++) {
             spawnRegularEnemies(ENEMY_SPAWN_PROBABILITY);
-            spawnSpecialEnemies(SPECIAL_ENEMY_SPAWN_PROBABILITY, 0.25); // Upper quarter
-            spawnSpecialSpecialEnemies(SPECIAL_SPECIAL_ENEMY_SPAWN_PROBABILITY);
+            spawnSpecialEnemies(SPECIAL_ENEMY_SPAWN_PROBABILITY); // Upper quarter
+            spawnTankerEnemies(TANKER_SPAWN_PROBABILITY);
         }
     }
 

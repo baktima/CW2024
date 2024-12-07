@@ -1,5 +1,6 @@
 package com.example.demo.plane;
 
+import com.example.demo.display.TextDisplay;
 import com.example.demo.display.menu.MainMenu;
 import com.example.demo.projectile.BossProjectile;
 import com.example.demo.display.ShieldImage;
@@ -7,45 +8,91 @@ import com.example.demo.actor.ActiveActor;
 
 import java.util.*;
 
+/**
+ * Represents the Boss character in the game.
+ * <p>
+ * The Boss class extends {@link FighterPlane} and introduces unique behaviors such as
+ * shield activation, projectile firing, and vertical zig-zag movement patterns.
+ * </p>
+ */
 public class Boss extends FighterPlane {
-
+	// Constants related to Boss appearance and initial position
 	private static final String IMAGE_NAME = "BossPlaneSlug.png";
 	private static final double INITIAL_X_POSITION = 1000.0;
 	private static final double INITIAL_Y_POSITION = 400;
-	private static final double PROJECTILE_Y_POSITION_OFFSET = 75.0;
-	private static final int SHIELD_X_POSITION_OFFSET = 30;
-	private static final int SHIELD_Y_POSITION_OFFSET = 50;
-	private static final double BOSS_FIRE_RATE = .04;
-	private static final double BOSS_SHIELD_PROBABILITY = 1;
 	private static final int IMAGE_HEIGHT = 200;
-	private static final int VERTICAL_VELOCITY = 8;
+
+	// Constants related to movement and position constraints
 	private static final double HORIZONTAL_VELOCITY = 0;
+	private static final int VERTICAL_VELOCITY = 8;
 	private static final int MOVE_FREQUENCY_PER_CYCLE = 5;
 	private static final int ZERO = 0;
 	private static final int MAX_FRAMES_WITH_SAME_MOVE = 10;
 	private static final int Y_POSITION_LOWER_BOUND = 475;
-	private static final int MAX_FRAMES_WITH_SHIELD = 100;
-	private static final int INITIAL_HEALTH = 3; // Instance variable for health
+
+	// Constants related to projectiles
+	private static final double PROJECTILE_Y_POSITION_OFFSET = 75.0;
+	private static final double BOSS_FIRE_RATE = .04;
+
+	// Constants related to shields
+	private static final int SHIELD_X_POSITION_OFFSET = 30;
+	private static final int SHIELD_Y_POSITION_OFFSET = 50;
+	private static final int SHIELD_ON_DURATION = 100; // Frames for shield ON
+	private static final int SHIELD_OFF_DURATION = 100; // Frames for shield OFF
+
+	// Constants related to health
+	private static final int INITIAL_HEALTH = 50;
+	private static int health = 50; // Static health for Boss
+
+	// Instance variables related to movement
 	private final List<Integer> movePattern;
-	private boolean isShielded;
 	private int consecutiveMovesInSameDirection;
 	private int indexOfCurrentMove;
-	private int framesWithShieldActivated;
-	private static int health = 3;
-	private ShieldImage shieldImage;
 
-	public Boss() {
+	// Instance variables related to shield
+	private boolean isShielded;
+	private int shieldStateFrames;
+	private final ShieldImage shieldImage;
+
+	//textDisplay
+	private final TextDisplay textDisplay;
+
+	/**
+	 * Constructs a new Boss instance with predefined initial positions, health, and behaviors.
+	 */
+	public Boss(TextDisplay textDisplay) {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, health);
+
+		this.textDisplay = textDisplay;
 		movePattern = new ArrayList<>();
 		consecutiveMovesInSameDirection = 0;
 		indexOfCurrentMove = 0;
-		framesWithShieldActivated = 0;
 		isShielded = false;
 		initializeMovePattern();
+
+		textDisplay.updateBossHealth(health);
 		
 		shieldImage = new ShieldImage(INITIAL_X_POSITION, INITIAL_Y_POSITION);
 	}
 
+	//initialize
+
+	/**
+	 * Initializes the movement pattern for the Boss, which consists of vertical zigzag moves.
+	 */
+	private void initializeMovePattern() {
+		for (int i = 0; i < MOVE_FREQUENCY_PER_CYCLE; i++) {
+			movePattern.add(VERTICAL_VELOCITY);
+			movePattern.add(-VERTICAL_VELOCITY);
+			movePattern.add(ZERO);
+		}
+		Collections.shuffle(movePattern);
+	}
+
+	//update method
+	/**
+	 * Updates the Boss's position based on its movement pattern and ensures it remains within screen bounds.
+	 */
 	@Override
 	public void updatePosition() {
 		moveVertically(getNextMove());
@@ -70,47 +117,65 @@ public class Boss extends FighterPlane {
 
 		updateShieldPosition();
 	}
+
+	/**
+	 * Updates the shield's position to match the Boss's current position.
+	 */
+	private void updateShieldPosition() {
+		if (shieldImage != null) {
+			shieldImage.setLayoutX(this.getLayoutX()-SHIELD_X_POSITION_OFFSET + this.getTranslateX());
+			shieldImage.setLayoutY(this.getLayoutY()-SHIELD_Y_POSITION_OFFSET + this.getTranslateY());
+		}
+	}
+
+	/**
+	 * Updates the shield's state (activates or deactivates based on timers).
+	 */
+	private void updateShield() {
+		shieldStateFrames++;
+		if (isShielded && shieldStateFrames >= SHIELD_ON_DURATION) {
+			deactivateShield(); // Turn off shield after ON duration
+		} else if (!isShielded && shieldStateFrames >= SHIELD_OFF_DURATION) {
+			activateShield(); // Turn on shield after OFF duration
+		}
+	}
+
+	/**
+	 * Updates the current boss instance including the shield.
+	 */
 	@Override
 	public void updateActor() {
 		super.updateActor();
 		updateShield();
 	}
 
-	@Override
-	public ActiveActor fireProjectile() {
-		return bossFiresInCurrentFrame() ? new BossProjectile(getProjectileInitialPosition()) : null;
+	//shield management
+	/**
+	 * Activates the Boss's shield and resets the shield state timer.
+	 */
+	private void activateShield() {
+		isShielded = true;
+		shieldStateFrames = 0;
+		shieldImage.showShield();
 	}
 
-	@Override
-	public void takeDamage() {
-		if (!isShielded) {
-			super.takeDamage();
-		}
+	/**
+	 * Deactivates the Boss's shield and resets the shield state timer.
+	 */
+	private void deactivateShield() {
+		isShielded = false;
+		shieldStateFrames = 0;
+
+		shieldImage.hideShield();
 	}
 
-	@Override
-	public double getHorizontalVelocity() {
-		return HORIZONTAL_VELOCITY;
-	}
+	//movement management
 
-	private void initializeMovePattern() {
-		for (int i = 0; i < MOVE_FREQUENCY_PER_CYCLE; i++) {
-			movePattern.add(VERTICAL_VELOCITY);
-			movePattern.add(-VERTICAL_VELOCITY);
-			movePattern.add(ZERO);
-		}
-		Collections.shuffle(movePattern);
-	}
-
-	private void updateShield() {
-		if (isShielded) {
-			framesWithShieldActivated++;
-			}
-		
-		else if (shieldShouldBeActivated()) activateShield();	
-		if (shieldExhausted()) deactivateShield();
-	}
-
+	/**
+	 * Retrieves the next movement in the Boss's movement pattern.
+	 *
+	 * @return The vertical velocity for the next frame.
+	 */
 	private int getNextMove() {
 		int currentMove = movePattern.get(indexOfCurrentMove);
 		consecutiveMovesInSameDirection++;
@@ -125,47 +190,56 @@ public class Boss extends FighterPlane {
 		return currentMove;
 	}
 
+	//projectile management
+
+	/**
+	 * Fires a projectile from the Boss, if firing conditions are met.
+	 *
+	 * @return A {@link BossProjectile} instance if fired, otherwise {@code null}.
+	 */
+	@Override
+	public ActiveActor fireProjectile() {
+		return bossFiresInCurrentFrame() ? new BossProjectile(getProjectileInitialPosition()) : null;
+	}
+
+	/**
+	 * Determines whether the Boss fires a projectile in the current frame.
+	 *
+	 * @return {@code true} if the Boss fires a projectile, otherwise {@code false}.
+	 */
 	private boolean bossFiresInCurrentFrame() {
 		return Math.random() < BOSS_FIRE_RATE;
 	}
 
+	/**
+	 * Calculates the initial Y position for a projectile fired by the Boss.
+	 *
+	 * @return The Y position for the projectile.
+	 */
 	private double getProjectileInitialPosition() {
 		return getLayoutY() + getTranslateY() + PROJECTILE_Y_POSITION_OFFSET;
 	}
 
-	private boolean shieldShouldBeActivated() {
-		return Math.random() < BOSS_SHIELD_PROBABILITY;
+	//damage
+	/**
+	 * Decreases the Boss's health when it takes damage, unless the shield is active.
+	 */
+	@Override
+	public void takeDamage() {
+		if (!isShielded) {
+			super.takeDamage();
+			//need to use getHealth() so it can update dynamically.
+			textDisplay.updateBossHealth(getHealth());
+
+
+		}
 	}
 
-	private boolean shieldExhausted() {
-		return framesWithShieldActivated == MAX_FRAMES_WITH_SHIELD;
-	}
+	//utility
 
-	private void activateShield() {
-		isShielded = true;
-		shieldImage.showShield();
-	}
-
-	private void deactivateShield() {
-		isShielded = false;
-		framesWithShieldActivated = 0;
-		
-		shieldImage.hideShield();
-	}
-	
-	//returning the shield image
-	public ShieldImage getShieldImage() {
-		return shieldImage;
-	}
-	
-	//this will make the shield move according to the boss
-	private void updateShieldPosition() {
-	    if (shieldImage != null) {
-	    	 shieldImage.setLayoutX(this.getLayoutX()-SHIELD_X_POSITION_OFFSET + this.getTranslateX());
-	         shieldImage.setLayoutY(this.getLayoutY()-SHIELD_Y_POSITION_OFFSET + this.getTranslateY());
-	    }
-	}
-
+	/**
+	 * Resets the Boss to its initial state, including health, position, shield, and movement pattern.
+	 */
 	public void reset() {
 		// Reset health
 		super.setHealth(INITIAL_HEALTH);
@@ -175,12 +249,32 @@ public class Boss extends FighterPlane {
 
 		// Reset shield status
 		isShielded = false;
-		framesWithShieldActivated = 0;
 		shieldImage.hideShield();
 
 		// Reset movement pattern
 		consecutiveMovesInSameDirection = 0;
 		indexOfCurrentMove = 0;
 		Collections.shuffle(movePattern);
+	}
+
+	//getter and setter
+
+	/**
+	 * Retrieves the shield image associated with the Boss.
+	 *
+	 * @return The {@link ShieldImage} of the Boss.
+	 */
+	public ShieldImage getShieldImage() {
+		return shieldImage;
+	}
+
+	/**
+	 * Retrieves the horizontal velocity of the Boss.
+	 *
+	 * @return The horizontal velocity.
+	 */
+	@Override
+	public double getHorizontalVelocity() {
+		return HORIZONTAL_VELOCITY;
 	}
 }

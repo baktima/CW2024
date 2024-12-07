@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Class representing the Win Menu in the game.
@@ -55,7 +56,7 @@ public class WinMenu extends ImageView {
     public WinMenu(double xPosition, double yPosition) {
 
         //display the image
-        this.setImage(new Image(getClass().getResource(IMAGE_NAME).toExternalForm()));
+        this.setImage(new Image(Objects.requireNonNull(getClass().getResource(IMAGE_NAME)).toExternalForm()));
         this.setVisible(false);
         this.setFitHeight(HEIGHT);
         this.setFitWidth(WIDTH);

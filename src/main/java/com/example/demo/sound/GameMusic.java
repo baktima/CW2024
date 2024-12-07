@@ -72,6 +72,9 @@ public class GameMusic {
         }
     }
 
+    /**
+     * Stop the backGround music from playing.
+     */
     public void stopMusic(){
         backgroundMusicPlayer.stop();
     }

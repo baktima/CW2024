@@ -3,6 +3,8 @@ package com.example.demo.display;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.Objects;
+
 /**
  * The {@code ShieldImage} class represents a visual shield icon in the game.
  * This class provides functionality to display or hide the shield and manages its visual properties, such as size, position, and opacity.
@@ -22,7 +24,7 @@ public class ShieldImage extends ImageView {
 	public ShieldImage(double xPosition, double yPosition) {
 		this.setLayoutX(xPosition);
 		this.setLayoutY(yPosition);
-		this.setImage(new Image(getClass().getResource(IMAGE_NAME).toExternalForm()));
+		this.setImage(new Image(Objects.requireNonNull(getClass().getResource(IMAGE_NAME)).toExternalForm()));
 		this.setVisible(false);
 		this.setFitHeight(SHIELD_SIZE);
 		this.setFitWidth(SHIELD_SIZE);

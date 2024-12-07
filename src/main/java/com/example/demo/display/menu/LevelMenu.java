@@ -16,6 +16,15 @@ import java.io.IOException;
 public class LevelMenu {
 
     /**
+     * Private constructor to prevent instantiation of the utility class.
+     *
+     * @throws IllegalStateException Always thrown to enforce utility class behavior.
+     */
+    private LevelMenu() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    /**
      * Loads and displays the Level Menu.
      * Sets up the associated {@link LevelMenuController} and initializes the game controller.
      *

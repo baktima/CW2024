@@ -1,7 +1,6 @@
 package com.example.demo.manager;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.example.demo.actor.ActiveActor;
 import com.example.demo.display.menu.MainMenu;
@@ -93,8 +92,6 @@ public class ActorManager {
      * Removes all destroyed actors from the game and the root scene graph.
      */
     // Remove Destroyed Actors by making it as an array list and iterate one by one to the removed
-    //destroyed
-    //temporary making the user not destroyed so the restart works
     private void removeAllDestroyedActors() {
         Arrays.asList(enemyUnits, userProjectiles, enemyProjectiles)
                 .forEach(this::removeDestroyedActors);
@@ -108,7 +105,7 @@ public class ActorManager {
     public void removeDestroyedActors(List<ActiveActor> actors) {
         List<ActiveActor> destroyedActors = actors.stream()
                 .filter(ActiveActor::getIsDestroyed)
-                .collect(Collectors.toList());
+                .toList();
         gamePlayRoot.getChildren().removeAll(destroyedActors);
         actors.removeAll(destroyedActors);
     }

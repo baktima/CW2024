@@ -4,6 +4,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+import java.util.Objects;
+
 /**
  * Class representing a display of hearts, used to visually indicate health or lives in the game.
  * The display consists of a horizontal box (HBox) containing heart icons.
@@ -13,10 +15,10 @@ public class HeartDisplay {
 	private static final String HEART_IMAGE_NAME = "/com/example/demo/images/heart.png";
 	private static final int HEART_HEIGHT = 50;
 	private static final int INDEX_OF_FIRST_ITEM = 0;
-	private HBox container;
 	private final double containerXPosition;
 	private final double containerYPosition;
 	private int numberOfHeartsToDisplay;
+	private HBox container;
 
 	/**
 	 * Constructs a HeartDisplay with a specified position and number of hearts to display.
@@ -49,7 +51,7 @@ public class HeartDisplay {
 	 */
 	public void initializeHearts() {
 		for (int i = 0; i < numberOfHeartsToDisplay; i++) {
-			ImageView heart = new ImageView(new Image(getClass().getResource(HEART_IMAGE_NAME).toExternalForm()));
+			ImageView heart = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(HEART_IMAGE_NAME)).toExternalForm()));
 
 			heart.setFitHeight(HEART_HEIGHT);
 			heart.setPreserveRatio(true);

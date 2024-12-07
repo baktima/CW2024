@@ -23,11 +23,13 @@
             <Image url="@../images/gear.png" />
          </image>
       </ImageView>
-      <ToolBar fx:id="volumeSliders" layoutX="1219.0" layoutY="455.0" prefHeight="172.0" prefWidth="26.0" visible="false">
+      <Text fx:id="sFX" fill="RED" layoutX="1177.0" layoutY="542.0" rotate="-90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SFX" visible="false" wrappingWidth="23.99998156229651" />
+      <ToolBar fx:id="volumeSliders" layoutX="1211.0" layoutY="455.0" prefHeight="172.0" prefWidth="46.0" visible="false">
          <items>
-            <Slider fx:id="soundEffect" orientation="VERTICAL" value="50.0" />
+            <Slider fx:id="soundEffect" orientation="VERTICAL" value="100.0" />
+            <Slider fx:id="backgroundMusic" orientation="VERTICAL" />
          </items>
       </ToolBar>
-      <Text fx:id="sFX" fill="WHITE" layoutX="1221.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SFX" visible="false" wrappingWidth="26.0" />
+      <Text fx:id="music" fill="#bc2727" layoutX="1249.0" layoutY="546.0" rotate="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Music" visible="false" wrappingWidth="32.0" />
    </children>
 </AnchorPane>

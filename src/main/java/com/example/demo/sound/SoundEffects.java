@@ -2,14 +2,16 @@ package com.example.demo.sound;
 
 import javafx.scene.media.AudioClip;
 
+import java.util.Objects;
+
 /**
  * The {@code SoundEffects} class manages the playback of sound effects in the game.
  * It includes support for global volume adjustment and specific sound effect playback.
  */
 public class SoundEffects {
-    private static double INITIAL_SFX_VOLUME = 0.3; // Default global volume
+    private static double INITIAL_SFX_VOLUME = 1.0; // Default global volume
     private static final String GUNSHOT_MP3 ="/com/example/demo/sounds/gun-shot.mp3";
-    private static final AudioClip GUN_SHOT_CLIP = new AudioClip(SoundEffects.class.getResource(GUNSHOT_MP3).toExternalForm());
+    private static final AudioClip GUN_SHOT_CLIP = new AudioClip(Objects.requireNonNull(SoundEffects.class.getResource(GUNSHOT_MP3)).toExternalForm());
 
     /**
      * Retrieves the current global volume level.

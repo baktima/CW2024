@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 public class TextDisplay {
     private int count;
 
+    private final Label bossHealthLabel;
     private final Label counterLabel;
     private final Label pauseInstructionLabel;
     private final Label skillTimerLabel;
@@ -23,6 +24,9 @@ public class TextDisplay {
 
     private static final int X_POSITION_SKILL_TIMER_LABEL = 400;
     private static final int Y_POSITION_SKILL_TIMER_LABEL = 50;
+
+    private static final int X_POSITION_BOSS_HIT_LABEL = 1050;
+    private static final int Y_POSITION_BOSS_HIT_LABEL = 30;
 
     /**
      * Constructs a {@code TextDisplay} instance and initializes the text elements
@@ -44,6 +48,11 @@ public class TextDisplay {
         skillTimerLabel.setStyle("-fx-font-size: 20; -fx-fill: white;");
         skillTimerLabel.setLayoutX(X_POSITION_SKILL_TIMER_LABEL); // Position X (adjust as needed)
         skillTimerLabel.setLayoutY(Y_POSITION_SKILL_TIMER_LABEL); // Position Y (adjust as needed)
+
+        bossHealthLabel = new Label("Boss Health: 0");
+        bossHealthLabel.setStyle("-fx-font-size: 30; -fx-text-fill: black;");
+        bossHealthLabel.setLayoutX(X_POSITION_BOSS_HIT_LABEL);
+        bossHealthLabel.setLayoutY(Y_POSITION_BOSS_HIT_LABEL);
     }
 
     /**
@@ -88,11 +97,36 @@ public class TextDisplay {
     }
 
     /**
+     * Updates the boss hit label to reflect the current hit count.
+     */
+    public void updateBossHealth(int health) {
+        bossHealthLabel.setText("Boss Health: " + health);
+    }
+
+    /**
      * Adds all text elements (kill counter, pause instructions, skill timer) to the given root.
      *
      * @param root the root {@link Group} to which the text elements will be added
      */
     public void addToRoot(Group root) {
-        root.getChildren().addAll(counterLabel, pauseInstructionLabel, skillTimerLabel);
+        root.getChildren().addAll(counterLabel, pauseInstructionLabel, skillTimerLabel, bossHealthLabel);
+    }
+
+    /**
+     * Setting the visibility of the boss hit text.
+     *
+     * @param visible true or false
+     */
+    public void setBossHealthVisible(boolean visible) {
+        bossHealthLabel.setVisible(visible);
+    }
+
+    /**
+     * Setting the visibility of the counter kill text.
+     *
+     * @param visible true or false
+     */
+    public void setCounterVisible(boolean visible){
+        counterLabel.setVisible(visible);
     }
 }
