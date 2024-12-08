@@ -13,6 +13,8 @@ import com.example.demo.level.LevelParent;
 /**
  * The main controller class for managing the game's levels and transitions.
  * This class is responsible for initializing and navigating between different game levels.
+ *
+ * @param stage The primary {@link Stage} object used for displaying game scenes.
  */
 public record Controller(Stage stage) implements LevelChangeListener {
 

@@ -8,14 +8,18 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * Utility class for managing the Main Menu of the game.
+ * Provides methods to display the Main Menu and retrieve screen properties.
+ */
 public class MainMenu {
     private static final int SCREEN_WIDTH = 1300;
     private static final int SCREEN_HEIGHT = 750;
     private static final String TITLE = "Sky Battle";
 
     /**
-     * Utility class for managing the Main Menu of the game.
-     * Provides methods to display the Main Menu and retrieve screen properties.
+     * Private constructor to prevent instantiation of this utility class.
+     * Throws an {@link IllegalStateException} if instantiation is attempted.
      */
     private MainMenu(){
         throw new IllegalStateException("Utility class");

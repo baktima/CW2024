@@ -730,6 +730,15 @@
 			//getter and setter
 
 			/**
+			 * Set the current stage value.
+			 *
+			 * @param stage the stage to set
+			 */
+			public void setStage(Stage stage){
+				this.stage = stage;
+			}
+
+			/**
 			 * Sets the level change listener.
 			 *
 			 * @param listener the listener to set.
@@ -821,12 +830,6 @@
 				return textDisplay;
 			}
 
-			/**
-			 * Set the current stage value.
-			 */
-			public void setStage(Stage stage){
-				this.stage = stage;
-			}
 
 
 		}

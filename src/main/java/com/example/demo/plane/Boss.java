@@ -58,8 +58,11 @@ public class Boss extends FighterPlane {
 	private final TextDisplay textDisplay;
 
 	/**
-	 * Constructs a new Boss instance with predefined initial positions, health, and behaviors.
+	 * Constructs a new {@code Boss} instance with predefined initial positions, health, and behaviors.
+	 *
+	 * @param textDisplay The {@link TextDisplay} instance used to update and display the boss's health and other text-related information.
 	 */
+
 	public Boss(TextDisplay textDisplay) {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, health);
 
@@ -71,7 +74,7 @@ public class Boss extends FighterPlane {
 		initializeMovePattern();
 
 		textDisplay.updateBossHealth(health);
-		
+
 		shieldImage = new ShieldImage(INITIAL_X_POSITION, INITIAL_Y_POSITION);
 	}
 
