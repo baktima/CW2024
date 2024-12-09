@@ -38,7 +38,7 @@ public class TankerPlane extends FighterPlane {
     /**
      * Toggles the vertical velocity between positive and negative to create a zigzag movement pattern.
      */
-    private void toggleVerticalVelocity() {
+    void toggleVerticalVelocity() {
         verticalVelocity *= -1;
     }
 
@@ -70,6 +70,8 @@ public class TankerPlane extends FighterPlane {
     public double getHorizontalVelocity() {
         return HORIZONTAL_VELOCITY;
     }
+
+    public int getVerticalVelocity(){return verticalVelocity;}
 
 
 }
