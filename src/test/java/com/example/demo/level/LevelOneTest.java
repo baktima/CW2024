@@ -1,124 +1,87 @@
-//package com.example.demo.level;
-//
-//import com.example.demo.level.levelViews.LevelView;
-//import com.example.demo.plane.UserPlane;
-//import com.example.demo.manager.ActorManager;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.Mockito.*;
-//
-////lots of the method were private or non-existence from internet.
-//class LevelOneTest {
-//
-//    private LevelOne levelOne;
-//    private UserPlane mockUserPlane;
-//    private ActorManager mockActorManager;
-//
-//    @BeforeEach
-//    void setUp() {
-//        // Create mock instances of required dependencies
-//        mockUserPlane = mock(UserPlane.class);
-//        mockActorManager = mock(ActorManager.class);
-//
-//        // Initialize LevelOne with mock dependencies
-//        levelOne = new LevelOne(800, 600);
-//        levelOne.setActorManager(mockActorManager);
-//        levelOne.setUser(mockUserPlane);
-//    }
-//
-//    @Test
-//    void testInitialSetup() {
-//        // Verify initial setup
-//        assertNotNull(levelOne, "LevelOne should be initialized properly.");
-//        assertFalse(levelOne.getTextDisplay().isBossHealthVisible(), "Boss health should not be visible in LevelOne.");
-//    }
-//
-//    @Test
-//    void testCheckIfGameOver_PlayerDestroyed() {
-//        // Simulate user destroyed
-//        when(mockUserPlane.getIsDestroyed()).thenReturn(true);
-//
-//        // Call method under test
-//        levelOne.checkIfGameOver();
-//
-//        // Verify that the game transitions to the game over state
-//        verify(mockActorManager).loseGame();
-//    }
-//
-//    @Test
-//    void testCheckIfGameOver_KillTargetReached() {
-//        // Simulate user reaching the kill target
-//        when(mockUserPlane.getNumberOfKills()).thenReturn(15);
-//
-//        // Call method under test
-//        levelOne.checkIfGameOver();
-//
-//        // Verify that the game transitions to the next level
-//        verify(mockActorManager).goToNextLevel("com.example.demo.level.LevelTwo");
-//    }
-//
-//    @Test
-//    void testCheckIfGameOver_NoConditionMet() {
-//        // Simulate user not being destroyed and not reaching kill target
-//        when(mockUserPlane.getIsDestroyed()).thenReturn(false);
-//        when(mockUserPlane.getNumberOfKills()).thenReturn(10);
-//
-//        // Call method under test
-//        levelOne.checkIfGameOver();
-//
-//        // Verify that no transitions occur
-//        verify(mockActorManager, never()).loseGame();
-//        verify(mockActorManager, never()).goToNextLevel(anyString());
-//    }
-//
-//    @Test
-//    void testSpawnEnemyUnits() {
-//        // Simulate fewer enemies than the total allowed
-//        when(mockActorManager.getCurrentNumberOfEnemies()).thenReturn(2);
-//
-//        // Call method under test
-//        levelOne.spawnEnemyUnits();
-//
-//        // Verify regular and special enemy spawning
-//        verify(mockActorManager, atLeast(1)).spawnRegularEnemies(anyDouble());
-//        verify(mockActorManager, atLeast(1)).spawnSpecialEnemies(anyDouble());
-//    }
-//
-//    @Test
-//    void testUserHasReachedKillTarget() {
-//        // Simulate user having enough kills to advance
-//        when(mockUserPlane.getNumberOfKills()).thenReturn(15);
-//
-//        // Call private method through reflection
-//        boolean result = levelOne.userHasReachedKillTarget();
-//
-//        // Verify result
-//        assertTrue(result, "User should reach kill target when they have the required kills.");
-//
-//        // Edge Case: Verify that kill target is not reached when kills are below the target
-//        when(mockUserPlane.getNumberOfKills()).thenReturn(14);
-//        result = levelOne.userHasReachedKillTarget();
-//        assertFalse(result, "User should not reach kill target when kills are below the required number.");
-//    }
-//
-//    @Test
-//    void testRestartGame() {
-//        // Simulate restarting the game
-//        levelOne.restartGame();
-//
-//        // Verify that the user's kills are reset
-//        verify(mockUserPlane).setNumberOfKills(0);
-//
-//        // Edge Case: Verify that health and game state reset properly
-//        assertEquals(5, mockUserPlane.getHealth(), "Player health should reset to initial value.");
-//    }
-//
-//    @Test
-//    void testInstantiateLevelView() {
-//        // Verify that a LevelView instance is created correctly
-//        LevelView levelView = levelOne.instantiateLevelView();
-//        assertNotNull(levelView, "LevelView should be instantiated for LevelOne.");
-//    }
-//}
+package com.example.demo.level;
+
+import com.example.demo.actor.ActiveActor;
+import com.example.demo.level.levelViews.LevelView;
+import com.example.demo.manager.ActorManager;
+import com.example.demo.util.JavaFXTestUtils;
+import javafx.application.Platform;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+
+class LevelOneTest {
+
+    // Test subclass of LevelOne just to mock the LevelView to avoid UI complexity.
+    private static class TestLevelOne extends LevelOne {
+        public TestLevelOne(double screenHeight, double screenWidth) {
+            super(screenHeight, screenWidth);
+        }
+
+        @Override
+        protected LevelView instantiateLevelView() {
+            return mock(LevelView.class);
+        }
+    }
+
+    private TestLevelOne levelOne;
+
+    @BeforeAll
+    static void initJavaFX() throws InterruptedException {
+        // Initialize JavaFX if your code or classes depend on it
+        JavaFXTestUtils.initJavaFX();
+    }
+
+    @BeforeEach
+    void setUp() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        Platform.runLater(() -> {
+            // Instantiate the TestLevelOne which uses the original LevelParent logic
+            levelOne = new TestLevelOne(600, 800);
+            latch.countDown();
+        });
+        assertTrue(latch.await(5, TimeUnit.SECONDS), "JavaFX initialization timed out");
+    }
+
+    @Test
+    void testEnemiesAlwaysMaintainedAtFive() {
+        ActorManager actorManager = levelOne.getActorManager();
+
+        // Initially no enemies
+        assertEquals(0, actorManager.getEnemyUnits().size(), "Initially, no enemies should be present.");
+
+        // Increase probabilities to 1.0 to guarantee enemy spawning.
+        // We'll call spawn methods directly from LevelOne: spawnRegularEnemies() and spawnEnemyBomber() are called inside spawnEnemyUnits().
+        // To ensure we get a full set of 5 enemies, we may need to call spawnEnemyUnits() multiple times, since the code tries to fill up to TOTAL_ENEMIES.
+        // Because the code in LevelOne uses ENEMY_SPAWN_PROBABILITY and SPECIAL_ENEMY_SPAWN_PROBABILITY,
+        // we can temporarily set these fields using reflection or rely on the code as-is.
+        // For simplicity, let's call spawnEnemyUnits() multiple times until we reach 5 enemies,
+        // given the probabilities. In a real scenario, you may want to adjust your code for testability.
+
+        // We'll loop until we get 5 enemies. Usually just one or few calls might suffice due to probabilities.
+        for (int i = 0; i < 100 && actorManager.getEnemyUnits().size() < 5; i++) {
+            levelOne.spawnEnemyUnits();
+        }
+
+        // Now we should have 5 enemies (if probabilities are high enough).
+        assertEquals(5, actorManager.getEnemyUnits().size(), "After first spawn attempts, there should be 5 enemies.");
+
+        // Simulate destroying 2 enemies
+        actorManager.getEnemyUnits().remove(0);
+        actorManager.getEnemyUnits().remove(0);
+        assertEquals(3, actorManager.getEnemyUnits().size(), "After removing 2 enemies, there should be 3 left.");
+
+        // Attempt to always respawn to see the reaction of the generation where it should always respawn 5 no more no less
+        for (int i = 0; i < 1000; i++) {
+            levelOne.spawnEnemyUnits();
+        }
+
+        assertEquals(5, actorManager.getEnemyUnits().size(),
+                "After respawning, total enemies should be back to 5.");
+    }
+}

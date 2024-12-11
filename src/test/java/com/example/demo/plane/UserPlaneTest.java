@@ -2,6 +2,8 @@ package com.example.demo.plane;
 
 import com.example.demo.projectile.UserProjectile;
 import com.example.demo.actor.ActiveActor;
+import com.example.demo.util.JavaFXTestUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserPlaneTest {
 
     private UserPlane userPlane;
+
+    @BeforeAll
+    static void initJavaFX() throws InterruptedException {
+        // Initialize the JavaFX platform once for all tests
+        JavaFXTestUtils.initJavaFX();
+    }
 
     @BeforeEach
     void setUp() {
@@ -105,5 +113,33 @@ class UserPlaneTest {
         }
 
         assertTrue(userPlane.getIsDestroyed(), "UserPlane should be destroyed when health reaches zero.");
+    }
+
+    @Test
+    void testDoNotExceedTopBoundary() {
+        // Move the plane upwards multiple times
+        userPlane.moveUp();
+
+        // Keep calling updatePosition to simulate continuous upward movement
+        for (int i = 0; i < 100; i++) {
+            userPlane.updatePosition();
+        }
+
+        double currentY = userPlane.getLayoutY() + userPlane.getTranslateY();
+        assertTrue(currentY >= 0, "UserPlane should not move above the top boundary (Y=0). Current Y: " + currentY);
+    }
+
+    @Test
+    void testDoNotExceedBottomBoundary() {
+        // Move the plane downwards multiple times
+        userPlane.moveDown();
+
+        // Keep calling updatePosition to simulate continuous downward movement
+        for (int i = 0; i < 100; i++) {
+            userPlane.updatePosition();
+        }
+
+        double currentY = userPlane.getLayoutY() + userPlane.getTranslateY();
+        assertTrue(currentY <= 650.0, "UserPlane should not move below the bottom boundary (Y=650). Current Y: " + currentY);
     }
 }

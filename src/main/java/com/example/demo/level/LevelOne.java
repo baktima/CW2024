@@ -15,7 +15,7 @@ public class LevelOne extends LevelParent {
 	private static final int KILLS_TO_ADVANCE = 15;
 	private static final double ENEMY_SPAWN_PROBABILITY = .05;
 	private static final int PLAYER_INITIAL_HEALTH = 5;
-	private static final double SPECIAL_ENEMY_SPAWN_PROBABILITY = 0.0125;
+	private static final double BOMBER_ENEMY_SPAWN_PROBABILITY = 0.0125;
 
 	/**
 	 * Constructs a new LevelOne instance with the specified screen dimensions.
@@ -44,16 +44,15 @@ public class LevelOne extends LevelParent {
 	}
 
 	/**
-	 * Spawns enemy units for Level One. Regular enemies are spawned based on
-	 * {@code ENEMY_SPAWN_PROBABILITY}, and special enemies are spawned with
-	 * {@code SPECIAL_ENEMY_SPAWN_PROBABILITY} in the upper half of the screen.
+	 * Spawns enemy units based on predefined probabilities and screen constraints.
+	 * Includes normal enemies and bomber enemies.
 	 */
 	@Override
 	protected void spawnEnemyUnits() {
 		int currentNumberOfEnemies = getActorManager().getCurrentNumberOfEnemies();
 		for (int i = 0; i < TOTAL_ENEMIES - currentNumberOfEnemies; i++) {
 			spawnRegularEnemies(ENEMY_SPAWN_PROBABILITY);
-			spawnSpecialEnemies(SPECIAL_ENEMY_SPAWN_PROBABILITY); // Upper half
+			spawnBomberEnemies(BOMBER_ENEMY_SPAWN_PROBABILITY); // Upper half
 		}
 	}
 
