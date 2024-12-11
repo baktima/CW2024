@@ -5,9 +5,8 @@ import com.example.demo.plane.Boss;
 
 /**
  * Represents the second level of the game. This level introduces a Boss enemy,
- * which the player must defeat to advance to the next level.
  * This class extends {@link LevelParent} and provides specific implementations
- * for Level Two's behavior, including boss management, enemy spawning, and level-specific views.
+ * for Level Two's behavior, including boss management.
  */
 public class LevelTwo extends LevelParent {
 

@@ -7,7 +7,10 @@ import javafx.util.Duration;
 
 /**
  * Represents a TankerPlane, a type of {@link FighterPlane} with high health and a zigzag movement pattern.
- * TankerPlane does not fire projectiles but moves horizontally with a zigzag vertical motion.
+ * <p>
+ * The TankerPlane moves horizontally while following a zigzag vertical motion. It does not fire projectiles,
+ * making it a unique enemy in terms of movement and survivability due to its higher health.
+ * </p>
  */
 public class TankerPlane extends FighterPlane {
     private static final int HORIZONTAL_VELOCITY = -3;
@@ -71,6 +74,11 @@ public class TankerPlane extends FighterPlane {
         return HORIZONTAL_VELOCITY;
     }
 
+    /**
+     * Gets the vertical velocity of the TankerPlane.
+     *
+     * @return The vertical velocity as a negative constant, indicating leftward movement.
+     */
     public int getVerticalVelocity(){return verticalVelocity;}
 
 

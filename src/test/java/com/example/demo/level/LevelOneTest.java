@@ -1,6 +1,5 @@
 package com.example.demo.level;
 
-import com.example.demo.actor.ActiveActor;
 import com.example.demo.level.levelViews.LevelView;
 import com.example.demo.manager.ActorManager;
 import com.example.demo.util.JavaFXTestUtils;
@@ -55,15 +54,7 @@ class LevelOneTest {
         // Initially no enemies
         assertEquals(0, actorManager.getEnemyUnits().size(), "Initially, no enemies should be present.");
 
-        // Increase probabilities to 1.0 to guarantee enemy spawning.
-        // We'll call spawn methods directly from LevelOne: spawnRegularEnemies() and spawnEnemyBomber() are called inside spawnEnemyUnits().
-        // To ensure we get a full set of 5 enemies, we may need to call spawnEnemyUnits() multiple times, since the code tries to fill up to TOTAL_ENEMIES.
-        // Because the code in LevelOne uses ENEMY_SPAWN_PROBABILITY and SPECIAL_ENEMY_SPAWN_PROBABILITY,
-        // we can temporarily set these fields using reflection or rely on the code as-is.
-        // For simplicity, let's call spawnEnemyUnits() multiple times until we reach 5 enemies,
-        // given the probabilities. In a real scenario, you may want to adjust your code for testability.
-
-        // We'll loop until we get 5 enemies. Usually just one or few calls might suffice due to probabilities.
+        // loop until we get 5 enemies.
         for (int i = 0; i < 100 && actorManager.getEnemyUnits().size() < 5; i++) {
             levelOne.spawnEnemyUnits();
         }

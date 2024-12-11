@@ -11,6 +11,13 @@ public class LevelMenuController {
     private Controller gameController;
 
     /**
+     * Default constructor is private to prevent instantiation.
+     */
+    private LevelMenuController(){
+        // Not intended for instantiation
+    }
+
+    /**
      * Initializes the level menu controller with the main game controller.
      *
      * @param gameController The main game controller instance.

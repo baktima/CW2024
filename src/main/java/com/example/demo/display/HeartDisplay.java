@@ -7,7 +7,7 @@ import javafx.scene.layout.HBox;
 import java.util.Objects;
 
 /**
- * Class representing a display of hearts, used to visually indicate health or lives in the game.
+ * The {@code HeartDisplay} class representing a display of hearts, used to visually indicate health or lives in the game.
  * The display consists of a horizontal box (HBox) containing heart icons.
  */
 public class HeartDisplay {

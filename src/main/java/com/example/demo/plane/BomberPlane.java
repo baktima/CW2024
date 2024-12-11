@@ -4,11 +4,11 @@ import com.example.demo.actor.ActiveActor;
 import com.example.demo.projectile.BomberProjectile;
 
 /**
- * Represents a BomberProjectile in the game.
+ * Represents a BomberPlane in the game.
  * <p>
- * The BomberProjectile is a specialized type of enemy that moves horizontally and
- * occasionally fires projectiles. It has specific health, fire rate, and movement
- * properties, making it a challenging opponent for the player.
+ * The BomberPlane is a specialized type of enemy plane with moderate health, horizontal movement,
+ * and the ability to fire projectiles at regular intervals. It presents a greater challenge to the player
+ * due to its firing mechanism and movement properties.
  * </p>
  */
 public class BomberPlane extends FighterPlane {
@@ -22,24 +22,24 @@ public class BomberPlane extends FighterPlane {
     private static final int PROJECTILE_OFFSET_Y = 35;
 
     /**
-     * Constructs a BomberProjectile with specified initial positions.
+     * Constructs a BomberPlane with specified initial positions.
      *
-     * @param initialXPos The initial X position of the BomberProjectile.
-     * @param initialYPos The initial Y position of the BomberProjectile.
+     * @param initialXPos The initial X position of the BomberPlane.
+     * @param initialYPos The initial Y position of the BomberPlane.
      */
     public BomberPlane(double initialXPos, double initialYPos) {
         super(IMAGE_NAME, IMAGE_HEIGHT,initialXPos, initialYPos, HEALTH);
     }
 
     /**
-     * Fires a projectile from the BomberProjectile.
+     * Fires a projectile from the BomberPlane.
      * <p>
      * The firing mechanism is probabilistic, determined by the {@code FIRE_RATE}. If the
-     * BomberProjectile fires a projectile in the current frame, it returns a new projectile
+     * BomberPlane fires a projectile in the current frame, it returns a new projectile
      * instance with calculated positions.
      * </p>
      *
-     * @return An {@link ActiveActor} representing the projectile if fired, or {@code null} if no projectile is fired.
+     * @return A {@link BomberProjectile} representing the projectile if fired, or {@code null} if no projectile is fired.
      */
     @Override
     public ActiveActor fireProjectile() {
@@ -52,12 +52,12 @@ public class BomberPlane extends FighterPlane {
     }
 
     /**
-     * Retrieves the horizontal velocity of the BomberProjectile.
+     * Retrieves the horizontal velocity of the BomberPlane.
      * <p>
-     * The BomberProjectile moves at a constant horizontal velocity.
+     * The BomberPlane moves at a constant horizontal velocity.
      * </p>
      *
-     * @return The horizontal velocity of the BomberProjectile.
+     * @return The horizontal velocity of the BomberPlane.
      */
     @Override
     public double getHorizontalVelocity(){

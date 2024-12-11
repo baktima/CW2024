@@ -90,6 +90,15 @@
           </includes>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.11.2</version>
+        <configuration>
+          <failOnError>false</failOnError>
+          <additionalJOptions>-encoding UTF-8</additionalJOptions>
+        </configuration>
+      </plugin>
 
       <!-- JavaFX Maven Plugin -->
       <plugin>

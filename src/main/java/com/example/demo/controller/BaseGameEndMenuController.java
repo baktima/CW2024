@@ -12,7 +12,20 @@ import java.io.IOException;
  * transitioning to the main menu and cleaning up game resources.
  */
 public abstract class BaseGameEndMenuController {
+    /**
+     * The current level instance associated with this controller.
+     */
     protected LevelParent levelParent;
+
+    /**
+     * Default constructor for {@code BaseGameEndMenuController}.
+     * <p>
+     * This constructor does not perform any initialization as this class is designed
+     * to be extended by specific menu controllers.
+     */
+    protected BaseGameEndMenuController() {
+        // not intended for instantiation
+    }
 
     /**
      * Initializes the controller with the current level instance.

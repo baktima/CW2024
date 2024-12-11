@@ -4,7 +4,23 @@ import javafx.fxml.FXML;
 
 import java.io.IOException;
 
+/**
+ * Controller for the "Game Over" menu in the game.
+ * <p>
+ * This class handles user interactions within the "Game Over" menu,
+ * such as restarting the current level or exiting to the main menu.
+ * It extends {@link BaseGameEndMenuController} to inherit common functionality.
+ * </p>
+ */
 public class GameOverMenuController extends BaseGameEndMenuController {
+
+    /**
+     * Default constructor is private to prevent instantiation.
+     */
+    private GameOverMenuController(){
+        // Not intended for instantiation
+    }
+
     /**
      * Handles the "Restart" button click event.
      * Restarts the current game level.

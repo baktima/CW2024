@@ -73,7 +73,7 @@ public abstract class ActiveActor extends ImageView implements Destructible {
 	}
 
 	/**
-	 * Respawns the actor by resetting the {@code isDestroyed} flag to false.
+	 * Marks the actor as not destroyed by setting the {@code isDestroyed} flag to false.
 	 */
 	public void respawn(){
 		this.isDestroyed = false;

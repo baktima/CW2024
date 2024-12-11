@@ -5,7 +5,6 @@ import com.example.demo.level.levelViews.LevelView;
 /**
  * Represents the third level of the game. This level features increased difficulty
  * with multiple types of enemies, including regular, bomber, and tanker planes.
- * The player must reach a specified number of kills to win the level.
  * This class extends {@link LevelParent} and provides specific implementations
  * for Level Three's behavior, including enemy spawning, game-over logic,
  * and level-specific views.

@@ -98,6 +98,8 @@ public class TextDisplay {
 
     /**
      * Updates the boss hit label to reflect the current hit count.
+     *
+     *  @param health the current health of the boss to be displayed on the label.
      */
     public void updateBossHealth(int health) {
         bossHealthLabel.setText("Boss Health: " + health);

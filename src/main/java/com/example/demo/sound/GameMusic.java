@@ -17,6 +17,18 @@ public class GameMusic {
     private static final double INITIAL_VOLUME = 0.5;
 
     /**
+     * Default constructor for {@code GameMusic}.
+     * <p>
+     * Initializes the {@code GameMusic} object. This constructor is empty because
+     * the class uses a singleton pattern, and its main purpose is to create the
+     * singleton instance when needed.
+     * </p>
+     */
+    public GameMusic() {
+        // Nothing to initialize in the default constructor
+    }
+
+    /**
      * Plays the background music. If the {@link MediaPlayer} is not already initialized,
      * it sets up the media player with the background music, loops it, and starts playback.
      */

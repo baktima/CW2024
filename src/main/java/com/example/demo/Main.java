@@ -17,6 +17,13 @@ public class Main extends Application {
 	private static final String TITLE = "Sky Battle";
 
 	/**
+	 * Default constructor is private to prevent instantiation.
+	 */
+	private Main(){
+		//not intended for instantiation
+	}
+
+	/**
 	 * The entry point of the JavaFX application.
 	 * Sets up the main game window, initializes the {@link Controller}, and displays the main menu.
 	 *

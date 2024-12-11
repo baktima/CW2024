@@ -35,6 +35,12 @@ public class MainMenuController {
 	private Text music;
 
 	/**
+	 * Default constructor is private to prevent instantiation.
+	 */
+	private MainMenuController(){
+		// not intended for instantiation
+	}
+	/**
 	 * Initializes the main menu with the given stage and game controller.
 	 * Sets up sound effect and background music sliders and starts playing background music.
 	 *

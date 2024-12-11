@@ -14,6 +14,17 @@ public class SoundEffects {
     private static final AudioClip GUN_SHOT_CLIP = new AudioClip(Objects.requireNonNull(SoundEffects.class.getResource(GUNSHOT_MP3)).toExternalForm());
 
     /**
+     * Default constructor for {@code SoundEffects}.
+     * <p>
+     * The constructor does not initialize any additional state because all functionalities
+     * are provided through static methods and preloaded sound clips.
+     * </p>
+     */
+    public SoundEffects(){
+        // Default constructor intentionally left empty
+    }
+
+    /**
      * Retrieves the current global volume level.
      *
      * @return the global volume level as a double (range: 0.0 to 1.0)

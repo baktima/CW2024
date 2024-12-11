@@ -36,6 +36,13 @@ public class PauseMenuController {
     private Text music;
 
     /**
+     * Default constructor is private to prevent instantiation.
+     */
+    private PauseMenuController(){
+        // not intended for instantiation
+    }
+
+    /**
      * Initializes the Pause Menu with the current level instance.
      *
      * @param levelParent the current level instance.

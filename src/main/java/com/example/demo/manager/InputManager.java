@@ -5,7 +5,9 @@ import javafx.scene.input.KeyCode;
 
 /**
  * Manages input handling for the user-controlled plane in the game.
+ *<p>
  * This class maps keyboard inputs to user actions such as movement, firing, and pausing the game.
+ *</p>
  */
 public class InputManager {
     private final UserPlane user;
