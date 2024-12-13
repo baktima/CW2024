@@ -279,3 +279,7 @@ reduce the amount of health left that the enemy plane have.
  and when reach the other side of the screen still also reduce the health of the player.
 - **Solution:** Force the spawning of the Tanker plane to spawn around the middle of the screen to prevent
 the plane going outside when doing the zigzag move.
+
+### 5. Firing 
+- **Problem:** When holding space and then move, it will not continue to fire.  
+- **Solution:** Not solved.
