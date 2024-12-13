@@ -6,31 +6,53 @@
 ---
 
 ## 2. Compilation Instructions
-- Have Java SDK 19 or higher version installed.
-- Maven is not necessary because the project includes a Maven wrapper (if using intellij).
 
-To check if maven is installed or not run this command
-````
-mvn -v
-````
+### Prerequisites
+1. **Java SDK**: Ensure Java SDK 19 or higher is installed.
 
-- Clone the GitHub repository to your desired file.
-````
-git clone https://github.com/baktima/CW2024.git
-````
+To check java version run this command on the terminal.
+```bash
+   java -version
+   javac -version
+   ```
 
-- To use the maven wrapper change from mvn to ./mvnw then the regular maven command (can only be run on the intellij terminal).
-````
-mvn clean install
-./mvnw clean install
-````
+2. **Maven**: While the project includes a Maven wrapper, you can verify if Maven is installed globally by running:
+   ```bash
+   mvn -v
+   ```
 
-- If it is not possible to run from the intellij you can run it using this command. 
+### Step 1: Clone the Repository
+1. Clone the GitHub repository to your desired directory:
+   ```bash
+   git clone https://github.com/baktima/CW2024.git
+   ```
 
-````
-mvn javafx:run
-./mvnw javafx:run
-````
+### Step 2: Build the Project
+1. Navigate to the root directory of the cloned repository.
+2. Use Maven to clean and install the project.
+    - If Maven is installed globally:
+      ```bash
+      mvn clean install
+      ```
+    - If using the Maven wrapper:
+      ```bash
+      ./mvnw clean install
+      ```
+
+### Step 3: Run the Application
+1. To run the application, execute the following commands:
+    - With Maven:
+      ```bash
+      mvn javafx:run
+      ```
+    - With the Maven wrapper:
+      ```bash
+      ./mvnw javafx:run
+      ```
+
+### Notes
+- If you’re using IntelliJ IDEA, run the Maven wrapper commands (`./mvnw`) or running the main class if it works.
+- Ensure your terminal is in the **root directory** of the cloned project before executing the commands.
 
 
 ## 3. Implemented and Working Properly
@@ -53,17 +75,19 @@ mvn javafx:run
       - Moves in a zigzag pattern but doesn’t fire projectiles.
 
 - **Sound Features:**
-   - Added sound effects for shooting.
+   - Added sound effects when the user is shooting.
    - Added background music.
    - Added sliders to control the volume for sound effects (SFX) and background music.
 
 - **New Player Skills:**
    - Added a skill to clear all bullets.
 
+- **Images:**
+    - Changing the images for the planes and the bullets. 
 ---
 
 ## 4. Implemented but Not Working
-- Need more testing. 
+- Explained on the unexpected problem on the persistent input section. 
 
 ---
 
@@ -76,127 +100,104 @@ mvn javafx:run
 - Enemy planes (except the boss) can fly off the screen due to the absence of bounding collisions.
 
 #### Reasons: 
-1. Not enough time
+1. Not enough time.
 2. No more willpower to do this project anymore.
 
 ---
 
-## 6. New Java Classes
+## 6. New Java Classes 
 
-### 1. **Controller**
+### 1. **Controller** (*Location:* `com.example.demo.controller`)
 - **BaseGameEndMenuController**:
    - *Purpose:* Base class for game end menu controllers (example game over menu and win menu).
-   - *Location:* `com.example.demo.controller`
 
 - **GameOverMenuController**:
    - *Purpose:* Manages the Game Over menu.
-   - *Location:* `com.example.demo.controller`
 
 - **WinMenuController**:
    - *Purpose:* Handles the Win menu.
-   - *Location:* `com.example.demo.controller`
 
 - **PauseMenuController**:
    - *Purpose:* Manages the Pause menu.
-   - *Location:* `com.example.demo.controller`
 
 - **MainMenuController**:
    - *Purpose:* Controls the Main Menu.
-   - *Location:* `com.example.demo.controller`
 
 - **LevelMenuController**:
    - *Purpose:* Handles the Level Menu.
-   - *Location:* `com.example.demo.controller`
 
 ---
 
-### 2. **Display**
+### 2. **Display** (*Location:* `com.example.demo.display`)
 - **GameOverMenu**:
    - *Purpose:* Visual display for the Game Over screen.
-   - *Location:* `com.example.demo.display`
 
 - **LevelMenu**:
    - *Purpose:* Visual display for level selection.
-   - *Location:* `com.example.demo.display`
 
 - **MainMenu**:
    - *Purpose:* Visual display for the main menu.
-   - *Location:* `com.example.demo.display`
 
 - **PauseMenu**:
    - *Purpose:* Visual display for the Pause menu.
-   - *Location:* `com.example.demo.display`
 
 - **WinMenu**:
    - *Purpose:* Visual display for the Win menu.
-   - *Location:* `com.example.demo.display`
 
 - **TextDisplay**:
    - *Purpose:* Manages on-screen text like killCount, skill cooldown, boss health, etc.
-   - *Location:* `com.example.demo.display`
 
 ---
 
-### 3. **Implementation (Interface)**
+### 3. **Implementation (Interface)** (*Location:* `com.example.demo.implementation`)
 - **LevelChangeListener**:
    - *Purpose:* Interface for handling level transitions.
-   - *Location:* `com.example.demo.implementation`
 
 ---
 
-### 4. **Level**
+### 4. **Level** (*Location:* `com.example.demo.level`)
 - **LevelEndless**:
    - *Purpose:* Represents endless mode for survival.
-   - *Location:* `com.example.demo.level`
 
 - **LevelThree**:
    - *Purpose:* Represents the third level.
-   - *Location:* `com.example.demo.level`
 
 ---
 
-### 5. **Manager**
+### 5. **Manager** (*Location:* `com.example.demo.manager`)
 - **ActorManager**:
    - *Purpose:* Manages all active actors (enemies, projectiles, and the player).
-   - *Location:* `com.example.demo.manager`
 
 - **GameLoopManager**:
-   - *Purpose:* Handle some of the gameLoop for restarting and resuming. 
-   - *Location:* `com.example.demo.manager`
+   - *Purpose:* Handle some of the gameLoop for restarting and resuming.
 
 - **InputManager**:
    - *Purpose:* Handles user input (keyboard and mouse).
-   - *Location:* `com.example.demo.manager`
 
 ---
 
-### 6. **Plane**
+### 6. **Plane** (*Location:* `com.example.demo.plane`)
 - **BomberPlane**:
    - *Purpose:* Enemy plane with 2 health and projectile that travels to bottom left.
-   - *Location:* `com.example.demo.plane`
 
 - **TankerPlane**:
    - *Purpose:* Enemy plane with high health (8) and zigzag movement.
-   - *Location:* `com.example.demo.plane`
 
 ---
 
-### 7. **Projectile**
+### 7. **Projectile** (*Location:* `com.example.demo.projectile`)
 - **BomberProjectile**:
    - *Purpose:* Projectiles fired by `BomberPlane`.
-   - *Location:* `com.example.demo.projectile`
 
 ---
 
-### 8. **Sound**
+### 8. **Sound** (*Location:* `com.example.demo.sound`)
 - **GameMusic**:
    - *Purpose:* Handles background music.
-   - *Location:* `com.example.demo.sound`
 
 - **SoundEffects**:
    - *Purpose:* Manages sound effects for actions like the user shooting.
-   - *Location:* `com.example.demo.sound`
-
+  
 ---
 
 ## 7. Modified Java Classes
@@ -208,10 +209,12 @@ mvn javafx:run
    - **Reason:** Improved readability by separating functionality.
 3. Delegated input handling to `InputManager`:
    - **Reason:** Simplified and centralized input management.
-4. Delegated `ActiveActor` interactions to `ActorManager`:
+4. Delegated most of `ActiveActor` interactions to `ActorManager`:
    - **Reason:** Improved readability and abstraction.
+   - **Example:** `handleEnemyCollisions()` and other collision handling, `enemyHasPenetratedDefence()`,
+   `removeDestroyedActors()`. 
 5. Added `cleanUp()` for error resolution:
-   - **Reason:** Prevents errors when changing levels.
+   - **Reason:** Prevents errors when changing levels and also for cleaning the objects when the gameplay is done.
 6. Generalized unit spawning:
    - **Reason:** Avoided code repetition across child classes.
 
@@ -235,7 +238,7 @@ mvn javafx:run
 
 ### 6. EnemyPlane.java, BossProjectile.java, EnemyProjectile.java, UserProjectile.java
 1. Generalized `updateActor()` and `updatePosition()` to `ActiveActor`:
-   - **Reason:** Reduced redundancy across child classes.
+   - **Reason:** Reduced redundancy (code repetition) across child classes.
 
 ### 7. File Restructuring
 1. Categorized files into related packages:
@@ -259,9 +262,12 @@ the previous iteration instead of restarting or resuming the current scene.
 - **Solution:** Modified the `PauseMenuController` to remove the single instance of the 
 pause menu and can always create new instance, which resolved the issue.
 
-### 2. Persistent Input After Restart
+### 2. Persistent Input After Pause and Restart
 - **Problem:** When restarting the game after the player's plane dies, the plane would continue moving based on the last input without new user input.
-- **Solution:** Not solved
+- **Solution:** Not solved (any input will make the user plane go back to normal).
+- 
+- **Problem:** When pausing the game and then continue the plane would continue moving based on the last input without new user input.
+- **Solution:** Not solved (any input will make the user plane go back to normal).
 
 ### 3. Health reduction
 - **Problem:** When user plane collide with plane with higher health, rather than reduce only 1 health, it will
@@ -269,6 +275,7 @@ reduce the amount of health left that the enemy plane have.
 - **Solution:** Not solved
 
 ### 4. TankerPlane move outside of screen
-- **Problem:** The tanker plane can go outside the screen if it spawns on the top or bottom of the screen.
+- **Problem:** The tanker plane can go outside the screen if it spawns on the top or bottom of the screen
+ and when reach the other side of the screen still also reduce the health of the player.
 - **Solution:** Force the spawning of the Tanker plane to spawn around the middle of the screen to prevent
 the plane going outside when doing the zigzag move.

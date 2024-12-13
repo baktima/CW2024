@@ -35,10 +35,11 @@ public class MainMenuController {
 	private Text music;
 
 	/**
-	 * Default constructor is private to prevent instantiation.
+	 *  @hidden
+	 *  Default constructor
 	 */
-	private MainMenuController(){
-		// not intended for instantiation
+	public MainMenuController(){
+		// No functionality needed
 	}
 	/**
 	 * Initializes the main menu with the given stage and game controller.

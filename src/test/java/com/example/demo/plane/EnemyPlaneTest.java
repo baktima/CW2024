@@ -2,6 +2,8 @@ package com.example.demo.plane;
 
 import com.example.demo.projectile.EnemyProjectile;
 import com.example.demo.actor.ActiveActor;
+import com.example.demo.util.JavaFXTestUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class EnemyPlaneTest {
 
     private EnemyPlane enemyPlane;
+
+    @BeforeAll
+    static void initFX() throws InterruptedException {
+        JavaFXTestUtils.initJavaFX();
+    }
 
     @BeforeEach
     void setUp() {

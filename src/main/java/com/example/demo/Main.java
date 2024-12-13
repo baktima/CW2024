@@ -17,10 +17,11 @@ public class Main extends Application {
 	private static final String TITLE = "Sky Battle";
 
 	/**
-	 * Default constructor is private to prevent instantiation.
+	 * @hidden
+	 * default constructor
 	 */
-	private Main(){
-		//not intended for instantiation
+	public Main(){
+		// No functionality needed
 	}
 
 	/**

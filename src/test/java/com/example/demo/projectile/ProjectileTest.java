@@ -1,11 +1,18 @@
 package com.example.demo.projectile;
 
+import com.example.demo.util.JavaFXTestUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProjectileTest {
+
+    @BeforeAll
+    static void initFX() throws InterruptedException {
+        JavaFXTestUtils.initJavaFX();
+    }
 
     // A simple implementation of Projectile for testing
     private static class TestProjectile extends Projectile {

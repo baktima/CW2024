@@ -15,10 +15,11 @@ import java.io.IOException;
 public class GameOverMenuController extends BaseGameEndMenuController {
 
     /**
-     * Default constructor is private to prevent instantiation.
+     * @hidden
+     * Default constructor
      */
-    private GameOverMenuController(){
-        // Not intended for instantiation
+    public GameOverMenuController(){
+        // No functionality needed
     }
 
     /**

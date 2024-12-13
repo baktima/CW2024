@@ -11,10 +11,11 @@ public class LevelMenuController {
     private Controller gameController;
 
     /**
-     * Default constructor is private to prevent instantiation.
+     *  @hidden
+     *  Default constructor
      */
-    private LevelMenuController(){
-        // Not intended for instantiation
+    public LevelMenuController(){
+        // No functionality needed
     }
 
     /**

@@ -36,10 +36,11 @@ public class PauseMenuController {
     private Text music;
 
     /**
-     * Default constructor is private to prevent instantiation.
+     *  @hidden
+     *  Default constructor
      */
-    private PauseMenuController(){
-        // not intended for instantiation
+    public PauseMenuController(){
+        // No functionality needed
     }
 
     /**

@@ -2,9 +2,16 @@ package com.example.demo.plane;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.example.demo.util.JavaFXTestUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class TankerPlaneTest {
+
+    @BeforeAll
+    static void initFX() throws InterruptedException {
+        JavaFXTestUtils.initJavaFX();
+    }
 
     @Test
     void testInitialHealth() {

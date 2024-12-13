@@ -17,10 +17,11 @@ public class WinMenuController extends BaseGameEndMenuController {
 
 
     /**
-     * Default constructor is private to prevent instantiation.
+     *  @hidden
+     *  Default constructor
      */
-    private WinMenuController(){
-        // not intended for instantiation
+    public WinMenuController(){
+        // No functionality needed
     }
 
     /**

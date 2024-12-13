@@ -1,5 +1,7 @@
 package com.example.demo.projectile;
 
+import com.example.demo.util.JavaFXTestUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class BossProjectileTest {
 
     private BossProjectile bossProjectile;
+
+    @BeforeAll
+    static void initFX() throws InterruptedException {
+        JavaFXTestUtils.initJavaFX();
+    }
 
     @BeforeEach
     void setUp() {
